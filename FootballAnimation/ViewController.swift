@@ -14,22 +14,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-<<<<<<< HEAD
-        // Do any additional setup after loading the view, typically from a nib.
-		if let bg = background {
-			bg.contentMode = .scaleAspectFit
-		}
-
     }
 	override func viewWillAppear(_ animated: Bool) {
-		if let bg = background {
-			let viewSize = bg.bounds;
-			if let img = bg.image {
-				let imageSize = img.size
-				
-				
-			}
-		}
 	}
 	override func viewDidLayoutSubviews() {
 		drawPlay("");
@@ -40,12 +26,41 @@ class ViewController: UIViewController {
     }
 
 	func drawPlay(_ play:Any?) -> Void {
-		drawPlayer("G2", number: "11");
+		let items = parseJSON()
+		let play = items[0]
 		
+		var lastPlace:String? = nil
+		
+		for player in play.players {
+			var alpha = player.position.count == 1 ? 1.0 : 0.5
+			
+			if let p = player.position.first {
+				if let lp = lastPlace {
+					drawPass(lp,p)
+				}
+			}
+			
+			var lastRun:String? = nil
+			
+			for c in player.position {
+				if let lr = lastRun {
+					drawRun(lr,c)
+				}
+				drawPlayer(c, number: String(player.number), alpha:alpha);
+				alpha = alpha + 0.5
+				lastRun = c
+			}
+			
+			if let p = player.position.last  {
+				lastPlace = p
+			}
+			
+		}
 	}
 	func calculatePoint(_ coordinate:String) -> CGPoint {
 		let viewSize = background!.bounds;
-		let squareSize = CGSize(width: viewSize.width / (18.0 + 1.0), height: viewSize.height / (11.0 + 1.0))
+		let squareSize = CGSize(width: viewSize.width / (18.0 + 1.0), height: viewSize.height / (11.0 + 0.8))
+		
 		let squareOffset = CGPoint(x: squareSize.width / 2.0, y: squareSize.height / 2.0)
 		let xString:String = String(coordinate[coordinate.characters.startIndex])
 		
@@ -61,15 +76,20 @@ class ViewController: UIViewController {
 		let yPosition:Double = Double(yString)!
 		
 		let x:Double = (Double(squareSize.width) * (xPosition - 1.0)) + Double(squareOffset.x) * 1.3
-		let y:Double = (Double(squareSize.height) * (yPosition - 1.0)) + Double(squareOffset.y) * 1.3
+		let y:Double = (Double(squareSize.height) * (yPosition - 1.0)) + Double(squareOffset.y) * 1.4
 		
 		return CGPoint(x: x, y: y)
 	}
 	func drawPlayer(_ coordinate:String, number:String) -> Void {
+		return drawPlayer(coordinate, number: number, alpha: 1.0)
+	}
+	func drawPlayer(_ coordinate:String, number:String, alpha:Double) -> Void {
+		let viewSize = background!.bounds;
+		let size = viewSize.height / 12.0 * 0.6
 		// calculate position
 		let point = calculatePoint(coordinate);
 		
-		let rect = CGRect(x: point.x, y: point.y, width: 16, height: 16);
+		let rect = CGRect(x: point.x, y: point.y, width:size, height: size);
 		// draw red circle
 		let player = UILabel(frame: rect)
 		player.backgroundColor = UIColor.red;
@@ -81,17 +101,49 @@ class ViewController: UIViewController {
 		player.layer.borderColor = UIColor.red.cgColor;
 		player.layer.cornerRadius = rect.size.height / 2.0
 		player.text = number;
+		player.alpha = CGFloat(alpha);
 		
 		if let bg = self.background {
 			bg.addSubview(player)
 		}
 		
 	}
+	func drawRun(_ coordinateStart:String, _ coordinateEnd:String) -> Void {
+		return drawLine(coordinateStart, coordinateEnd, "run")
+	}
+	
+	func drawPass(_ coordinateStart:String, _ coordinateEnd:String) -> Void {
+		return drawLine(coordinateStart, coordinateEnd, "pass")
+	}
+	
+	func drawLine(_ coordinateStart:String, _ coordinateEnd:String, _ type:String) -> Void {
+		let viewSize = background!.bounds;
+		let size = viewSize.height / 12.0 * 0.6
+		
+		var point1 = calculatePoint(coordinateStart);
+		var point2 = calculatePoint(coordinateEnd);
+		
+		point1.x = point1.x + size / 2.0;
+		point1.y = point1.y + size / 2.0;
+		point2.x = point2.x + size / 2.0;
+		point2.y = point2.y + size / 2.0;
+		
+		// Draw line
+		let path = UIBezierPath()
+		path.move(to: point1)
+		path.addLine(to: point2)
+		
+		let layer = CAShapeLayer()
+		layer.path = path.cgPath
+		layer.strokeColor = (type == "run" ? UIColor.red.cgColor : UIColor.blue.cgColor)
+		layer.lineDashPattern = (type == "run" ? [4, 4] : nil)
 
-=======
-        
-       let items = parseJSON()
-    }
+		layer.lineWidth = 3.0
+		
+		if let bg = self.background {
+			bg.layer.addSublayer(layer)
+		}
+	}
 
     // MARK: - ParseJSON
     func parseJSON() -> [Position] {
@@ -133,6 +185,34 @@ class ViewController: UIViewController {
         
         return []
     }
->>>>>>> 2606e988e229bc5273b9fc9d090b1bed34859aef
 }
 
+extension UIBezierPath {
+	
+	class func arrow(from start: CGPoint, to end: CGPoint, tailWidth: CGFloat, headWidth: CGFloat, headLength: CGFloat) -> Self {
+		let length = hypot(end.x - start.x, end.y - start.y)
+		let tailLength = length - headLength
+		
+		func p(_ x: CGFloat, _ y: CGFloat) -> CGPoint { return CGPoint(x: x, y: y) }
+		let points: [CGPoint] = [
+			p(0, tailWidth / 2),
+			p(tailLength, tailWidth / 2),
+			p(tailLength, headWidth / 2),
+			p(length, 0),
+			p(tailLength, -headWidth / 2),
+			p(tailLength, -tailWidth / 2),
+			p(0, -tailWidth / 2)
+		]
+		
+		let cosine = (end.x - start.x) / length
+		let sine = (end.y - start.y) / length
+		let transform = CGAffineTransform(a: cosine, b: sine, c: -sine, d: cosine, tx: start.x, ty: start.y)
+		
+		let path = CGMutablePath.init()
+		path.addLines(between: points, transform: transform)
+		path.closeSubpath()
+		
+		return self.init(cgPath: path)
+	}
+	
+}
