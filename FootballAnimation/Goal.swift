@@ -9,5 +9,5 @@
 import Foundation
 
 struct Goal {
-    let playerPositions: [Position]
+    let playerPositions: [Play]
 }

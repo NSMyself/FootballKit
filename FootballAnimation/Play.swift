@@ -1,5 +1,5 @@
 //
-//  Position.swift
+//  Play.swift
 //  FootballAnimation
 //
 //  Created by João Pereira on 11/11/16.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct Position {
+struct Play {
     let players: [Player]
 }
