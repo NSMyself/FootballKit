@@ -34,7 +34,7 @@
 		590AD2951DD7CDDC00C583C3 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		590AD2971DD7D6A300C583C3 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
-		59F90B271DD5D55900A29BDA /* FootballAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		59F90B271DD5D55900A29BDA /* FootballKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F90B2A1DD5D55900A29BDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		59F90B2C1DD5D55900A29BDA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		59F90B2F1DD5D55900A29BDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		59F90B281DD5D55900A29BDA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				59F90B271DD5D55900A29BDA /* FootballAnimation.app */,
+				59F90B271DD5D55900A29BDA /* FootballKit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,9 +130,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		59F90B261DD5D55900A29BDA /* FootballAnimation */ = {
+		59F90B261DD5D55900A29BDA /* FootballKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 59F90B391DD5D55900A29BDA /* Build configuration list for PBXNativeTarget "FootballAnimation" */;
+			buildConfigurationList = 59F90B391DD5D55900A29BDA /* Build configuration list for PBXNativeTarget "FootballKit" */;
 			buildPhases = (
 				59F90B231DD5D55900A29BDA /* Sources */,
 				59F90B241DD5D55900A29BDA /* Frameworks */,
@@ -142,9 +142,9 @@
 			);
 			dependencies = (
 			);
-			name = FootballAnimation;
+			name = FootballKit;
 			productName = FootballAnimation;
-			productReference = 59F90B271DD5D55900A29BDA /* FootballAnimation.app */;
+			productReference = 59F90B271DD5D55900A29BDA /* FootballKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -159,11 +159,12 @@
 				TargetAttributes = {
 					59F90B261DD5D55900A29BDA = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = UP6QXSY3FS;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 59F90B221DD5D55900A29BDA /* Build configuration list for PBXProject "FootballAnimation" */;
+			buildConfigurationList = 59F90B221DD5D55900A29BDA /* Build configuration list for PBXProject "FootballKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -176,7 +177,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				59F90B261DD5D55900A29BDA /* FootballAnimation */,
+				59F90B261DD5D55900A29BDA /* FootballKit */,
 			);
 		};
 /* End PBXProject section */
@@ -333,10 +334,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UP6QXSY3FS;
 				INFOPLIST_FILE = FootballAnimation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nsmyself.FootballAnimation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nsmyself.FootballKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -346,10 +348,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UP6QXSY3FS;
 				INFOPLIST_FILE = FootballAnimation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nsmyself.FootballAnimation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nsmyself.FootballKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -358,7 +361,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		59F90B221DD5D55900A29BDA /* Build configuration list for PBXProject "FootballAnimation" */ = {
+		59F90B221DD5D55900A29BDA /* Build configuration list for PBXProject "FootballKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				59F90B371DD5D55900A29BDA /* Debug */,
@@ -367,7 +370,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		59F90B391DD5D55900A29BDA /* Build configuration list for PBXNativeTarget "FootballAnimation" */ = {
+		59F90B391DD5D55900A29BDA /* Build configuration list for PBXNativeTarget "FootballKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				59F90B3A1DD5D55900A29BDA /* Debug */,

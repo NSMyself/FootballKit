@@ -35,5 +35,4 @@ extension UIBezierPath {
         
         return self.init(cgPath: path)
     }
-    
 }
