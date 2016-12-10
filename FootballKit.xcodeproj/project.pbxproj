@@ -96,7 +96,7 @@
 		59F90B1E1DD5D55900A29BDA = {
 			isa = PBXGroup;
 			children = (
-				59F90B291DD5D55900A29BDA /* FootballAnimation */,
+				59F90B291DD5D55900A29BDA /* FootballKit */,
 				59F90B281DD5D55900A29BDA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,7 +109,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		59F90B291DD5D55900A29BDA /* FootballAnimation */ = {
+		59F90B291DD5D55900A29BDA /* FootballKit */ = {
 			isa = PBXGroup;
 			children = (
 				590AD2901DD7C76A00C583C3 /* Components */,
@@ -124,7 +124,7 @@
 				59F90B361DD5D55900A29BDA /* Info.plist */,
 				59F90B3C1DD5D58100A29BDA /* goals.json */,
 			);
-			path = FootballAnimation;
+			path = FootballKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
