@@ -1,6 +1,6 @@
 //
 //  Extensions.swift
-//  FootballAnimation
+//  FootballKit
 //
 //  Created by João Pereira on 12/11/16.
 //  Copyright © 2016 NSMyself. All rights reserved.
@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIBezierPath {
-    
     class func arrow(from start: CGPoint, to end: CGPoint, tailWidth: CGFloat, headWidth: CGFloat, headLength: CGFloat) -> Self {
         let length = hypot(end.x - start.x, end.y - start.y)
         let tailLength = length - headLength
@@ -34,5 +33,13 @@ extension UIBezierPath {
         path.closeSubpath()
         
         return self.init(cgPath: path)
+    }
+}
+
+extension CGPoint {
+    func angleToPoint(comparisonPoint: CGPoint) -> CGFloat {
+        let originX = comparisonPoint.x - self.x
+        let originY = comparisonPoint.y - self.y
+        return CGFloat(atan2f(Float(originY), Float(originX)))
     }
 }

@@ -1,6 +1,6 @@
 //
 //  JSONParser.swift
-//  FootballAnimation
+//  FootballKit
 //
 //  Created by João Pereira on 12/11/16.
 //  Copyright © 2016 NSMyself. All rights reserved.
