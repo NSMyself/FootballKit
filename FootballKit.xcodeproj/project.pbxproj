@@ -17,6 +17,7 @@
 		590AD2981DD7D6A300C583C3 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590AD2971DD7D6A300C583C3 /* Line.swift */; };
 		590FF8C31E0325BE00DF3F33 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FF8C21E0325BE00DF3F33 /* Field.swift */; };
 		594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */; };
+		59633A841E046DEF00F12C4A /* newFormat.json in Resources */ = {isa = PBXBuildFile; fileRef = 59633A831E046DEF00F12C4A /* newFormat.json */; };
 		59F90B2B1DD5D55900A29BDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F90B2A1DD5D55900A29BDA /* AppDelegate.swift */; };
 		59F90B2D1DD5D55900A29BDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F90B2C1DD5D55900A29BDA /* ViewController.swift */; };
 		59F90B301DD5D55900A29BDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59F90B2E1DD5D55900A29BDA /* Main.storyboard */; };
@@ -36,11 +37,12 @@
 		590AD2971DD7D6A300C583C3 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		590FF8C21E0325BE00DF3F33 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
+		59633A831E046DEF00F12C4A /* newFormat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newFormat.json; sourceTree = "<group>"; };
 		59F90B271DD5D55900A29BDA /* FootballKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59F90B2A1DD5D55900A29BDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		59F90B2C1DD5D55900A29BDA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		59F90B2F1DD5D55900A29BDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		59F90B311DD5D55900A29BDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		59F90B311DD5D55900A29BDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		59F90B341DD5D55900A29BDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		59F90B361DD5D55900A29BDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59F90B3C1DD5D58100A29BDA /* goals.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = goals.json; sourceTree = "<group>"; };
@@ -68,13 +70,14 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		0AFD45AB1DD61AB5006DAB0B /* Images */ = {
+		0AFD45AB1DD61AB5006DAB0B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				59F90B311DD5D55900A29BDA /* Assets.xcassets */,
 				0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */,
 				0AFD45AD1DD61AB5006DAB0B /* fussballfeld.jpg */,
 			);
-			name = Images;
+			name = Assets;
 			path = images;
 			sourceTree = "<group>";
 		};
@@ -117,15 +120,15 @@
 			children = (
 				590AD2901DD7C76A00C583C3 /* Components */,
 				590AD28D1DD7C73C00C583C3 /* Extensions */,
-				0AFD45AB1DD61AB5006DAB0B /* Images */,
+				0AFD45AB1DD61AB5006DAB0B /* Assets */,
 				0AFD45AA1DD61A42006DAB0B /* Models */,
 				59F90B2A1DD5D55900A29BDA /* AppDelegate.swift */,
 				59F90B2C1DD5D55900A29BDA /* ViewController.swift */,
 				59F90B2E1DD5D55900A29BDA /* Main.storyboard */,
-				59F90B311DD5D55900A29BDA /* Assets.xcassets */,
 				59F90B331DD5D55900A29BDA /* LaunchScreen.storyboard */,
 				59F90B361DD5D55900A29BDA /* Info.plist */,
 				59F90B3C1DD5D58100A29BDA /* goals.json */,
+				59633A831E046DEF00F12C4A /* newFormat.json */,
 			);
 			path = FootballKit;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59F90B3D1DD5D58100A29BDA /* goals.json in Resources */,
+				59633A841E046DEF00F12C4A /* newFormat.json in Resources */,
 				59F90B351DD5D55900A29BDA /* LaunchScreen.storyboard in Resources */,
 				0AFD45AF1DD61AB5006DAB0B /* fussballfeld.jpg in Resources */,
 				0AFD45AE1DD61AB5006DAB0B /* fussballfeld-grid.jpg in Resources */,

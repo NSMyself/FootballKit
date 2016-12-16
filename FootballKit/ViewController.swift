@@ -21,12 +21,14 @@ class ViewController: UIViewController {
         guard let bundle = Bundle.main.path(forResource: "goals", ofType: "json") else { return }
         items = JSONParser.parse(url: URL(fileURLWithPath: bundle))
         
-        playManager = PlayManager(view: background)
-        playManager?.play(play: items.first)
+        if let background = background {
+            playManager = PlayManager(view: background)
+            playManager?.play(play: items.first)
+        }
     }
     
     @IBAction func playToggled(_ sender: Any) {
-        print("Play")
+        playManager?.animate(play: items.first!)
     }
     
     @IBAction func prevClicked(_ sender: Any) {
