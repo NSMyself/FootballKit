@@ -1,5 +1,5 @@
 //
-//  Goal.swift
+//  Team.swift
 //  FootballKit
 //
 //  Created by João Pereira on 16/12/16.
@@ -8,8 +8,9 @@
 
 import Foundation
 
-struct Goal {
-    let scorer:Player
-    let assist:Player
-    let team:Team
+struct Team {
+    let id:Int
+    let name: String
+    let country: String
+    let players: [Player]
 }

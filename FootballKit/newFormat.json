@@ -47,7 +47,7 @@
 				{
 					"timestamp": "45:23",
 					"kind": "goal", // shot, foul, corner, offside
-					"scorer": "Rafa" // optional,
+					"scorer": "Rafa", // optional,
 					"sequence": [
 						{
 							"duration": 5, // in seconds

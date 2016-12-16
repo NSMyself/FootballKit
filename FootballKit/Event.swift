@@ -1,5 +1,5 @@
 //
-//  Goal.swift
+//  Event.swift
 //  FootballKit
 //
 //  Created by João Pereira on 16/12/16.
@@ -8,8 +8,10 @@
 
 import Foundation
 
-struct Goal {
-    let scorer:Player
-    let assist:Player
-    let team:Team
+struct Event {
+    let timestamp: String
+    let kind:EventKind
+    let goal:Goal?
+    let sequence:[Step]
 }
+

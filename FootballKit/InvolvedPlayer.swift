@@ -1,5 +1,5 @@
 //
-//  Goal.swift
+//  InvolvedPlayer.swift
 //  FootballKit
 //
 //  Created by João Pereira on 16/12/16.
@@ -8,8 +8,7 @@
 
 import Foundation
 
-struct Goal {
-    let scorer:Player
-    let assist:Player
-    let team:Team
+struct InvolvedPlayer {
+    let player:Player
+    let position:[String]
 }
