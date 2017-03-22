@@ -9,8 +9,7 @@
 import Foundation
 
 struct Team {
-    let id:Int
-    let name: String
-    let country: String
-    let players: [Player]
+    let name:String
+    let country:String // let's keep it simple for now
+    let players:[Player]
 }

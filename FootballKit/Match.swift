@@ -9,12 +9,10 @@
 import Foundation
 
 struct Match {
-    let id:Int
     let date:Date
-    let competition:String
+    let competition:String  // let's keep it simple for now
     let homeTeam:Team
     let awayTeam:Team
-    let timeline:[Event]
-    let firstHalf:[Goal]
-    let secondHalf:[Goal]
+    let score:Score
+    let timeline:[Play]
 }

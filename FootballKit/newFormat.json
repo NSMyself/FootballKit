@@ -68,7 +68,7 @@
 								}
 							],
 							"ball": {
-								"action": "dribble", // pass, cross, shot
+								"action": "dribble", // pass, shot
 								"curvature": "",	// optional
 								"positions": ["H2", "C1"] // Moved
 							}
