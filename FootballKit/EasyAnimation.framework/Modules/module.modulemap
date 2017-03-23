@@ -1,0 +1,10 @@
+framework module EasyAnimation {
+  umbrella header "EasyAnimation.h"
+
+  export *
+  module * { export * }
+}
+
+module EasyAnimation.Swift {
+    header "EasyAnimation-Swift.h"
+}

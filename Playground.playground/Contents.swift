@@ -2,6 +2,10 @@
 
 import UIKit
 
+let x  = [1: "a", 2: "c"]
+
+
+
 struct Match {
     let date:Date
     let competition:String  // let's keep it simple for now

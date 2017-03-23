@@ -43,3 +43,5 @@ extension CGPoint {
         return CGFloat(atan2f(Float(originY), Float(originX)))
     }
 }
+
+extension String: Error {}

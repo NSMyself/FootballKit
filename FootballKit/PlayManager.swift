@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EasyAnimation
 
 struct PlayManager {
     
@@ -102,6 +103,26 @@ struct PlayManager {
         ballMovement.isRemovedOnCompletion = false
         ballMovement.fillMode = kCAFillModeForwards
         ball.layer.add(ballMovement, forKey: nil)
+        
+        play.homeTeam.forEach{ key, value in
+            
+            let offsets = [5, 10, 20]
+            
+            UIView.animateAndChain(withDuration: 1.0, delay: 0.0,
+                                   options: [], animations: {
+                                    self.view.center.y += 100
+            }, completion: nil)
+                
+                
+            
+            .animate(withDuration: 1.0, animations: {
+                self.view.center.x += 100
+            }).animate(withDuration: 1.0, animations: {
+                self.view.center.y -= 100
+            }).animate(withDuration: 1.0, animations: {
+                self.view.center.x -= 100
+            })
+        }
     }
     
     

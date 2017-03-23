@@ -24,11 +24,9 @@ class ViewController: UIViewController {
         if let background = background {
             playManager = PlayManager(view: background)
             
-            var p1 = Play(scored: true, kind: .OpenPlay, ball: ["A1", "G5"], homeTeam: [:], awayTeam: [:])
-        
-            let bernardo = Player(name: Name(full: "Bernardo Silva", short: "Bernardo Silva", jersey: "Bernardo"), number: 10)
-            p1.homeTeam[bernardo] = ["G11", "C8"]
-            
+            var p1 = Play(scored: true, kind: .OpenPlay)
+            let bernardo = Player(name: "Bernardo Silva", number: 10)
+            p1.homeTeam.register(player: bernardo, positions: [0:"G11", 1:"C8", 2:"C9"])
             
             let renato = Player(name: Name(full: "Renato Sanches", short: "Renato Sanches", jersey: "Renato Sanches"), number: 8)
             
