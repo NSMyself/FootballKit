@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
 struct Team {
     let name:String
     let country:String // let's keep it simple for now
     let players:[Player]
+    let colour:UIColor
 }
