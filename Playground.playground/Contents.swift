@@ -32,10 +32,8 @@ struct Player:Equatable, Hashable {
         var hashValue: Int {
             return full?.hashValue ?? 0 ^ short.hashValue ^ jersey.hashValue
         }
-    }
-    
-    extension PlayerName {
-        static func == (lhs:PlayerName, rhs: PlayerName) -> Bool {
+
+        static func == (lhs:Name, rhs: Name) -> Bool {
             return lhs.hashValue == rhs.hashValue
         }
     }

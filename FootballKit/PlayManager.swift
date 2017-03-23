@@ -14,49 +14,66 @@ struct PlayManager {
     var playerRadius:CGFloat = 50
     let ballRadius:CGFloat = 14
     
+    let ball:UIView = {
+        $0.backgroundColor = UIColor.init(colorLiteralRed: 241/255, green: 196/255, blue: 15/255, alpha: 1)
+        return $0
+    }(UIView())
+    
+    var players:[Player:UIView] = [:]
+    
     init(view: UIView) {
         self.view = view
+        ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
+        ball.layer.cornerRadius = ballRadius/2
     }
     
-    func play(play: Play?) {
-        
-        guard let play = play else { return }
+    mutating func play(play: Play) {
         
         wipeClean()
         
-        var lastPlace:String? = nil
-        
-        for player in play.players {
-            var alpha = player.position.count == 1 ? 1.0 : 0.5
+        for player in play.homeTeam {
             
-            if let p = player.position.first {
-                if let lp = lastPlace {
+            // PASSES; NOT YET IMPLEMENTED
+            /*if let p = player.value.first {
                     view.layer.addSublayer(pass(coordinateStart:lp, p))
-                }
-            }
+            }*/
             
-            var lastRun:String? = nil
-            
-            for c in player.position {
+            /*for position in player.value {
+                
+                
                 
                 if let lr = lastRun {
-                    view.layer.addSublayer((run(coordinateStart:lr, coordinateEnd:c)))
+                    view.layer.addSublayer((run(coordinateStart:lr, coordinateEnd:position)))
                 }
                 
-                view.addSubview(playerCircle(coordinate:c, number: String(player.number), alpha: alpha))
+                view.addSubview(playerCircle(coordinate:position, number: String(player.key.number), alpha: alpha))
                 alpha = alpha + 0.5
-                lastRun = c
+                lastRun = position
             }
             
-            if let p = player.position.last  {
+            if let p = player.value.last  {
                 lastPlace = p
+            }*/
+            
+            // INITIAL POSITIONS
+            
+            if let initialPosition = player.value.first {
+                registerPlayer(player.key, initialPosition: initialPosition)
             }
         }
     }
     
+    mutating func registerPlayer(_ player:Player, initialPosition:String) {
+        
+        let playerView = playerCircle(coordinate:initialPosition, number: String(player.number), alpha: 1)
+        
+        players[player] = playerView
+        view.addSubview(playerView)
+    }
+    
     func animate(play: Play) {
         
-        guard let initialCoord = play.players.first?.position.first,
+        /*guard let initialCoord = play.players.first?.position.first,
             let lastCoord = play.players.last?.position.last else {
                 print("NO DATA")
                 return
@@ -64,30 +81,23 @@ struct PlayManager {
         
         print("Initial Coord: \(initialCoord)")
         print("Last Coord: \(lastCoord)")
-        
+        */
         var initialPosition = Field.calculatePoint(coordinate: "H1", size: view.bounds.size, adjustment: 0)
         var lastPosition = Field.calculatePoint(coordinate: "E1", size: view.bounds.size, adjustment: 0)
         
-        initialPosition = CGPoint(x: initialPosition.x + 10, y: initialPosition.y + 14)
-        lastPosition = CGPoint(x: lastPosition.x + 10, y: initialPosition.y + 14)
+        initialPosition = CGPoint(x: initialPosition.x, y: initialPosition.y)
+        lastPosition = CGPoint(x: lastPosition.x, y: initialPosition.y)
         
         print("Initial Position \(initialPosition)")
         print("Last Position \(lastPosition)")
         
-        let ball:UIView = {
-            $0.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
-            $0.center = Field.dribbleBallPosition(p1: initialPosition, p2: lastPosition)
-            $0.backgroundColor = UIColor.init(colorLiteralRed: 241/255, green: 196/255, blue: 15/255, alpha: 1)
-            $0.layer.cornerRadius = ballRadius/2
-            return $0
-        }(UIView())
-        
+        ball.center = Field.dribbleBallPosition(p1: initialPosition, p2: lastPosition)
         view.addSubview(ball)
         
         let ballMovement = CABasicAnimation(keyPath: "position")
         ballMovement.fromValue = ball.center
-        ballMovement.toValue = CGPoint.zero
-        ballMovement.duration = 4
+        ballMovement.toValue = lastPosition
+        ballMovement.duration = 1
         ballMovement.repeatCount = 1
         ballMovement.isRemovedOnCompletion = false
         ballMovement.fillMode = kCAFillModeForwards

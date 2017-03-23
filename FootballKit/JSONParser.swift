@@ -15,6 +15,7 @@ struct JSONParser {
     static func parse(url:URL) -> [Play] {
         
         do {
+            /*
             let data = try Data(contentsOf: url)
             
             if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? JSONDictionary {
@@ -41,7 +42,7 @@ struct JSONParser {
                         }
                     }.flatMap { $0 }
                 }
-            }
+            }*/
         }
         catch _ {
             print("Could not load shots!")

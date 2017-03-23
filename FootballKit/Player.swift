@@ -8,22 +8,23 @@
 
 import Foundation
 
-struct Player:Equatable, Hashable {
+typealias Name = PlayerName
+
+struct PlayerName:Hashable {
+    let full:String?
+    let short:String
+    let jersey:String
     
-    struct Name:Hashable {
-        let full:String?
-        let short:String
-        let jersey:String
-        
-        var hashValue: Int {
-            return full?.hashValue ?? 0 ^ short.hashValue ^ jersey.hashValue
-        }
-        
-        static func == (lhs:Name, rhs: Name) -> Bool {
-            return lhs.hashValue == rhs.hashValue
-        }
+    var hashValue: Int {
+        return full?.hashValue ?? 0 ^ short.hashValue ^ jersey.hashValue
     }
     
+    static func == (lhs:PlayerName, rhs: PlayerName) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct Player:Equatable, Hashable {    
     let name:Name
     let number:UInt8
     

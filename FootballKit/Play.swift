@@ -13,6 +13,6 @@ struct Play {
     let offside:Bool = false
     let kind:Kind
     let ball:[String]
-    let homeTeam:[Player:[String]]
-    let awayTeam:[Player:[String]]
+    var homeTeam:[Player:[String]]
+    var awayTeam:[Player:[String]]
 }

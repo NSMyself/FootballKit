@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     var playManager:PlayManager?
     var items:[Play] = []
     var i = 0
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +23,20 @@ class ViewController: UIViewController {
         
         if let background = background {
             playManager = PlayManager(view: background)
-            playManager?.play(play: items.first)
+            
+            var p1 = Play(scored: true, kind: .OpenPlay, ball: ["A1", "G5"], homeTeam: [:], awayTeam: [:])
+        
+            let bernardo = Player(name: Name(full: "Bernardo Silva", short: "Bernardo Silva", jersey: "Bernardo"), number: 10)
+            p1.homeTeam[bernardo] = ["G11", "C8"]
+            
+            
+            let renato = Player(name: Name(full: "Renato Sanches", short: "Renato Sanches", jersey: "Renato Sanches"), number: 8)
+            
+            p1.homeTeam[renato] = ["F5", "A5"]
+            
+            items.append(p1)
+            
+            playManager?.play(play: items.first!)
         }
     }
     
