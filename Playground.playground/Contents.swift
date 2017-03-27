@@ -1,89 +1,44 @@
 //: Playground - noun: a place where people can play
-
 import UIKit
+import EasyAnimation
+import PlaygroundSupport
 
-let x  = [1: "a", 2: "c"]
 
+let bg = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 400, height: 400)))
+bg.backgroundColor = .white
+PlaygroundPage.current.liveView = bg
 
+let square = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
+square.backgroundColor = .red
+square.center = bg.center
+bg.addSubview(square)
 
-struct Match {
-    let date:Date
-    let competition:String  // let's keep it simple for now
-    let homeTeam:Team
-    let awayTeam:Team
-    let score:Score
-    let timeline:[Play]
-}
+// Chainable animations
+typealias Position = (x: Int, y: Int)
 
-struct Score {
-    let halfTime:(UInt8, UInt8)
-    let fullTime:(UInt8, UInt8)
-}
+let movements:[Position] = [(x:100, y:0), (x:-200, y:100), (x:15, y:-200)]
 
-struct Team {
-    let name:String
-    let country:String // let's keep it simple for now
-    let players:[Player]
-}
-
-struct Player:Equatable, Hashable {
+func gleipnir(offset:[Position]) -> () {
     
-    struct Name:Hashable {
-        let full:String?
-        let short:String
-        let jersey:String
+    guard let amount = offset.last else {
+        return
+    }
+    
+    print("Amount: \(amount)")
+    
+    return UIView.animate(withDuration: 1, animations: {
+        square.center.x += CGFloat(amount.x)
+        square.center.y += CGFloat(amount.y)
+    }, completion: {
         
-        var hashValue: Int {
-            return full?.hashValue ?? 0 ^ short.hashValue ^ jersey.hashValue
+        (finished: Bool) in
+        
+        guard offset.count > 0 else {
+            return
         }
-
-        static func == (lhs:Name, rhs: Name) -> Bool {
-            return lhs.hashValue == rhs.hashValue
-        }
-    }
-
-    let name:Name
-    let number:UInt8
-    
-    var hashValue: Int {
-        return name.hashValue ^ number.hashValue
-    }
+        
+        gleipnir(offset: Array(offset[0..<offset.count-1]))
+    })
 }
 
-extension Player {
-    static func == (lhs:Player, rhs:Player) -> Bool {
-        return lhs.name.full == rhs.name.full
-            && lhs.name.jersey == rhs.name.jersey
-            && lhs.number == rhs.number
-    }
-}
-
-struct Play {
-    let scored:Bool
-    let offside:Bool = false
-    let kind:Kind
-    let ball:[String]
-    let homeTeam:[Player:[String]]
-    let awayTeam:[Player:[String]]
-}
-
-typealias Kind = PlayKind
-
-enum PlayKind {
-    case OpenPlay
-    case Freekick
-    case Penalty
-    case Corner
-    case ThrowIn
-}
-
-struct BallTracker {
-    let positions:[String]
-}
-
-struct PlayerTracker {
-    let players:[Player:[String]]
-}
-
-
-
+gleipnir(offset: movements)

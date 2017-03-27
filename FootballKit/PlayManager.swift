@@ -32,7 +32,11 @@ struct PlayManager {
         
         wipeClean()
         
-        for player in play.homeTeam {
+        for (player, positions) in play.homeTeam.players() {
+            
+            guard positions.count > 0 else {
+                break
+            }
             
             // PASSES; NOT YET IMPLEMENTED
             /*if let p = player.value.first {
@@ -58,8 +62,8 @@ struct PlayManager {
             
             // INITIAL POSITIONS
             
-            if let initialPosition = player.value.first {
-                registerPlayer(player.key, initialPosition: initialPosition)
+            if let initialPosition = positions[0] {
+                registerPlayer(player, initialPosition: initialPosition)
             }
         }
     }
@@ -67,7 +71,6 @@ struct PlayManager {
     mutating func registerPlayer(_ player:Player, initialPosition:String) {
         
         let playerView = playerCircle(coordinate:initialPosition, number: String(player.number), alpha: 1)
-        
         players[player] = playerView
         view.addSubview(playerView)
     }
@@ -103,42 +106,81 @@ struct PlayManager {
         ballMovement.isRemovedOnCompletion = false
         ballMovement.fillMode = kCAFillModeForwards
         ball.layer.add(ballMovement, forKey: nil)
+        /*
+        let totalDuration = play.animationDuration
         
-        play.homeTeam.forEach{ key, value in
+        // Position array conversion
+        var converted = [Int: [Player:String]]()
+        
+        play.homeTeam.players().forEach { player, value in
             
-            let offsets = [5, 10, 20]
+            for (timestamp, position) in value {
+                converted[timestamp]?[player] = position
+            }
+        }
+        
+        // Actual animation
+        for step in converted.keys {
             
-            UIView.animateAndChain(withDuration: 1.0, delay: 0.0,
-                                   options: [], animations: {
-                                    self.view.center.y += 100
-            }, completion: nil)
+            guard let players = converted[step] else {
+                return
+            }
+            
+            for player in players {
                 
-                
+            }
+        }*/
+        
+        for player in play.homeTeam.players() {
             
-            .animate(withDuration: 1.0, animations: {
-                self.view.center.x += 100
-            }).animate(withDuration: 1.0, animations: {
-                self.view.center.y -= 100
-            }).animate(withDuration: 1.0, animations: {
-                self.view.center.x -= 100
-            })
+            guard let playerView = players[player.key] else {
+                fatalError("No view found for player \(player.key)")
+            }
+            
+            let convertedPositions = player.value.sorted{ $0.0 < $1.0 }
+                .filter { $0.key > 0 }
+                .map { Field.calculatePoint(coordinate: $0.value, size: view.bounds.size, adjustment: 0) }
+            
+            chainedAnimations(view: playerView, offset: convertedPositions)
         }
     }
     
-    
     // MARK: - Private methods
+    private func chainedAnimations(view:UIView, offset:[CGPoint]) -> () {
+        
+        guard let amount = offset.last else {
+            return
+        }
+        
+        print("Amount: \(amount)")
+        
+        return UIView.animate(withDuration: 3, animations: {
+            view.center.x = CGFloat(amount.x)
+            view.center.y = CGFloat(amount.y)
+        }, completion: {
+            
+            (finished: Bool) in
+            
+            guard offset.count > 0 else {
+                return
+            }
+            
+            self.chainedAnimations(view: view, offset: Array(offset[0..<offset.count-1]))
+        })
+    }
+    
     private func playerCircle(coordinate:String, number:String, alpha:Double = 1.0) -> UIView {
         
         // calculate position
         let point = Field.calculatePoint(coordinate: coordinate, size: view.bounds.size, adjustment: 0)
         
         // draw red circle
-        let player:UILabel = {
+        let playerView:UILabel = {
             $0.frame = CGRect(x: point.x, y: point.y, width:playerRadius, height: playerRadius)
             $0.backgroundColor = UIColor.red
             $0.textColor = UIColor.white
             $0.textAlignment = .center
-            $0.font = UIFont.systemFont(ofSize: 10.0, weight: UIFontWeightBold)
+            $0.font = UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightBold)
             $0.layer.borderWidth = 1.0
             $0.layer.masksToBounds = true
             $0.layer.borderColor = UIColor.red.cgColor
@@ -148,7 +190,7 @@ struct PlayManager {
             return $0
         }(UILabel())
         
-        return player
+        return playerView
     }
     
     private func run(coordinateStart:String, coordinateEnd:String) -> CAShapeLayer {

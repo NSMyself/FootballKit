@@ -26,12 +26,9 @@ class ViewController: UIViewController {
             
             var p1 = Play(scored: true, kind: .OpenPlay)
             let bernardo = Player(name: "Bernardo Silva", number: 10)
+            let renato = Player(name: "Renato Sanches", number: 8)
             p1.homeTeam.register(player: bernardo, positions: [0:"G11", 1:"C8", 2:"C9"])
-            
-            let renato = Player(name: Name(full: "Renato Sanches", short: "Renato Sanches", jersey: "Renato Sanches"), number: 8)
-            
-            p1.homeTeam[renato] = ["F5", "A5"]
-            
+            p1.homeTeam.register(player: renato, positions: [0:"C1", 1:"B5"])
             items.append(p1)
             
             playManager?.play(play: items.first!)

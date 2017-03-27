@@ -15,6 +15,12 @@ struct Play {
     let ball:[String]
     var homeTeam:PlayerTracker
     var awayTeam:PlayerTracker
+    
+    var animationDuration:Int {
+        get {
+            return [homeTeam.animationDuration(), awayTeam.animationDuration()].max() ?? 0
+        }
+    }
 }
 
 extension Play {

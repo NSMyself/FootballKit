@@ -8,19 +8,29 @@
 
 import Foundation
 
-typealias Position = [Int: String]
+typealias Positions = [Int: String]
 
 struct PlayerTracker {
+    fileprivate var tracker:[Player:Positions]
+    fileprivate var duration:Int = 0
     
-    fileprivate var tracker:[Player:[Position]]
-    
-    mutating func register(player:Player, positions:[Position]) {
+    mutating func register(player:Player, positions:Positions) {
         
         guard positions.count > 0 else {
             fatalError("Cannot register the player's position array without an actual value")
         }
         
         tracker[player] = positions
+        
+        duration = positions.count > duration ? positions.count : duration
+    }
+    
+    func players() -> [Player:Positions] {
+        return tracker
+    }
+    
+    func animationDuration() -> Int {
+        return duration
     }
 }
 

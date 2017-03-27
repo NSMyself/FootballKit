@@ -28,6 +28,9 @@ struct Field {
         let x = squareSize.width * CGFloat(xPosition - 1.0) + squareOffset.x * 1.3 + adjustment
         let y = squareSize.height * CGFloat(yPosition - 1.0) + squareOffset.y * 1.4 + adjustment
         
+        print("original coordinate: \(coordinate) size: \(size)")
+        print("converted: x:\(x) y:\(y)")
+        
         return CGPoint(x: x, y: y)
     }
     
