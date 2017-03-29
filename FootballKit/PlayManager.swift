@@ -15,6 +15,8 @@ struct PlayManager {
     var playerRadius:CGFloat = 50
     let ballRadius:CGFloat = 14
     
+    let field:Field
+    
     let ball:UIView = {
         $0.backgroundColor = UIColor.init(colorLiteralRed: 241/255, green: 196/255, blue: 15/255, alpha: 1)
         return $0
@@ -26,17 +28,18 @@ struct PlayManager {
         self.view = view
         ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
         ball.layer.cornerRadius = ballRadius/2
+        field = Field(size: view.bounds.size, adjustment: 0)
     }
     
     mutating func play(play: Play) {
         
+        guard let homeTeam = play.homeTeam else {
+            return
+        }
+        
         wipeClean()
         
-        for (player, positions) in play.homeTeam.players() {
-            
-            guard positions.count > 0 else {
-                break
-            }
+        for player in homeTeam.players {
             
             // PASSES; NOT YET IMPLEMENTED
             /*if let p = player.value.first {
@@ -62,15 +65,13 @@ struct PlayManager {
             
             // INITIAL POSITIONS
             
-            if let initialPosition = positions[0] {
-                registerPlayer(player, initialPosition: initialPosition)
-            }
+            registerPlayer(player, initialPosition: player.initialPosition())
         }
     }
     
-    mutating func registerPlayer(_ player:Player, initialPosition:String) {
+    mutating func registerPlayer(_ player:Player, initialPosition:Coordinate) {
         
-        let playerView = playerCircle(coordinate:initialPosition, number: String(player.number), alpha: 1)
+        let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), alpha: 1)
         players[player] = playerView
         view.addSubview(playerView)
     }
@@ -86,16 +87,7 @@ struct PlayManager {
         print("Initial Coord: \(initialCoord)")
         print("Last Coord: \(lastCoord)")
         */
-        var initialPosition = Field.calculatePoint(coordinate: "H1", size: view.bounds.size, adjustment: 0)
-        var lastPosition = Field.calculatePoint(coordinate: "E1", size: view.bounds.size, adjustment: 0)
-        
-        initialPosition = CGPoint(x: initialPosition.x, y: initialPosition.y)
-        lastPosition = CGPoint(x: lastPosition.x, y: initialPosition.y)
-        
-        print("Initial Position \(initialPosition)")
-        print("Last Position \(lastPosition)")
-        
-        ball.center = Field.dribbleBallPosition(p1: initialPosition, p2: lastPosition)
+        /*ball.center = Field.dribbleBallPosition(p1: initialPosition, p2: lastPosition)
         view.addSubview(ball)
         
         let ballMovement = CABasicAnimation(keyPath: "position")
@@ -106,7 +98,7 @@ struct PlayManager {
         ballMovement.isRemovedOnCompletion = false
         ballMovement.fillMode = kCAFillModeForwards
         ball.layer.add(ballMovement, forKey: nil)
-        /*
+        
         let totalDuration = play.animationDuration
         
         // Position array conversion
@@ -130,8 +122,8 @@ struct PlayManager {
                 
             }
         }*/
-        
-        for player in play.homeTeam.players() {
+        /*
+        for player in play.homeTeam {
             
             guard let playerView = players[player.key] else {
                 fatalError("No view found for player \(player.key)")
@@ -142,7 +134,7 @@ struct PlayManager {
                 .map { Field.calculatePoint(coordinate: $0.value, size: view.bounds.size, adjustment: 0) }
             
             chainedAnimations(view: playerView, offset: convertedPositions)
-        }
+        }*/
     }
     
     // MARK: - Private methods
@@ -151,9 +143,7 @@ struct PlayManager {
         guard let amount = offset.last else {
             return
         }
-        
-        print("Amount: \(amount)")
-        
+                
         return UIView.animate(withDuration: 3, animations: {
             view.center.x = CGFloat(amount.x)
             view.center.y = CGFloat(amount.y)
@@ -169,10 +159,10 @@ struct PlayManager {
         })
     }
     
-    private func playerCircle(coordinate:String, number:String, alpha:Double = 1.0) -> UIView {
+    private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
         
         // calculate position
-        let point = Field.calculatePoint(coordinate: coordinate, size: view.bounds.size, adjustment: 0)
+        let point = field.calculatePoint(coordinate: coordinate)
         
         // draw red circle
         let playerView:UILabel = {
@@ -193,21 +183,21 @@ struct PlayManager {
         return playerView
     }
     
-    private func run(coordinateStart:String, coordinateEnd:String) -> CAShapeLayer {
+    private func run(coordinateStart:Coordinate, coordinateEnd:Coordinate) -> CAShapeLayer {
         return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.run)
     }
     
-    private func pass(coordinateStart:String, _ coordinateEnd:String) -> CAShapeLayer {
+    private func pass(coordinateStart:Coordinate, _ coordinateEnd:Coordinate) -> CAShapeLayer {
         return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.pass)
     }
     
-    private func line(coordinateStart:String, coordinateEnd:String, type:Line) -> CAShapeLayer {
+    private func line(coordinateStart:Coordinate, coordinateEnd:Coordinate, type:Line) -> CAShapeLayer {
         
         let size = Double(view.bounds.size.height / 12.0 * 0.6)
         let adjustment = CGFloat(size)/2.0
         
-        let point1 = Field.calculatePoint(coordinate: coordinateStart, size:view.bounds.size, adjustment: adjustment)
-        let point2 = Field.calculatePoint(coordinate: coordinateEnd, size:view.bounds.size, adjustment: adjustment)
+        let point1 = field.calculatePoint(coordinate: coordinateStart)
+        let point2 = field.calculatePoint(coordinate: coordinateEnd)
         
         // Draw line
         let path = UIBezierPath()

@@ -12,8 +12,19 @@ import UIKit
 struct Team {
     let name:String
     let country:String // let's keep it simple for now
-    let players:[Player]
+    var players = Set<Player>()
     let colour:UIColor
+    
+    mutating func register(player:Player) {
+        players.insert(player)
+        let x = 1
+    }
 }
 
-
+extension Team {
+    init(name:String, country:String, colour:UIColor) {
+        self.name = name
+        self.country = country
+        self.colour = colour
+    }
+}

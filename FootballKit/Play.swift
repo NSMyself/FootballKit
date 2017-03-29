@@ -13,14 +13,14 @@ struct Play {
     let offside:Bool = false
     let kind:Kind
     let ball:[String]
-    var homeTeam:PlayerTracker
-    var awayTeam:PlayerTracker
+    var homeTeam:Team?
+    var awayTeam:Team?
     
-    var animationDuration:Int {
+    /*var animationDuration:Int {
         get {
             return [homeTeam.animationDuration(), awayTeam.animationDuration()].max() ?? 0
         }
-    }
+    }*/
 }
 
 extension Play {
@@ -28,7 +28,5 @@ extension Play {
         self.ball = ball ?? []
         self.scored = scored
         self.kind = kind
-        self.homeTeam = PlayerTracker()
-        self.awayTeam = PlayerTracker()
     }
 }
