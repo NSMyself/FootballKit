@@ -12,7 +12,7 @@ import EasyAnimation
 struct PlayManager {
     
     let view:UIView
-    var playerRadius:CGFloat = 50
+    var playerRadius:CGFloat = 38
     let ballRadius:CGFloat = 14
     
     let field:Field
@@ -40,31 +40,6 @@ struct PlayManager {
         wipeClean()
         
         for player in homeTeam.players {
-            
-            // PASSES; NOT YET IMPLEMENTED
-            /*if let p = player.value.first {
-                    view.layer.addSublayer(pass(coordinateStart:lp, p))
-            }*/
-            
-            /*for position in player.value {
-                
-                
-                
-                if let lr = lastRun {
-                    view.layer.addSublayer((run(coordinateStart:lr, coordinateEnd:position)))
-                }
-                
-                view.addSubview(playerCircle(coordinate:position, number: String(player.key.number), alpha: alpha))
-                alpha = alpha + 0.5
-                lastRun = position
-            }
-            
-            if let p = player.value.last  {
-                lastPlace = p
-            }*/
-            
-            // INITIAL POSITIONS
-            
             registerPlayer(player, initialPosition: player.initialPosition())
         }
     }
@@ -129,9 +104,7 @@ struct PlayManager {
                 continue
             }
             
-            let convertedPositions = player.positions(skipInitial:true).map { field.calculatePoint(coordinate: $0.position) }
-            print(convertedPositions)
-            chainedAnimations(view: playerView, offset: convertedPositions)
+            chainedAnimations(view: playerView, offset: player.positions(skipInitial:true).map { field.calculatePoint(coordinate: $0.position) })
         }
     }
     

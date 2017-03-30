@@ -22,7 +22,6 @@
 		597E86AD1E8ACE4700D905BA /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E86AC1E8ACE4700D905BA /* Movement.swift */; };
 		59A36BCD1E047A7C00B4FA58 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A36BCC1E047A7C00B4FA58 /* Team.swift */; };
 		59A36BCF1E047AFB00B4FA58 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A36BCE1E047AFB00B4FA58 /* Match.swift */; };
-		59AAE54A1E83F59300F65553 /* EasyAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59AAE5491E83F59300F65553 /* EasyAnimation.framework */; };
 		59AAE5511E843E5A00F65553 /* PlayerName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AAE5501E843E5A00F65553 /* PlayerName.swift */; };
 		59B48B801E8294AB0095A6C4 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B7F1E8294AB0095A6C4 /* Score.swift */; };
 		59B48B821E8298130095A6C4 /* PlayKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B811E8298130095A6C4 /* PlayKind.swift */; };
@@ -69,7 +68,6 @@
 		599DC10E1E818E56000A6242 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Playground.playground; path = ../Playground.playground; sourceTree = "<group>"; };
 		59A36BCC1E047A7C00B4FA58 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		59A36BCE1E047AFB00B4FA58 /* Match.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
-		59AAE5491E83F59300F65553 /* EasyAnimation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EasyAnimation.framework; sourceTree = "<group>"; };
 		59AAE5501E843E5A00F65553 /* PlayerName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerName.swift; sourceTree = "<group>"; };
 		59B48B7F1E8294AB0095A6C4 /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		59B48B811E8298130095A6C4 /* PlayKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKind.swift; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59AAE54A1E83F59300F65553 /* EasyAnimation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,15 +138,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		59AAE5481E83F58C00F65553 /* Carthage */ = {
-			isa = PBXGroup;
-			children = (
-				59AAE5491E83F59300F65553 /* EasyAnimation.framework */,
-			);
-			name = Carthage;
-			path = FootballKit;
-			sourceTree = "<group>";
-		};
 		59B48B7D1E82945E0095A6C4 /* Visualization */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,7 +168,6 @@
 			isa = PBXGroup;
 			children = (
 				59F90B291DD5D55900A29BDA /* FootballKit */,
-				59AAE5481E83F58C00F65553 /* Carthage */,
 				59F90B281DD5D55900A29BDA /* Products */,
 			);
 			sourceTree = "<group>";
