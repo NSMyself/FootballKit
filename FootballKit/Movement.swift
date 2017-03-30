@@ -12,12 +12,10 @@ struct Movement {
     let position:Coordinate
     let when:Double
     let duration:Double
-    let hasBall:Bool
     
-    init(position:Coordinate, when:Double = 0, duration:Double, hasBall:Bool = false) {
+    init(position:Coordinate, when:Double = 0, duration:Double) {
         self.position = position
         self.when = when
         self.duration = duration
-        self.hasBall = hasBall
     }
 }

@@ -27,30 +27,24 @@ class Player:Equatable, Hashable {
         return name.hashValue ^ number.hashValue
     }
     
-    init(name:String, number:UInt8, at coordinate:Coordinate? = nil, ball:Bool = false) {
+    init(name:String, number:UInt8, at coordinate:Coordinate? = nil) {
         self.name = Name(name: name)
         self.number = number
-        self.move(to:coordinate ?? .G6, duration: 0, ball: ball)
+        self.move(to:coordinate ?? .G6, duration: 0)
     }
     
     // MARK: - Moving
-    func move(to:Coordinate, duration:Double, ball:Bool = false) {
-        self.track(movement: Movement(position: to, duration: duration, hasBall:ball))
+    func move(to:Coordinate, duration:Double) {
+        self.track(movement: Movement(position: to, duration: duration))
     }
     
     func holdPosition(duration:Double) {
         let lastPosition = tracker.last?.position ?? .G6
-        self.track(movement: Movement(position: lastPosition, duration: duration, hasBall: (tracker.last?.hasBall ?? false)))
+        self.track(movement: Movement(position: lastPosition, duration: duration))
     }
     
     // MARK: - Passing
     func pass(to: Coordinate, duration:Double) {
-        
-        guard ball else {
-            fatalError("Player \(name) doesn't have the ball! Can't pass")
-        }
-        
-        has(ball: false)
         //TODO: pass
         print("E agora falta aqui um passe para (\(to.x),\(to.y))")
     }
@@ -69,13 +63,8 @@ class Player:Equatable, Hashable {
         return tracker.first?.position ?? .G6
     }
     
-    // MARK: - Private methods
-    private func has(ball:Bool) {
-        self.ball = ball
-    }
-    
+    // MARK: - Auxiliar methods
     private func track(movement:Movement) {
-        has(ball: movement.hasBall)
         tracker.append(movement)
     }
     
