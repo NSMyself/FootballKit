@@ -122,19 +122,17 @@ struct PlayManager {
                 
             }
         }*/
-        /*
-        for player in play.homeTeam {
+        
+        for player in play.homeTeam!.players {
             
-            guard let playerView = players[player.key] else {
-                fatalError("No view found for player \(player.key)")
+            guard let playerView = players[player] else {
+                continue
             }
             
-            let convertedPositions = player.value.sorted{ $0.0 < $1.0 }
-                .filter { $0.key > 0 }
-                .map { Field.calculatePoint(coordinate: $0.value, size: view.bounds.size, adjustment: 0) }
-            
+            let convertedPositions = player.positions(skipInitial:true).map { field.calculatePoint(coordinate: $0.position) }
+            print(convertedPositions)
             chainedAnimations(view: playerView, offset: convertedPositions)
-        }*/
+        }
     }
     
     // MARK: - Private methods

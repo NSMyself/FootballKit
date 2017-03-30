@@ -8,24 +8,14 @@
 
 import Foundation
 
-struct Play {
+class Play {
     let scored:Bool
     let offside:Bool = false
     let kind:Kind
-    let ball:[String]
     var homeTeam:Team?
     var awayTeam:Team?
     
-    /*var animationDuration:Int {
-        get {
-            return [homeTeam.animationDuration(), awayTeam.animationDuration()].max() ?? 0
-        }
-    }*/
-}
-
-extension Play {
-    init(scored:Bool, offside:Bool = false, kind:Kind, ball:[String]? = nil) {
-        self.ball = ball ?? []
+    init(scored:Bool, offside:Bool = false, kind:Kind) {
         self.scored = scored
         self.kind = kind
     }

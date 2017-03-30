@@ -9,22 +9,26 @@
 import Foundation
 import UIKit
 
-struct Team {
+class Team {
     let name:String
     let country:String // let's keep it simple for now
-    var players = Set<Player>()
     let colour:UIColor
     
-    mutating func register(player:Player) {
-        players.insert(player)
-        let x = 1
-    }
-}
-
-extension Team {
-    init(name:String, country:String, colour:UIColor) {
+    private(set) public var players = Set<Player>()
+    
+    init(name:String, country:String, players:[Player]? = nil, colour:UIColor) {
         self.name = name
         self.country = country
         self.colour = colour
+        
+        if let players = players {
+            for player in players {
+                self.players.insert(player)
+            }
+        }
+    }
+    
+    func register(player: Player) {
+        players.insert(player)
     }
 }

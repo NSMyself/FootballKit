@@ -24,19 +24,21 @@ class ViewController: UIViewController {
         if let background = background {
             playManager = PlayManager(view: background)
             
-            var p1 = Play(scored: true, kind: .OpenPlay)
-            var home = Team(name: "Home Team", country: "Portugal", colour: .red)
+            let p1 = Play(scored: true, kind: .OpenPlay)
+            let home = Team(name: "Home Team", country: "Portugal", colour: .red)
             
             //let bernardo = Player(name: "Bernardo Silva", number: 10)
             
-            var renato = Player(name: "Renato Sanches", number: 8, at:.G11)
+            let renato = Player(name: "Renato Sanches", number: 8, at:.G11)
             renato.move(to: .C8, duration:1, ball: true)
             renato.holdPosition(duration: 2)
-            renato.pass(to: .C9, duration:2)
-            renato.shoot() // goal = false (default)
+            renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it
+            renato.shoot() // only if we have the damn thing
             
             home.register(player: renato)
             p1.homeTeam = home
+            
+            items.append(p1)
             
             //renato.ball = true
             //renato.pass(to: bernardo, timespan:4)
@@ -56,7 +58,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playToggled(_ sender: Any) {
-        //playManager?.animate(play: p1)
+        playManager?.animate(play: items.first!)
     }
     
     @IBAction func prevClicked(_ sender: Any) {

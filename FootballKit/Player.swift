@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Player:Equatable, Hashable {
+class Player:Equatable, Hashable {
     
     let name:Name
     let number:UInt8
@@ -34,17 +34,17 @@ struct Player:Equatable, Hashable {
     }
     
     // MARK: - Moving
-    mutating func move(to:Coordinate, duration:Double, ball:Bool = false) {
+    func move(to:Coordinate, duration:Double, ball:Bool = false) {
         self.track(movement: Movement(position: to, duration: duration, hasBall:ball))
     }
     
-    mutating func holdPosition(duration:Double) {
+    func holdPosition(duration:Double) {
         let lastPosition = tracker.last?.position ?? .G6
         self.track(movement: Movement(position: lastPosition, duration: duration, hasBall: (tracker.last?.hasBall ?? false)))
     }
     
     // MARK: - Passing
-    mutating func pass(to: Coordinate, duration:Double) {
+    func pass(to: Coordinate, duration:Double) {
         
         guard ball else {
             fatalError("Player \(name) doesn't have the ball! Can't pass")
@@ -55,11 +55,11 @@ struct Player:Equatable, Hashable {
         print("E agora falta aqui um passe para (\(to.x),\(to.y))")
     }
     
-    mutating func pass(to: Player, duration:Double) {
+    func pass(to: Player, duration:Double) {
         pass(to: to.currentPosition, duration: duration)
     }
     
-    mutating func shoot(nearest:Bool = true, goal:Bool = false) {
+    func shoot(nearest:Bool = true, goal:Bool = false) {
         let marcou = goal ? "" : "não"
         print("Rematou e \(marcou) foi golo")
     }
@@ -70,13 +70,22 @@ struct Player:Equatable, Hashable {
     }
     
     // MARK: - Private methods
-    mutating private func has(ball:Bool) {
+    private func has(ball:Bool) {
         self.ball = ball
     }
     
-    mutating private func track(movement:Movement) {
+    private func track(movement:Movement) {
         has(ball: movement.hasBall)
         tracker.append(movement)
+    }
+    
+    func positions(skipInitial:Bool = false) -> [Movement] {
+        
+        guard skipInitial, tracker.count > 1 else {
+            return tracker
+        }
+        
+        return Array(tracker[1...tracker.count-1])
     }
 }
 
