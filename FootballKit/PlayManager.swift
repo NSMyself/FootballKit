@@ -115,7 +115,10 @@ struct PlayManager {
             return
         }
                 
-        return UIView.animate(withDuration: 3, animations: {
+        return UIView.animate(withDuration: 3,
+                              delay: 0,
+                              options: [.curveLinear],
+                              animations: {
             view.center.x = CGFloat(amount.x)
             view.center.y = CGFloat(amount.y)
         }, completion: {

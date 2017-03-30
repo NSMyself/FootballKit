@@ -1,6 +1,5 @@
 //: Playground - noun: a place where people can play
 import UIKit
-import EasyAnimation
 import PlaygroundSupport
 
 
@@ -26,7 +25,8 @@ func gleipnir(offset:[Position]) -> () {
     
     print("Amount: \(amount)")
     
-    return UIView.animate(withDuration: 1, animations: {
+    return UIView.animate(withDuration: 1, delay: 0, options: [.curveLinear],
+                          animations: {
         square.center.x += CGFloat(amount.x)
         square.center.y += CGFloat(amount.y)
     }, completion: {

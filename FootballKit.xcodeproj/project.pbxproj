@@ -33,23 +33,6 @@
 		59F90B3D1DD5D58100A29BDA /* goals.json in Resources */ = {isa = PBXBuildFile; fileRef = 59F90B3C1DD5D58100A29BDA /* goals.json */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		597C5C931E854AEA00C6DA41 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 597C5C8E1E854AEA00C6DA41 /* EasyAnimation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 403482541B8E01ED006C3C7C;
-			remoteInfo = EasyAnimation;
-		};
-		597C5C951E854AEA00C6DA41 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 597C5C8E1E854AEA00C6DA41 /* EasyAnimation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 72A03EF91C29784A002DA467;
-			remoteInfo = "EasyAnimation tvOS";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		0AFD45A51DD61A30006DAB0B /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0AFD45A61DD61A30006DAB0B /* Play.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Play.swift; sourceTree = "<group>"; };
@@ -62,7 +45,6 @@
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
 		5953C5FE1E853BBB00A62B1A /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		59633A831E046DEF00F12C4A /* newFormat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newFormat.json; sourceTree = "<group>"; };
-		597C5C8E1E854AEA00C6DA41 /* EasyAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EasyAnimation.xcodeproj; path = Carthage/Checkouts/EasyAnimation/EasyAnimation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		597E86A91E8A88C900D905BA /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		597E86AC1E8ACE4700D905BA /* Movement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
 		599DC10E1E818E56000A6242 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Playground.playground; path = ../Playground.playground; sourceTree = "<group>"; };
@@ -129,15 +111,6 @@
 			name = Components;
 			sourceTree = "<group>";
 		};
-		597C5C8F1E854AEA00C6DA41 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				597C5C941E854AEA00C6DA41 /* EasyAnimation.framework */,
-				597C5C961E854AEA00C6DA41 /* EasyAnimation.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		59B48B7D1E82945E0095A6C4 /* Visualization */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,7 +167,6 @@
 				59F90B361DD5D55900A29BDA /* Info.plist */,
 				59F90B3C1DD5D58100A29BDA /* goals.json */,
 				59633A831E046DEF00F12C4A /* newFormat.json */,
-				597C5C8E1E854AEA00C6DA41 /* EasyAnimation.xcodeproj */,
 				599DC10E1E818E56000A6242 /* Playground.playground */,
 			);
 			path = FootballKit;
@@ -249,35 +221,12 @@
 			mainGroup = 59F90B1E1DD5D55900A29BDA;
 			productRefGroup = 59F90B281DD5D55900A29BDA /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 597C5C8F1E854AEA00C6DA41 /* Products */;
-					ProjectRef = 597C5C8E1E854AEA00C6DA41 /* EasyAnimation.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				59F90B261DD5D55900A29BDA /* FootballKit */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		597C5C941E854AEA00C6DA41 /* EasyAnimation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = EasyAnimation.framework;
-			remoteRef = 597C5C931E854AEA00C6DA41 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		597C5C961E854AEA00C6DA41 /* EasyAnimation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = EasyAnimation.framework;
-			remoteRef = 597C5C951E854AEA00C6DA41 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		59F90B251DD5D55900A29BDA /* Resources */ = {

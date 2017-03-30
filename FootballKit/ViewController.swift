@@ -37,21 +37,9 @@ class ViewController: UIViewController {
             
             home.register(player: renato)
             p1.homeTeam = home
+            p1.initialBallCarrier = renato
             
             items.append(p1)
-            
-            //renato.ball = true
-            //renato.pass(to: bernardo, timespan:4)
-            /* renato.shoot() // goal = false (default)
-            renato.shoot(goal:true) // default shooting speed for now
- 
-            p1.homeTeam.register(player: bernardo, at:.G11)
-                                 
-                                 
-                                 positions: [0:"G11", 1:"C8", 2:"C9"])
-            p1.homeTeam.register(player: renato, positions: [0:"C1", 1:"B5"])
-            items.append(p1)
-            */
             
             playManager?.play(play: p1)
         }

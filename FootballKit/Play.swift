@@ -14,9 +14,13 @@ class Play {
     let kind:Kind
     var homeTeam:Team?
     var awayTeam:Team?
+    var initialBallCarrier:Player?
     
-    init(scored:Bool, offside:Bool = false, kind:Kind) {
+    init(scored:Bool, offside:Bool = false, kind:Kind, homeTeam:Team? = nil, awayTeam:Team? = nil, initialBallCarrier:Player? = nil) {
         self.scored = scored
         self.kind = kind
+        self.homeTeam = homeTeam
+        self.awayTeam = awayTeam
+        self.initialBallCarrier = initialBallCarrier
     }
 }
