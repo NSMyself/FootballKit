@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     var playManager:PlayManager?
     var items:[Play] = []
     var i = 0
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +23,37 @@ class ViewController: UIViewController {
         
         if let background = background {
             playManager = PlayManager(view: background)
-            playManager?.play(play: items.first)
+            
+            let p1 = Play(scored: true, kind: .OpenPlay)
+            let home = Team(name: "Home Team", country: "Portugal", colour: .red)
+            
+            //let bernardo = Player(name: "Bernardo Silva", number: 10)
+            
+            let renato = Player(name: "Renato Sanches", number: 8, at:.G11)
+            renato.move(to: .C8, duration:1, ball: true)
+            renato.holdPosition(duration: 2)
+            renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it
+            renato.shoot() // only if we have the damn thing
+            
+            home.register(player: renato)
+            p1.homeTeam = home
+            
+            items.append(p1)
+            
+            //renato.ball = true
+            //renato.pass(to: bernardo, timespan:4)
+            /* renato.shoot() // goal = false (default)
+            renato.shoot(goal:true) // default shooting speed for now
+ 
+            p1.homeTeam.register(player: bernardo, at:.G11)
+                                 
+                                 
+                                 positions: [0:"G11", 1:"C8", 2:"C9"])
+            p1.homeTeam.register(player: renato, positions: [0:"C1", 1:"B5"])
+            items.append(p1)
+            */
+            
+            playManager?.play(play: p1)
         }
     }
     

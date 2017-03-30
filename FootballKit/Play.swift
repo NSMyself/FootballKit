@@ -8,6 +8,15 @@
 
 import Foundation
 
-struct Play {
-    let players: [Player]
+class Play {
+    let scored:Bool
+    let offside:Bool = false
+    let kind:Kind
+    var homeTeam:Team?
+    var awayTeam:Team?
+    
+    init(scored:Bool, offside:Bool = false, kind:Kind) {
+        self.scored = scored
+        self.kind = kind
+    }
 }
