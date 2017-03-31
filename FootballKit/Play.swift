@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Play {
+class Play:BallActionDelegate {
     let scored:Bool
     let offside:Bool = false
     let kind:Kind
@@ -22,5 +22,21 @@ class Play {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
         self.initialBallCarrier = initialBallCarrier
+    }
+    
+    // MARK: - Delegation
+    func did(player:Player, perform action:Action) {
+        
+        /*switch(action) {
+        case is Hold.Type:
+                print("Player stopped!")
+        case is Movement:
+                print("Player Moved!")
+        case is BallAction.Type:
+                print("Player did something to the ball")
+        default:
+            fatalError("Unknown action")
+        }*/
+        print("Something happened!")
     }
 }

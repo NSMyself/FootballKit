@@ -12,41 +12,37 @@ class Player:Equatable, Hashable {
     
     let name:Name
     let number:UInt8
+    weak var delegate:BallActionDelegate?
+    
+    private(set) public var actions = Queue<Action>()
     
     var currentPosition:Coordinate {
         get {
-            return tracker.last?.position ?? .G6
+            return actions.last?.destination ?? .G6
         }
     }
     
-    var ball:Bool = false
-    
-    private var tracker:[Movement] = []
-    
-    var hashValue: Int {
-        return name.hashValue ^ number.hashValue
-    }
-    
-    init(name:String, number:UInt8, at coordinate:Coordinate? = nil) {
+    // MARK: - Init
+    init(name:String, number:UInt8, at coordinate:Coordinate? = nil, delegate:BallActionDelegate? = nil) {
         self.name = Name(name: name)
         self.number = number
+        self.delegate = delegate
         self.move(to:coordinate ?? .G6, duration: 0)
     }
     
     // MARK: - Moving
     func move(to:Coordinate, duration:Double) {
-        self.track(movement: Movement(position: to, duration: duration))
+        self.track(action: Movement(destination: to, duration: duration))
     }
     
     func holdPosition(duration:Double) {
-        let lastPosition = tracker.last?.position ?? .G6
-        self.track(movement: Movement(position: lastPosition, duration: duration))
+        let lastPosition = actions.last?.destination ?? .G6
+        self.track(action: Hold(position:lastPosition, when: duration, duration: duration))
     }
     
     // MARK: - Passing
-    func pass(to: Coordinate, duration:Double) {
-        //TODO: pass
-        print("E agora falta aqui um passe para (\(to.x),\(to.y))")
+    func pass(to coordinate: Coordinate, duration:Double) {
+     //   delegate?.didPass(player:self, to: coordinate, duration: duration)
     }
     
     func pass(to: Player, duration:Double) {
@@ -54,31 +50,26 @@ class Player:Equatable, Hashable {
     }
     
     func shoot(nearest:Bool = true, goal:Bool = false) {
-        let marcou = goal ? "" : "não"
-        print("Rematou e \(marcou) foi golo")
+        self.track(action: BallAction(kind: .shoot, destination: Field.nearestGoal(from: self.currentPosition), when:0, duration: 1))
     }
     
-    // MARK: - Position retrival methods
+    // MARK: - Position retrieval methods
     func initialPosition() -> Coordinate {
-        return tracker.first?.position ?? .G6
+        return actions.first?.destination ?? .G6
     }
     
     // MARK: - Auxiliar methods
-    private func track(movement:Movement) {
-        tracker.append(movement)
-    }
-    
-    func positions(skipInitial:Bool = false) -> [Movement] {
-        
-        guard skipInitial, tracker.count > 1 else {
-            return tracker
-        }
-        
-        return Array(tracker[1...tracker.count-1])
+    private func track(action:Action) {
+        actions.enqueue(action)
     }
 }
 
 extension Player {
+    // MARK: - Equatable & Hashable protocol compliance
+    
+    var hashValue: Int {
+        return name.hashValue ^ number.hashValue
+    }
     
     static func == (lhs:Player, rhs:Player) -> Bool {
         return lhs.name.full == rhs.name.full

@@ -9,7 +9,7 @@
 import UIKit
 import EasyAnimation
 
-struct PlayManager {
+class PlayManager {
     
     let view:UIView
     var playerRadius:CGFloat = 38
@@ -31,7 +31,7 @@ struct PlayManager {
         field = Field(size: view.bounds.size, adjustment: 0)
     }
     
-    mutating func play(play: Play) {
+    func play(play: Play) {
         
         guard let homeTeam = play.homeTeam else {
             return
@@ -42,13 +42,29 @@ struct PlayManager {
         for player in homeTeam.players {
             registerPlayer(player, initialPosition: player.initialPosition())
         }
+        
+        if let player = play.initialBallCarrier {
+            drawBall(with: player)
+        }
     }
     
-    mutating func registerPlayer(_ player:Player, initialPosition:Coordinate) {
-        
+    func registerPlayer(_ player:Player, initialPosition:Coordinate) {
         let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), alpha: 1)
         players[player] = playerView
         view.addSubview(playerView)
+    }
+    
+    
+    func drawBall(with player:Player) {
+        
+        guard let playerView = players[player] else {
+            return
+        }
+        
+        ball.center.x = playerView.center.x - ballRadius*2
+        ball.center.y = playerView.center.y
+        view.addSubview(ball)
+        print("Ball: \(ball.center)")
     }
     
     func animate(play: Play) {
@@ -104,33 +120,43 @@ struct PlayManager {
                 continue
             }
             
-            chainedAnimations(view: playerView, offset: player.positions(skipInitial:true).map { field.calculatePoint(coordinate: $0.position) })
+            animate(view: playerView, actions: player.actions)
+        }
+    }
+    
+    func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            completion()
         }
     }
     
     // MARK: - Private methods
-    private func chainedAnimations(view:UIView, offset:[CGPoint]) -> () {
+    private func animate(view player:UIView, actions:Queue<Action>) -> () {
         
-        guard let amount = offset.last else {
+        var animatedActions = actions
+        
+         // dropping the first action due to the fact it only represents the initial position of the player
+        guard let original = animatedActions.dequeue() else {
             return
         }
-                
-        return UIView.animate(withDuration: 3,
-                              delay: 0,
-                              options: [.curveLinear],
-                              animations: {
-            view.center.x = CGFloat(amount.x)
-            view.center.y = CGFloat(amount.y)
-        }, completion: {
-            
-            (finished: Bool) in
-            
-            guard offset.count > 0 else {
-                return
-            }
-            
-            self.chainedAnimations(view: view, offset: Array(offset[0..<offset.count-1]))
-        })
+        
+        player.center = CGPoint(x: original.destination.x, y: original.destination.y)
+        
+        fetchNextAction(actions: animatedActions)
+    }
+    
+    private func fetchNextAction(actions:Queue<Action>) {
+        
+        var x = actions
+        
+        guard let action = x.dequeue() else {
+            return
+        }
+        
+        delayWithSeconds(1) {
+            print("action!")
+            self.fetchNextAction(actions: x)
+        }
     }
     
     private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
@@ -157,6 +183,8 @@ struct PlayManager {
         return playerView
     }
     
+    
+    // MARK: - Drawables (solid and dotted lines for passes and runs, respectively)
     private func run(coordinateStart:Coordinate, coordinateEnd:Coordinate) -> CAShapeLayer {
         return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.run)
     }

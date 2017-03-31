@@ -42,3 +42,4 @@ func gleipnir(offset:[Position]) -> () {
 }
 
 gleipnir(offset: movements)
+

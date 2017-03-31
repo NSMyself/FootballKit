@@ -8,14 +8,12 @@
 
 import Foundation
 
-struct Movement {
-    let position:Coordinate
-    let when:Double
+struct Movement:Action {
+    let destination:Coordinate
     let duration:Double
     
-    init(position:Coordinate, when:Double = 0, duration:Double) {
-        self.position = position
-        self.when = when
+    init(destination:Coordinate, duration:Double) {
+        self.destination = destination
         self.duration = duration
     }
 }
