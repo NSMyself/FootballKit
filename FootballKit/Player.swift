@@ -6,6 +6,7 @@
 //  Copyright © 2016 NSMyself. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 class Player:Equatable, Hashable {
@@ -15,12 +16,6 @@ class Player:Equatable, Hashable {
     weak var delegate:BallActionDelegate?
     
     private(set) public var actions = Queue<Action>()
-    
-    var currentPosition:Coordinate {
-        get {
-            return actions.last?.destination ?? .G6
-        }
-    }
     
     // MARK: - Init
     init(name:String, number:UInt8, at coordinate:Coordinate? = nil, delegate:BallActionDelegate? = nil) {
@@ -37,25 +32,36 @@ class Player:Equatable, Hashable {
     
     func holdPosition(duration:Double) {
         let lastPosition = actions.last?.destination ?? .G6
-        self.track(action: Hold(position:lastPosition, when: duration, duration: duration))
+        track(action: Hold(position:lastPosition, duration: duration))
     }
     
     // MARK: - Passing
-    func pass(to coordinate: Coordinate, duration:Double) {
-     //   delegate?.didPass(player:self, to: coordinate, duration: duration)
+    func pass(to coordinate: Coordinate, duration:Double, swerve:Swerve? = nil) {
+        track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, swerve: swerve))
     }
     
-    func pass(to: Player, duration:Double) {
-        pass(to: to.currentPosition, duration: duration)
+    func pass(to:Player, duration:Double, highBall:Bool = false, swerve:Swerve? = nil) {
+        
+        guard to != self else {
+            fatalError("Can't pass to self!")
+        }
+        
+        //pass(to: to.currentPosition, duration: duration, swerve: swerve)
     }
     
-    func shoot(nearest:Bool = true, goal:Bool = false) {
-        self.track(action: BallAction(kind: .shoot, destination: Field.nearestGoal(from: self.currentPosition), when:0, duration: 1))
+    func shoot(from location:Coordinate) {
+        let y = Field.nearestGoal(from: location)
+        track(action: BallAction(kind: .shoot, destination: Field.nearestGoal(from: location), duration: 0.8))
     }
     
     // MARK: - Position retrieval methods
     func initialPosition() -> Coordinate {
         return actions.first?.destination ?? .G6
+    }
+    
+    func position(at:Double) -> CGPoint {
+        // TODO: IMPLEMENT
+        return CGPoint.zero
     }
     
     // MARK: - Auxiliar methods

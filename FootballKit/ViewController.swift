@@ -27,17 +27,25 @@ class ViewController: UIViewController {
             let p1 = Play(scored: true, kind: .OpenPlay)
             let home = Team(name: "Home Team", country: "Portugal", colour: .red)
             
-            //let bernardo = Player(name: "Bernardo Silva", number: 10)
+            let renato = Player(name: "Renato Sanches", number: 8, at:.C8)
+            let bernardo = Player(name: "Bernardo Silva", number: 10, at:.D1)
             
-            let renato = Player(name: "Renato Sanches", number: 8, at:.G11, delegate:p1)
             renato.move(to: .C8, duration:2)
-            renato.holdPosition(duration: 5)
-            renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it
-            renato.shoot() // only if we have the damn thing
+            renato.holdPosition(duration: 1)
+            renato.shoot(from:.C8)
+            
+            bernardo.move(to: .B2, duration: 1)
+            bernardo.pass(to: .C8, duration: 2, swerve: .right)
+            
+            //renato.holdPosition(duration: 5)
+            //renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it
+            //renato.shoot() // only if we have the damn thing
             
             home.register(player: renato)
+            home.register(player: bernardo)
+            
             p1.homeTeam = home
-            p1.initialBallCarrier = renato
+            p1.initialBallCarrier = bernardo
             
             items.append(p1)
             

@@ -16,6 +16,13 @@ enum BallActionKind {
 struct BallAction:Action {
     let kind:BallActionKind
     let destination:Coordinate
-    let when:Double
     let duration:Double
+    let swerve:Swerve?
+    
+    init(kind:BallActionKind, destination:Coordinate, duration:Double, swerve:Swerve? = nil) {
+        self.kind = kind
+        self.destination = destination
+        self.duration = duration
+        self.swerve = swerve
+    }
 }

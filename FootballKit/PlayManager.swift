@@ -14,6 +14,7 @@ class PlayManager {
     let view:UIView
     var playerRadius:CGFloat = 38
     let ballRadius:CGFloat = 14
+    let swerveOffset:CGFloat = 100
     
     let field:Field
     
@@ -23,6 +24,8 @@ class PlayManager {
     }(UIView())
     
     var players:[Player:UIView] = [:]
+    
+    var ballCarrier:Player?
     
     init(view: UIView) {
         self.view = view
@@ -45,6 +48,7 @@ class PlayManager {
         
         if let player = play.initialBallCarrier {
             drawBall(with: player)
+            ballCarrier = player
         }
     }
     
@@ -61,14 +65,9 @@ class PlayManager {
             return
         }
         
-        let nextPoint = field.calculatePoint(coordinate: .H7)
-        
-        self.ball.center = self.periferalBallPosition(from:playerView.center, to:nextPoint)
-        
-        //ball.center.x = playerView.center.x - ballRadius*2
-        //ball.center.y = playerView.center.y
+        ball.center = aimBall(from:playerView.center, to:field.calculatePoint(coordinate: .A4))
+        print(ball.center)
         view.addSubview(ball)
-        print("Ball: \(ball.center)")
     }
     
     func animate(play: Play) {
@@ -124,12 +123,12 @@ class PlayManager {
                 continue
             }
             
-            animate(view: playerView, actions: player.actions)
+            animate(player: player, view: playerView, actions: player.actions)
         }
     }
     
     // MARK: - Private methods
-    private func animate(view player:UIView, actions:Queue<Action>) -> () {
+    private func animate(player:Player, view:UIView, actions:Queue<Action>) -> () {
         
         func fetchNextAction(from actions:Queue<Action>) {
             
@@ -139,7 +138,8 @@ class PlayManager {
                 case is Movement:
                     move(to: action.destination, duration:action.duration)
                 case is BallAction:
-                    print("Player did something to the ball")
+                    let ballAction = action as! BallAction
+                    pass(from: player.lastLocation, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -171,13 +171,17 @@ class PlayManager {
                           options: [.curveLinear],
                           animations: {
                             [unowned self] in
-                            self.ball.center = self.periferalBallPosition(from:player.center , to:converted)
-                            player.center = converted
                             
-            }, completion: { _ in
-                print(player.frame)
-                print(self.ball.frame)
-            })
+                            if (self.ballCarrier == player) {
+                                let diferential = (self.ball.center.x - view.center.x, self.ball.center.y - view.center.y)
+                                self.ball.center = self.moveWithBall(to: converted, maintaining: diferential)
+                            }
+                            else {
+                                print("This guy doesn't have the ball")
+                            }
+                            
+                            view.center = converted
+                }, completion: nil)
         }
 
         var animatedActions = actions
@@ -196,17 +200,69 @@ class PlayManager {
         fetchNextAction(from: animatedActions)
     }
     
-    
-    private func periferalBallPosition(from:CGPoint, to:CGPoint)->CGPoint {
-        let theta = atan2((to.y - from.y), (to.x-from.y))
-        print("Angle is \(theta)")
+    private func pass(from:CGPoint, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
         
+        UIView.animate(withDuration: duration,
+                       delay: 0,
+                       options: [.curveLinear],
+                       animations: {
+                        
+                        [unowned self] in
+                        
+                        if let swerveFactor = swerve {
+                            
+                            let animation = CAKeyframeAnimation(keyPath: "position")
+                            let path = UIBezierPath()
+                            path.move(to: from)
+                            
+                            let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
+                            let c2 = CGPoint(x:to.x, y: to.y)
+                            
+                            path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
+                            animation.path = path.cgPath
+                            animation.fillMode = kCAFillModeForwards
+                            animation.isRemovedOnCompletion = false
+                            animation.duration = duration
+    
+                            self.ball.layer.add(animation, forKey:nil)
+                        }
+                        else {
+                            //self.ball.center = to
+                            let animation = CAKeyframeAnimation(keyPath: "position")
+                            let path = UIBezierPath()
+                            path.move(to: from)
+                            
+                            let c1 = CGPoint(x:from.x + self.swerveOffset * 1, y:from.y)
+                            let c2 = CGPoint(x:to.x, y: to.y)
+                            
+                            path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
+                            animation.path = path.cgPath
+                            animation.fillMode = kCAFillModeForwards
+                            animation.isRemovedOnCompletion = false
+                            animation.duration = duration
+                            self.ball.layer.add(animation, forKey:nil)
+                        }
+            }, completion: { _ in
+                print("Just passed the ball")
+                
+                for player in self.players {
+                    if player.value.center == to {
+                        print("É PRA ESTE! \(player.key.name)")
+                        self.ballCarrier = player.key
+                    }
+                }
+        })
+    }
+    
+    private func aimBall(from:CGPoint, to:CGPoint)->CGPoint {
+        let theta = atan2((to.y - from.y), (to.x-from.y))
         let y = playerRadius * sin(theta)
         let x = playerRadius * cos(theta)
-        
-        print("position is \(x) - \(y)")
-        
         return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
+    }
+    
+    private func moveWithBall(to:CGPoint, maintaining:(x: CGFloat, y: CGFloat)) -> CGPoint {
+        return CGPoint(x: to.x + maintaining.y, y:to.y + maintaining.y)
     }
     
     private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
@@ -234,7 +290,7 @@ class PlayManager {
     }
     
     
-    // MARK: - Drawables (solid and dotted lines for passes and runs, respectively)
+    /*// MARK: - Drawables (solid and dotted lines for passes and runs, respectively)
     private func run(coordinateStart:Coordinate, coordinateEnd:Coordinate) -> CAShapeLayer {
         return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.run)
     }
@@ -265,7 +321,7 @@ class PlayManager {
         }(CAShapeLayer())
         
         return layer
-    }
+    }*/
     
     private func wipeClean() {
         
