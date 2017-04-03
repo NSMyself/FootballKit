@@ -28,7 +28,7 @@ class PlayManager {
         self.view = view
         ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
         ball.layer.cornerRadius = ballRadius/2
-        field = Field(size: view.bounds.size, adjustment: 0)
+        field = Field(size: view.bounds.size, adjustment: CGSize(width: 14, height: 16))
     }
     
     func play(play: Play) {
@@ -61,8 +61,12 @@ class PlayManager {
             return
         }
         
-        ball.center.x = playerView.center.x - ballRadius*2
-        ball.center.y = playerView.center.y
+        let nextPoint = field.calculatePoint(coordinate: .H7)
+        
+        self.ball.center = self.periferalBallPosition(from:playerView.center, to:nextPoint)
+        
+        //ball.center.x = playerView.center.x - ballRadius*2
+        //ball.center.y = playerView.center.y
         view.addSubview(ball)
         print("Ball: \(ball.center)")
     }
@@ -124,15 +128,58 @@ class PlayManager {
         }
     }
     
-    func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            completion()
-        }
-    }
-    
     // MARK: - Private methods
     private func animate(view player:UIView, actions:Queue<Action>) -> () {
         
+        func fetchNextAction(from actions:Queue<Action>) {
+            
+            func handle(action: Action) {
+                
+                switch(action) {
+                case is Movement:
+                    move(to: action.destination, duration:action.duration)
+                case is BallAction:
+                    print("Player did something to the ball")
+                case is Hold:
+                    print("Nothing to do but wait")
+                default:
+                    print("Unknown action! Terminating")
+                }
+            }
+            
+            var remainingActions = actions
+            
+            guard let next = remainingActions.dequeue() else {
+                return
+            }
+            
+            handle(action: next)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + next.duration) {
+                fetchNextAction(from: remainingActions)
+            }
+        }
+        
+        func move(to:Coordinate, duration:Double) {
+            
+            print("Moving")
+            
+            let converted = field.calculatePoint(coordinate: to)
+            
+            UIView.animate(withDuration: duration,
+                          delay: 0,
+                          options: [.curveLinear],
+                          animations: {
+                            [unowned self] in
+                            self.ball.center = self.periferalBallPosition(from:player.center , to:converted)
+                            player.center = converted
+                            
+            }, completion: { _ in
+                print(player.frame)
+                print(self.ball.frame)
+            })
+        }
+
         var animatedActions = actions
         
          // dropping the first action due to the fact it only represents the initial position of the player
@@ -140,23 +187,26 @@ class PlayManager {
             return
         }
         
-        player.center = CGPoint(x: original.destination.x, y: original.destination.y)
+        /*let converted = field.calculatePoint(coordinate: original.destination)
+        player.center = CGPoint(x: converted.x, y: converted.y)
         
-        fetchNextAction(actions: animatedActions)
+        self.ball.center.x = player.center.x - ballRadius*2
+        self.ball.center.y = player.center.y
+        */
+        fetchNextAction(from: animatedActions)
     }
     
-    private func fetchNextAction(actions:Queue<Action>) {
+    
+    private func periferalBallPosition(from:CGPoint, to:CGPoint)->CGPoint {
+        let theta = atan2((to.y - from.y), (to.x-from.y))
+        print("Angle is \(theta)")
         
-        var x = actions
+        let y = playerRadius * sin(theta)
+        let x = playerRadius * cos(theta)
         
-        guard let action = x.dequeue() else {
-            return
-        }
+        print("position is \(x) - \(y)")
         
-        delayWithSeconds(1) {
-            print("action!")
-            self.fetchNextAction(actions: x)
-        }
+        return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
     }
     
     private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
