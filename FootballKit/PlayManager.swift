@@ -24,7 +24,6 @@ class PlayManager {
     }(UIView())
     
     var players:[Player:UIView] = [:]
-    
     var ballCarrier:Player?
     
     init(view: UIView) {
@@ -71,51 +70,6 @@ class PlayManager {
     }
     
     func animate(play: Play) {
-        
-        /*guard let initialCoord = play.players.first?.position.first,
-            let lastCoord = play.players.last?.position.last else {
-                print("NO DATA")
-                return
-        }
-        
-        print("Initial Coord: \(initialCoord)")
-        print("Last Coord: \(lastCoord)")
-        */
-        /*ball.center = Field.dribbleBallPosition(p1: initialPosition, p2: lastPosition)
-        view.addSubview(ball)
-        
-        let ballMovement = CABasicAnimation(keyPath: "position")
-        ballMovement.fromValue = ball.center
-        ballMovement.toValue = lastPosition
-        ballMovement.duration = 1
-        ballMovement.repeatCount = 1
-        ballMovement.isRemovedOnCompletion = false
-        ballMovement.fillMode = kCAFillModeForwards
-        ball.layer.add(ballMovement, forKey: nil)
-        
-        let totalDuration = play.animationDuration
-        
-        // Position array conversion
-        var converted = [Int: [Player:String]]()
-        
-        play.homeTeam.players().forEach { player, value in
-            
-            for (timestamp, position) in value {
-                converted[timestamp]?[player] = position
-            }
-        }
-        
-        // Actual animation
-        for step in converted.keys {
-            
-            guard let players = converted[step] else {
-                return
-            }
-            
-            for player in players {
-                
-            }
-        }*/
         
         for player in play.homeTeam!.players {
             
@@ -186,50 +140,32 @@ class PlayManager {
         
         func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
             
-            UIView.animate(withDuration: duration,
-                           delay: 0,
-                           options: [.curveLinear],
-                           animations: {
-                            
-                            [unowned self] in
-                            
-                            guard let lastCoordinate = player.tracker.lastPosition() else {
-                                return
-                            }
-                            
-                            let from = self.field.calculatePoint(coordinate: lastCoordinate)
+            guard let lastCoordinate = player.tracker.lastPosition() else {
+                return
+            }
+            
+            let from = self.field.calculatePoint(coordinate: lastCoordinate)
 
-                            // Time to animate it
-                            let animation = CAKeyframeAnimation(keyPath: "position")
-                            let path = UIBezierPath()
-                            path.move(to: from)
+            // Time to animate it
+            let animation = CAKeyframeAnimation(keyPath: "position")
+            let path = UIBezierPath()
+            path.move(to: from)
 
-                            if let swerveFactor = swerve {
-                                let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
-                                let c2 = CGPoint(x:to.x, y: to.y)
-                                
-                                path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
-                                animation.duration = duration
-                            }
-                            else {
-                                path.addLine(to: to)
-                                animation.duration = 0.2
-                            }
-                            
-                            animation.path = path.cgPath
-                            animation.fillMode = kCAFillModeForwards
-                            animation.isRemovedOnCompletion = false
-                            self.ball.layer.add(animation, forKey:nil)
-                }, completion: { _ in
-                    print("Just passed the ball")
-                    
-                    for player in self.players {
-                        if player.value.center == to {
-                            print("É PRA ESTE! \(player.key.name)")
-                            self.ballCarrier = player.key
-                        }
-                    }
-            })
+            if let swerveFactor = swerve {
+                let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
+                let c2 = CGPoint(x:to.x, y: to.y)
+                path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
+                
+            }
+            else {
+                path.addLine(to: to)
+            }
+            
+            animation.duration = duration
+            animation.path = path.cgPath
+            animation.fillMode = kCAFillModeForwards
+            animation.isRemovedOnCompletion = false
+            self.ball.layer.add(animation, forKey:nil)
         }
 
         fetchNextAction(from: actions)
@@ -269,41 +205,7 @@ class PlayManager {
         
         return playerView
     }
-    
-    
-    /*// MARK: - Drawables (solid and dotted lines for passes and runs, respectively)
-    private func run(coordinateStart:Coordinate, coordinateEnd:Coordinate) -> CAShapeLayer {
-        return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.run)
-    }
-    
-    private func pass(coordinateStart:Coordinate, _ coordinateEnd:Coordinate) -> CAShapeLayer {
-        return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.pass)
-    }
-    
-    private func line(coordinateStart:Coordinate, coordinateEnd:Coordinate, type:Line) -> CAShapeLayer {
-        
-        let size = Double(view.bounds.size.height / 12.0 * 0.6)
-        let adjustment = CGFloat(size)/2.0
-        
-        let point1 = field.calculatePoint(coordinate: coordinateStart)
-        let point2 = field.calculatePoint(coordinate: coordinateEnd)
-        
-        // Draw line
-        let path = UIBezierPath()
-        path.move(to: point1)
-        path.addLine(to: point2)
-        
-        let layer:CAShapeLayer = {
-            $0.path = path.cgPath
-            $0.strokeColor = type.color()
-            $0.lineDashPattern = type.dashPattern()
-            $0.lineWidth = 3.0
-            return $0
-        }(CAShapeLayer())
-        
-        return layer
-    }*/
-    
+
     private func wipeClean() {
         
         view.subviews.forEach {

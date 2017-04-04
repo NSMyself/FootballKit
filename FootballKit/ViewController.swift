@@ -29,12 +29,11 @@ class ViewController: UIViewController {
             
             let bernardo = Player(name: "Bernardo Silva", number: 10, at:.D1)
             bernardo.move(to: .B2, duration: 1)
-            bernardo.pass(to: .C8, duration: 1, swerve: .right)
+            bernardo.pass(to: .C8, duration: 0.8, swerve: .right)
             
             let renato = Player(name: "Renato Sanches", number: 8, at:.D9)
-            renato.move(to: .C8, duration:2)
+            renato.move(to: .C8, duration:1.8)
             renato.shoot()
-            
             
             //renato.holdPosition(duration: 5)
             //renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it

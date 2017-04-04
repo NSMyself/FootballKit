@@ -22,11 +22,14 @@ struct Tracker {
     }
     
     mutating func set(position:Coordinate, duration:Double) {
+        print("Setting...")
         timer += duration
         positions[duration] = position
     }
     
     func position(when:Double) -> Coordinate? {
+        
+        print("Requesting position")
         
         // Input validation
         guard when > 0 else {
@@ -44,13 +47,14 @@ struct Tracker {
                 return positions[highestKey]
             }
             else {
+                
                 let keys = positions.keys.filter { $0 < when }.sorted()
-                if let lastKey = keys.last {
-                    return positions[lastKey]
-                }
-                else {
+                
+                guard let lastKey = keys.last else {
                     return nil
                 }
+                
+                return positions[lastKey]
             }
         }
         
@@ -58,6 +62,7 @@ struct Tracker {
     }
     
     func lastPosition() -> Coordinate? {
+
         guard let highestKey = positions.keys.max() else {
             return nil
         }

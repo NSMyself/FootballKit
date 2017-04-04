@@ -41,20 +41,13 @@ class Player:Equatable, Hashable {
     }
     
     func pass(to:Player, duration:Double, highBall:Bool = false, swerve:Swerve? = nil) {
-        
         fatalError("Not yet implemented!")
-        
-        /*guard to != self else {
-            fatalError("Can't pass to self!")
-        }
-        
-        pass(to: to.currentPosition, duration: duration, swerve: swerve)*/
     }
     
     func shoot() {
         
         guard let position = tracker.lastPosition() else {
-            fatalError("Fodeste-te")
+            fatalError("Not yet implemented")
         }
         
         actions.enqueue(BallAction(kind: .shoot, destination: Field.nearestGoal(from: position), duration: 0.2))
