@@ -6,90 +6,81 @@
 //  Copyright © 2016 NSMyself. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 class Player:Equatable, Hashable {
     
     let name:Name
     let number:UInt8
+    var tracker:Tracker
+    weak var delegate:BallActionDelegate?
     
-    var currentPosition:Coordinate {
-        get {
-            return tracker.last?.position ?? .G6
-        }
-    }
+    private(set) public var actions = Queue<Action>()
     
-    var ball:Bool = false
-    
-    private var tracker:[Movement] = []
-    
-    var hashValue: Int {
-        return name.hashValue ^ number.hashValue
-    }
-    
-    init(name:String, number:UInt8, at coordinate:Coordinate? = nil, ball:Bool = false) {
+    // MARK: - Init
+    init(name:String, number:UInt8, at coordinate:Coordinate? = nil, delegate:BallActionDelegate? = nil) {
         self.name = Name(name: name)
         self.number = number
-        self.move(to:coordinate ?? .G6, duration: 0, ball: ball)
+        self.delegate = delegate
+        self.tracker = Tracker(position: coordinate ?? .G6)
     }
     
     // MARK: - Moving
-    func move(to:Coordinate, duration:Double, ball:Bool = false) {
-        self.track(movement: Movement(position: to, duration: duration, hasBall:ball))
+    func move(to:Coordinate, duration:Double) {
+        track(action: Movement(destination: to, duration: duration))
     }
     
     func holdPosition(duration:Double) {
-        let lastPosition = tracker.last?.position ?? .G6
-        self.track(movement: Movement(position: lastPosition, duration: duration, hasBall: (tracker.last?.hasBall ?? false)))
+        track(action: Hold(position:tracker.lastPosition() ?? .G6, duration: duration))
     }
     
     // MARK: - Passing
-    func pass(to: Coordinate, duration:Double) {
+    func pass(to coordinate: Coordinate, duration:Double, swerve:Swerve? = nil) {
+        track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, swerve: swerve))
+    }
+    
+    func pass(to:Player, duration:Double, highBall:Bool = false, swerve:Swerve? = nil) {
         
-        guard ball else {
-            fatalError("Player \(name) doesn't have the ball! Can't pass")
+        fatalError("Not yet implemented!")
+        
+        /*guard to != self else {
+            fatalError("Can't pass to self!")
         }
         
-        has(ball: false)
-        //TODO: pass
-        print("E agora falta aqui um passe para (\(to.x),\(to.y))")
+        pass(to: to.currentPosition, duration: duration, swerve: swerve)*/
     }
     
-    func pass(to: Player, duration:Double) {
-        pass(to: to.currentPosition, duration: duration)
-    }
-    
-    func shoot(nearest:Bool = true, goal:Bool = false) {
-        let marcou = goal ? "" : "não"
-        print("Rematou e \(marcou) foi golo")
-    }
-    
-    // MARK: - Position retrival methods
-    func initialPosition() -> Coordinate {
-        return tracker.first?.position ?? .G6
-    }
-    
-    // MARK: - Private methods
-    private func has(ball:Bool) {
-        self.ball = ball
-    }
-    
-    private func track(movement:Movement) {
-        has(ball: movement.hasBall)
-        tracker.append(movement)
-    }
-    
-    func positions(skipInitial:Bool = false) -> [Movement] {
+    func shoot() {
         
-        guard skipInitial, tracker.count > 1 else {
-            return tracker
+        guard let position = tracker.lastPosition() else {
+            fatalError("Fodeste-te")
         }
         
-        return Array(tracker[1...tracker.count-1])
+        actions.enqueue(BallAction(kind: .shoot, destination: Field.nearestGoal(from: position), duration: 0.2))
+    }
+    
+    // MARK: - Location management
+    private func track(action:Action) {
+        actions.enqueue(action)
+        
+        if ((action is Movement) || (action is Hold)) {
+            tracker.set(position: action.destination, duration: action.duration)
+        }
+    }
+    
+    func position(at:Double) -> CGPoint {
+        // TODO: IMPLEMENT
+        return CGPoint.zero
     }
 }
 
 extension Player {
+    // MARK: - Equatable & Hashable protocol compliance
+    
+    var hashValue: Int {
+        return name.hashValue ^ number.hashValue
+    }
     
     static func == (lhs:Player, rhs:Player) -> Bool {
         return lhs.name.full == rhs.name.full

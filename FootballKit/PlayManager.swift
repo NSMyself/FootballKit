@@ -9,11 +9,12 @@
 import UIKit
 import EasyAnimation
 
-struct PlayManager {
+class PlayManager {
     
     let view:UIView
     var playerRadius:CGFloat = 38
     let ballRadius:CGFloat = 14
+    let swerveOffset:CGFloat = 70
     
     let field:Field
     
@@ -24,14 +25,16 @@ struct PlayManager {
     
     var players:[Player:UIView] = [:]
     
+    var ballCarrier:Player?
+    
     init(view: UIView) {
         self.view = view
         ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
         ball.layer.cornerRadius = ballRadius/2
-        field = Field(size: view.bounds.size, adjustment: 0)
+        field = Field(size: view.bounds.size, adjustment: CGSize(width: 14, height: 16))
     }
     
-    mutating func play(play: Play) {
+    func play(play: Play) {
         
         guard let homeTeam = play.homeTeam else {
             return
@@ -40,15 +43,31 @@ struct PlayManager {
         wipeClean()
         
         for player in homeTeam.players {
-            registerPlayer(player, initialPosition: player.initialPosition())
+            registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
+        }
+        
+        if let player = play.initialBallCarrier {
+            drawBall(with: player)
+            ballCarrier = player
         }
     }
     
-    mutating func registerPlayer(_ player:Player, initialPosition:Coordinate) {
-        
+    func registerPlayer(_ player:Player, initialPosition:Coordinate) {
         let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), alpha: 1)
         players[player] = playerView
         view.addSubview(playerView)
+    }
+    
+    
+    func drawBall(with player:Player) {
+        
+        guard let playerView = players[player] else {
+            return
+        }
+        
+        ball.center = aimBall(from:playerView.center, to:field.calculatePoint(coordinate: .A4))
+        print(ball.center)
+        view.addSubview(ball)
     }
     
     func animate(play: Play) {
@@ -104,30 +123,127 @@ struct PlayManager {
                 continue
             }
             
-            chainedAnimations(view: playerView, offset: player.positions(skipInitial:true).map { field.calculatePoint(coordinate: $0.position) })
+            animate(player: player, view: playerView, actions: player.actions)
         }
     }
     
     // MARK: - Private methods
-    private func chainedAnimations(view:UIView, offset:[CGPoint]) -> () {
+    private func animate(player:Player, view:UIView, actions:Queue<Action>) -> () {
         
-        guard let amount = offset.last else {
-            return
-        }
+        func fetchNextAction(from actions:Queue<Action>) {
+            
+            func handle(action: Action) {
                 
-        return UIView.animate(withDuration: 3, animations: {
-            view.center.x = CGFloat(amount.x)
-            view.center.y = CGFloat(amount.y)
-        }, completion: {
+                switch(action) {
+                case is Movement:
+                    move(player:player, to: action.destination, duration:action.duration)
+                case is BallAction:
+                    let ballAction = action as! BallAction
+                    pass(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve)
+                case is Hold:
+                    print("Nothing to do but wait")
+                default:
+                    print("Unknown action! Terminating")
+                }
+            }
             
-            (finished: Bool) in
+            var remainingActions = actions
             
-            guard offset.count > 0 else {
+            guard let next = remainingActions.dequeue() else {
                 return
             }
             
-            self.chainedAnimations(view: view, offset: Array(offset[0..<offset.count-1]))
-        })
+            handle(action: next)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + next.duration) {
+                fetchNextAction(from: remainingActions)
+            }
+        }
+        
+        func move(player:Player, to:Coordinate, duration:Double) {
+            
+            print("Moving")
+            
+            let converted = field.calculatePoint(coordinate: to)
+            
+            UIView.animate(withDuration: duration,
+                          delay: 0,
+                          options: [.curveLinear],
+                          animations: {
+                            [unowned self] in
+                            
+                            if (self.ballCarrier == player) {
+                                let diferential = (self.ball.center.x - view.center.x, self.ball.center.y - view.center.y)
+                                self.ball.center = self.moveWithBall(to: converted, maintaining: diferential)
+                            }
+                            else {
+                                print("This guy doesn't have the ball")
+                            }
+                            
+                            view.center = converted
+                }, completion: nil)
+        }
+        
+        func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
+            
+            UIView.animate(withDuration: duration,
+                           delay: 0,
+                           options: [.curveLinear],
+                           animations: {
+                            
+                            [unowned self] in
+                            
+                            guard let lastCoordinate = player.tracker.lastPosition() else {
+                                return
+                            }
+                            
+                            let from = self.field.calculatePoint(coordinate: lastCoordinate)
+
+                            // Time to animate it
+                            let animation = CAKeyframeAnimation(keyPath: "position")
+                            let path = UIBezierPath()
+                            path.move(to: from)
+
+                            if let swerveFactor = swerve {
+                                let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
+                                let c2 = CGPoint(x:to.x, y: to.y)
+                                
+                                path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
+                                animation.duration = duration
+                            }
+                            else {
+                                path.addLine(to: to)
+                                animation.duration = 0.2
+                            }
+                            
+                            animation.path = path.cgPath
+                            animation.fillMode = kCAFillModeForwards
+                            animation.isRemovedOnCompletion = false
+                            self.ball.layer.add(animation, forKey:nil)
+                }, completion: { _ in
+                    print("Just passed the ball")
+                    
+                    for player in self.players {
+                        if player.value.center == to {
+                            print("É PRA ESTE! \(player.key.name)")
+                            self.ballCarrier = player.key
+                        }
+                    }
+            })
+        }
+
+        fetchNextAction(from: actions)
+    }
+    
+    private func aimBall(from:CGPoint, to:CGPoint)->CGPoint {
+        let theta = atan2((to.y - from.y), (to.x-from.y))
+        let y = playerRadius * sin(theta)
+        let x = playerRadius * cos(theta)
+        return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
+    }
+    
+    private func moveWithBall(to:CGPoint, maintaining:(x: CGFloat, y: CGFloat)) -> CGPoint {
+        return CGPoint(x: to.x + maintaining.y, y:to.y + maintaining.y)
     }
     
     private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
@@ -154,6 +270,8 @@ struct PlayManager {
         return playerView
     }
     
+    
+    /*// MARK: - Drawables (solid and dotted lines for passes and runs, respectively)
     private func run(coordinateStart:Coordinate, coordinateEnd:Coordinate) -> CAShapeLayer {
         return line(coordinateStart: coordinateStart, coordinateEnd: coordinateEnd, type: Line.run)
     }
@@ -184,7 +302,7 @@ struct PlayManager {
         }(CAShapeLayer())
         
         return layer
-    }
+    }*/
     
     private func wipeClean() {
         
