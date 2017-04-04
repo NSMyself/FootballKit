@@ -14,7 +14,7 @@ class PlayManager {
     let view:UIView
     var playerRadius:CGFloat = 38
     let ballRadius:CGFloat = 14
-    let swerveOffset:CGFloat = 100
+    let swerveOffset:CGFloat = 70
     
     let field:Field
     
@@ -43,7 +43,7 @@ class PlayManager {
         wipeClean()
         
         for player in homeTeam.players {
-            registerPlayer(player, initialPosition: player.initialPosition())
+            registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
         }
         
         if let player = play.initialBallCarrier {
@@ -136,10 +136,10 @@ class PlayManager {
                 
                 switch(action) {
                 case is Movement:
-                    move(to: action.destination, duration:action.duration)
+                    move(player:player, to: action.destination, duration:action.duration)
                 case is BallAction:
                     let ballAction = action as! BallAction
-                    pass(from: player.lastLocation, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve)
+                    pass(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -160,7 +160,7 @@ class PlayManager {
             }
         }
         
-        func move(to:Coordinate, duration:Double) {
+        func move(player:Player, to:Coordinate, duration:Double) {
             
             print("Moving")
             
@@ -183,75 +183,56 @@ class PlayManager {
                             view.center = converted
                 }, completion: nil)
         }
+        
+        func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
+            
+            UIView.animate(withDuration: duration,
+                           delay: 0,
+                           options: [.curveLinear],
+                           animations: {
+                            
+                            [unowned self] in
+                            
+                            guard let lastCoordinate = player.tracker.lastPosition() else {
+                                return
+                            }
+                            
+                            let from = self.field.calculatePoint(coordinate: lastCoordinate)
 
-        var animatedActions = actions
-        
-         // dropping the first action due to the fact it only represents the initial position of the player
-        guard let original = animatedActions.dequeue() else {
-            return
-        }
-        
-        /*let converted = field.calculatePoint(coordinate: original.destination)
-        player.center = CGPoint(x: converted.x, y: converted.y)
-        
-        self.ball.center.x = player.center.x - ballRadius*2
-        self.ball.center.y = player.center.y
-        */
-        fetchNextAction(from: animatedActions)
-    }
-    
-    private func pass(from:CGPoint, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
-        
-        UIView.animate(withDuration: duration,
-                       delay: 0,
-                       options: [.curveLinear],
-                       animations: {
-                        
-                        [unowned self] in
-                        
-                        if let swerveFactor = swerve {
-                            
+                            // Time to animate it
                             let animation = CAKeyframeAnimation(keyPath: "position")
                             let path = UIBezierPath()
                             path.move(to: from)
+
+                            if let swerveFactor = swerve {
+                                let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
+                                let c2 = CGPoint(x:to.x, y: to.y)
+                                
+                                path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
+                                animation.duration = duration
+                            }
+                            else {
+                                path.addLine(to: to)
+                                animation.duration = 0.2
+                            }
                             
-                            let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
-                            let c2 = CGPoint(x:to.x, y: to.y)
-                            
-                            path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
                             animation.path = path.cgPath
                             animation.fillMode = kCAFillModeForwards
                             animation.isRemovedOnCompletion = false
-                            animation.duration = duration
-    
                             self.ball.layer.add(animation, forKey:nil)
+                }, completion: { _ in
+                    print("Just passed the ball")
+                    
+                    for player in self.players {
+                        if player.value.center == to {
+                            print("É PRA ESTE! \(player.key.name)")
+                            self.ballCarrier = player.key
                         }
-                        else {
-                            //self.ball.center = to
-                            let animation = CAKeyframeAnimation(keyPath: "position")
-                            let path = UIBezierPath()
-                            path.move(to: from)
-                            
-                            let c1 = CGPoint(x:from.x + self.swerveOffset * 1, y:from.y)
-                            let c2 = CGPoint(x:to.x, y: to.y)
-                            
-                            path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
-                            animation.path = path.cgPath
-                            animation.fillMode = kCAFillModeForwards
-                            animation.isRemovedOnCompletion = false
-                            animation.duration = duration
-                            self.ball.layer.add(animation, forKey:nil)
-                        }
-            }, completion: { _ in
-                print("Just passed the ball")
-                
-                for player in self.players {
-                    if player.value.center == to {
-                        print("É PRA ESTE! \(player.key.name)")
-                        self.ballCarrier = player.key
                     }
-                }
-        })
+            })
+        }
+
+        fetchNextAction(from: actions)
     }
     
     private func aimBall(from:CGPoint, to:CGPoint)->CGPoint {

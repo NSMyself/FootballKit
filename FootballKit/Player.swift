@@ -13,6 +13,7 @@ class Player:Equatable, Hashable {
     
     let name:Name
     let number:UInt8
+    var tracker:Tracker
     weak var delegate:BallActionDelegate?
     
     private(set) public var actions = Queue<Action>()
@@ -22,17 +23,16 @@ class Player:Equatable, Hashable {
         self.name = Name(name: name)
         self.number = number
         self.delegate = delegate
-        self.move(to:coordinate ?? .G6, duration: 0)
+        self.tracker = Tracker(position: coordinate ?? .G6)
     }
     
     // MARK: - Moving
     func move(to:Coordinate, duration:Double) {
-        self.track(action: Movement(destination: to, duration: duration))
+        track(action: Movement(destination: to, duration: duration))
     }
     
     func holdPosition(duration:Double) {
-        let lastPosition = actions.last?.destination ?? .G6
-        track(action: Hold(position:lastPosition, duration: duration))
+        track(action: Hold(position:tracker.lastPosition() ?? .G6, duration: duration))
     }
     
     // MARK: - Passing
@@ -42,31 +42,36 @@ class Player:Equatable, Hashable {
     
     func pass(to:Player, duration:Double, highBall:Bool = false, swerve:Swerve? = nil) {
         
-        guard to != self else {
+        fatalError("Not yet implemented!")
+        
+        /*guard to != self else {
             fatalError("Can't pass to self!")
         }
         
-        //pass(to: to.currentPosition, duration: duration, swerve: swerve)
+        pass(to: to.currentPosition, duration: duration, swerve: swerve)*/
     }
     
-    func shoot(from location:Coordinate) {
-        let y = Field.nearestGoal(from: location)
-        track(action: BallAction(kind: .shoot, destination: Field.nearestGoal(from: location), duration: 0.8))
+    func shoot() {
+        
+        guard let position = tracker.lastPosition() else {
+            fatalError("Fodeste-te")
+        }
+        
+        actions.enqueue(BallAction(kind: .shoot, destination: Field.nearestGoal(from: position), duration: 0.2))
     }
     
-    // MARK: - Position retrieval methods
-    func initialPosition() -> Coordinate {
-        return actions.first?.destination ?? .G6
+    // MARK: - Location management
+    private func track(action:Action) {
+        actions.enqueue(action)
+        
+        if ((action is Movement) || (action is Hold)) {
+            tracker.set(position: action.destination, duration: action.duration)
+        }
     }
     
     func position(at:Double) -> CGPoint {
         // TODO: IMPLEMENT
         return CGPoint.zero
-    }
-    
-    // MARK: - Auxiliar methods
-    private func track(action:Action) {
-        actions.enqueue(action)
     }
 }
 
