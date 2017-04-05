@@ -18,27 +18,31 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let bundle = Bundle.main.path(forResource: "goals", ofType: "json") else { return }
-        items = JSONParser.parse(url: URL(fileURLWithPath: bundle))
-        
         if let background = background {
             playManager = PlayManager(view: background)
             
             let p1 = Play(scored: true, kind: .OpenPlay)
-            let home = Team(name: "Home Team", country: "Portugal", colour: .red)
+            let home = Team(name: "Home Team", country: "Portugal", color: .red)
+            let away = Team(name: "Away Team", country: "France", color: .blue)
             
             let bernardo = Player(name: "Bernardo Silva", number: 10, at:.D1)
             bernardo.move(to: .B2, duration: 1)
-            bernardo.pass(to: .C8, duration: 2, swerve: .right, highBall:true)
+            bernardo.pass(to: .C8, duration: 1, swerve: .right, highBall:true)
             
             let renato = Player(name: "Renato Sanches", number: 8, at:.D9)
-            renato.move(to: .C8, duration:3)
+            renato.move(to: .C8, duration:2)
             renato.shoot()
             
             home.register(player: renato)
             home.register(player: bernardo)
             
+            let evra = Player(name: "Patrice Evra", number: 3, at:.E3)
+            evra.move(to: .B3, duration: 1.5)
+            
+            away.register(player: evra)
+            
             p1.homeTeam = home
+            p1.awayTeam = away
             p1.initialBallCarrier = bernardo
             
             items.append(p1)
@@ -47,26 +51,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playToggled(_ sender: Any) {
-        playManager?.animate(play: items.first!)
-    }
-    
-    @IBAction func prevClicked(_ sender: Any) {
-        changeItem(step: -1)
-    }
-    
-    @IBAction func nextClicked(_ sender: Any) {
-        changeItem(step: 1)
-    }
-    
-    // MARK: - Navigation
-    func changeItem(step: Int) {
         
-        let newIndex = i + step
-        
-        if ((newIndex >= 0) && (newIndex < items.count)) {
-            i = newIndex
-            print(i)
-            playManager?.play(play: items[i])
+        guard let play = items.first else {
+            return
         }
+        
+        playManager?.animate(play)
     }
 }

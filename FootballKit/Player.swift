@@ -14,6 +14,7 @@ class Player:Equatable, Hashable {
     let name:Name
     let number:UInt8
     var tracker:Tracker
+    weak var team:Team?
     weak var delegate:BallActionDelegate?
     
     private(set) public var actions = Queue<Action>()

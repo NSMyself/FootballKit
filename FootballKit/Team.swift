@@ -12,14 +12,14 @@ import UIKit
 class Team {
     let name:String
     let country:String // let's keep it simple for now
-    let colour:UIColor
+    let color:UIColor
     
     private(set) public var players = Set<Player>()
     
-    init(name:String, country:String, players:[Player]? = nil, colour:UIColor) {
+    init(name:String, country:String, players:[Player]? = nil, color:UIColor) {
         self.name = name
         self.country = country
-        self.colour = colour
+        self.color = color
         
         if let players = players {
             for player in players {
@@ -30,5 +30,6 @@ class Team {
     
     func register(player: Player) {
         players.insert(player)
+        player.team = self
     }
 }

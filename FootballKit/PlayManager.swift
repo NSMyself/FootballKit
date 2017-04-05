@@ -14,8 +14,6 @@ class PlayManager {
     let view:UIView
     var playerRadius:CGFloat = 38
     let ballRadius:CGFloat = 14
-    let swerveOffset:CGFloat = 70
-    
     let field:Field
     
     let ball:UIView = {
@@ -46,6 +44,12 @@ class PlayManager {
             registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
         }
         
+        if let awayTeam = play.awayTeam {
+            for player in awayTeam.players {
+                registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
+            }
+        }
+        
         if let player = play.initialBallCarrier {
             drawBall(with: player)
             ballCarrier = player
@@ -53,7 +57,10 @@ class PlayManager {
     }
     
     func registerPlayer(_ player:Player, initialPosition:Coordinate) {
-        let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), alpha: 1)
+        
+        let color = player.team?.color ?? UIColor.red
+        
+        let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), color: color)
         players[player] = playerView
         view.addSubview(playerView)
     }
@@ -70,9 +77,11 @@ class PlayManager {
         view.addSubview(ball)
     }
     
-    func animate(play: Play) {
+    func animate(_ play: Play) {
         
-        for player in play.homeTeam!.players {
+        let bothTeams = [play.homeTeam?.players, play.awayTeam?.players].flatMap { $0 }.flatMap { $0 }
+        
+        for player in bothTeams {
             
             guard let playerView = players[player] else {
                 continue
@@ -190,7 +199,7 @@ class PlayManager {
         return CGPoint(x: to.x + maintaining.y, y:to.y + maintaining.y)
     }
     
-    private func playerCircle(coordinate:Coordinate, number:String, alpha:Double = 1.0) -> UIView {
+    private func playerCircle(coordinate:Coordinate, number:String, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
         
         // calculate position
         let point = field.calculatePoint(coordinate: coordinate)
@@ -198,13 +207,13 @@ class PlayManager {
         // draw red circle
         let playerView:UILabel = {
             $0.frame = CGRect(x: point.x, y: point.y, width:playerRadius, height: playerRadius)
-            $0.backgroundColor = UIColor.red
-            $0.textColor = UIColor.white
+            $0.backgroundColor = color
+            $0.textColor = textColor
             $0.textAlignment = .center
             $0.font = UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightBold)
             $0.layer.borderWidth = 1.0
             $0.layer.masksToBounds = true
-            $0.layer.borderColor = UIColor.red.cgColor
+            $0.layer.borderColor = color.cgColor
             $0.layer.cornerRadius = playerRadius / 2.0
             $0.text = number
             $0.isOpaque = true
