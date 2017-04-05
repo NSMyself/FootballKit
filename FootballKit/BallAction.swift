@@ -18,11 +18,13 @@ struct BallAction:Action {
     let destination:Coordinate
     let duration:Double
     let swerve:Swerve?
+    let highBall:Bool
     
-    init(kind:BallActionKind, destination:Coordinate, duration:Double, swerve:Swerve? = nil) {
+    init(kind:BallActionKind, destination:Coordinate, duration:Double, swerve:Swerve? = nil, highBall:Bool = false) {
         self.kind = kind
         self.destination = destination
         self.duration = duration
         self.swerve = swerve
+        self.highBall = highBall
     }
 }

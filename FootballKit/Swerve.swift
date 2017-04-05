@@ -8,7 +8,17 @@
 
 import Foundation
 
-enum Swerve:Double {
+enum SwerveDirection:Double {
     case left = -1
     case right = 1
+}
+
+struct Swerve {
+    let direction:SwerveDirection
+    let factor:Double
+    
+    init(direction:SwerveDirection, factor:Double = 100) {
+        self.direction = direction
+        self.factor = factor
+    }
 }

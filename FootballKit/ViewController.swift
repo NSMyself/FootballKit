@@ -29,15 +29,11 @@ class ViewController: UIViewController {
             
             let bernardo = Player(name: "Bernardo Silva", number: 10, at:.D1)
             bernardo.move(to: .B2, duration: 1)
-            bernardo.pass(to: .C8, duration: 0.8, swerve: .right)
+            bernardo.pass(to: .C8, duration: 2, swerve: .right, highBall:true)
             
             let renato = Player(name: "Renato Sanches", number: 8, at:.D9)
-            renato.move(to: .C8, duration:1.8)
+            renato.move(to: .C8, duration:3)
             renato.shoot()
-            
-            //renato.holdPosition(duration: 5)
-            //renato.move(to: .C9, duration:1) // we need to see if we previously had the ball; if we haven't lost it/passed/shot, we still have it
-            //renato.shoot() // only if we have the damn thing
             
             home.register(player: renato)
             home.register(player: bernardo)
@@ -46,7 +42,6 @@ class ViewController: UIViewController {
             p1.initialBallCarrier = bernardo
             
             items.append(p1)
-            
             playManager?.play(play: p1)
         }
     }

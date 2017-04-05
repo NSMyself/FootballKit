@@ -20,6 +20,7 @@ class PlayManager {
     
     let ball:UIView = {
         $0.backgroundColor = UIColor.init(colorLiteralRed: 241/255, green: 196/255, blue: 15/255, alpha: 1)
+        $0.isOpaque = true
         return $0
     }(UIView())
     
@@ -93,7 +94,7 @@ class PlayManager {
                     move(player:player, to: action.destination, duration:action.duration)
                 case is BallAction:
                     let ballAction = action as! BallAction
-                    pass(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve)
+                    pass(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -138,7 +139,7 @@ class PlayManager {
                 }, completion: nil)
         }
         
-        func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil) {
+        func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil, highBall:Bool) {
             
             guard let lastCoordinate = player.tracker.lastPosition() else {
                 return
@@ -151,14 +152,21 @@ class PlayManager {
             let path = UIBezierPath()
             path.move(to: from)
 
-            if let swerveFactor = swerve {
-                let c1 = CGPoint(x:from.x + self.swerveOffset * CGFloat(swerveFactor.rawValue), y:from.y)
+            if let swerve = swerve {
+                let c1 = CGPoint(x:from.x + CGFloat(swerve.factor * swerve.direction.rawValue), y:from.y)
                 let c2 = CGPoint(x:to.x, y: to.y)
                 path.addCurve(to: to, controlPoint1: c1, controlPoint2: c2)
-                
             }
             else {
                 path.addLine(to: to)
+            }
+            
+            if highBall {
+                let scaleAnim = CAKeyframeAnimation(keyPath:"transform.scale")
+                scaleAnim.values = [1, 1.2, 1.4, 2, 1.4, 1.2,1].map { NSNumber(value: $0) }
+                scaleAnim.duration = duration
+                
+                self.ball.layer.add(scaleAnim, forKey: "transform")
             }
             
             animation.duration = duration
@@ -199,7 +207,7 @@ class PlayManager {
             $0.layer.borderColor = UIColor.red.cgColor
             $0.layer.cornerRadius = playerRadius / 2.0
             $0.text = number
-            $0.alpha = CGFloat(alpha)
+            $0.isOpaque = true
             return $0
         }(UILabel())
         

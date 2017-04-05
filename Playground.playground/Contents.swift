@@ -6,11 +6,6 @@ let bg = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 400, height: 40
 bg.backgroundColor = .white
 PlaygroundPage.current.liveView = bg
 
-let blueSquare = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
-blueSquare.backgroundColor = .blue
-blueSquare.center = bg.center
-bg.addSubview(blueSquare)
-
 let square = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
 square.backgroundColor = .red
 square.center = bg.center
@@ -65,4 +60,10 @@ animation.fillMode = kCAFillModeForwards
 animation.isRemovedOnCompletion = false
 animation.duration = 3
 
-square.layer.add(animation, forKey: "trash")
+//square.layer.add(animation, forKey: "movement")
+
+let animation2 = CAKeyframeAnimation(keyPath: "transform.scale")
+animation2.values = [1,2,1].map { NSNumber(value: $0) }
+animation2.duration = 1
+
+square.layer.add(animation2, forKey: "transform")

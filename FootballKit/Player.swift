@@ -36,18 +36,24 @@ class Player:Equatable, Hashable {
     }
     
     // MARK: - Passing
-    func pass(to coordinate: Coordinate, duration:Double, swerve:Swerve? = nil) {
-        track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, swerve: swerve))
+    func pass(to coordinate:Coordinate, duration:Double, swerve swerveDirection:SwerveDirection? = nil, highBall:Bool) {
+        
+        guard let direction = swerveDirection else {
+            track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, highBall: highBall))
+            return
+        }
+        
+        track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, swerve: Swerve(direction: direction), highBall: highBall))
     }
     
-    func pass(to:Player, duration:Double, highBall:Bool = false, swerve:Swerve? = nil) {
-        fatalError("Not yet implemented!")
+    func pass(to coordinate:Coordinate, duration:Double, swerve:Swerve? = nil, highBall:Bool) {
+        track(action: BallAction(kind: .pass, destination: coordinate, duration: duration, swerve: swerve, highBall: highBall))
     }
     
     func shoot() {
         
         guard let position = tracker.lastPosition() else {
-            fatalError("Not yet implemented")
+            fatalError("Player has no registered positions")
         }
         
         actions.enqueue(BallAction(kind: .shoot, destination: Field.nearestGoal(from: position), duration: 0.2))
