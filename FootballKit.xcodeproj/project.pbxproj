@@ -20,6 +20,7 @@
 		591169E11E8D68F600368DE1 /* Hold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E01E8D68F600368DE1 /* Hold.swift */; };
 		591169E31E8E5F7E00368DE1 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E21E8E5F7E00368DE1 /* Queue.swift */; };
 		591169E61E8E60E700368DE1 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E51E8E60E700368DE1 /* LinkedList.swift */; };
+		5920C1831E964FED003B5778 /* PlayManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */; };
 		594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */; };
 		5953C5FF1E853BBB00A62B1A /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5953C5FE1E853BBB00A62B1A /* Country.swift */; };
 		597E86AA1E8A88C900D905BA /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E86A91E8A88C900D905BA /* Coordinate.swift */; };
@@ -52,6 +53,7 @@
 		591169E01E8D68F600368DE1 /* Hold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hold.swift; sourceTree = "<group>"; };
 		591169E21E8E5F7E00368DE1 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		591169E51E8E60E700368DE1 /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
+		5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManagerDelegate.swift; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
 		5953C5FE1E853BBB00A62B1A /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		597E86A91E8A88C900D905BA /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				591169DC1E8D65FF00368DE1 /* Action.swift */,
 				591169DA1E8D631D00368DE1 /* BallActionDelegate.swift */,
+				5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				59A36BCD1E047A7C00B4FA58 /* Team.swift in Sources */,
 				591169DB1E8D631D00368DE1 /* BallActionDelegate.swift in Sources */,
 				59F90B2B1DD5D55900A29BDA /* AppDelegate.swift in Sources */,
+				5920C1831E964FED003B5778 /* PlayManagerDelegate.swift in Sources */,
 				5953C5FF1E853BBB00A62B1A /* Country.swift in Sources */,
 				590FF8C31E0325BE00DF3F33 /* Field.swift in Sources */,
 				59A36BCF1E047AFB00B4FA58 /* Match.swift in Sources */,

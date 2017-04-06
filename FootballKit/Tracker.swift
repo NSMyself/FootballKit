@@ -22,14 +22,11 @@ struct Tracker {
     }
     
     mutating func set(position:Coordinate, duration:Double) {
-        print("Setting...")
         timer += duration
         positions[duration] = position
     }
     
     func position(when:Double) -> Coordinate? {
-        
-        print("Requesting position")
         
         // Input validation
         guard when > 0 else {

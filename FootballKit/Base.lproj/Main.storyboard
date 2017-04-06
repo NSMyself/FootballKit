@@ -32,7 +32,7 @@
                                 <rect key="frame" x="480" y="716" width="240" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5X-oy-y4d" userLabel="Play">
-                                        <rect key="frame" x="95" y="10" width="50" height="50"/>
+                                        <rect key="frame" x="95" y="7" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="KWR-dd-K3a"/>
                                             <constraint firstAttribute="width" constant="50" id="kc2-Ru-5XU"/>
@@ -45,7 +45,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.45616918103448278" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="b5X-oy-y4d" firstAttribute="top" secondItem="nu9-jV-pa6" secondAttribute="top" constant="10" id="T5a-3h-tT8"/>
+                                    <constraint firstItem="b5X-oy-y4d" firstAttribute="centerY" secondItem="nu9-jV-pa6" secondAttribute="centerY" id="XNc-RL-rre"/>
                                     <constraint firstAttribute="width" constant="240" id="aWD-8Z-Gc5"/>
                                     <constraint firstAttribute="height" constant="64" id="bwS-DU-iMn"/>
                                     <constraint firstItem="b5X-oy-y4d" firstAttribute="centerX" secondItem="nu9-jV-pa6" secondAttribute="centerX" id="m37-cI-Aqt"/>
@@ -81,7 +81,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Play" width="50" height="50"/>
+        <image name="Play" width="64" height="64"/>
         <image name="fussballfeld-grid.jpg" width="1230" height="829"/>
     </resources>
 </document>

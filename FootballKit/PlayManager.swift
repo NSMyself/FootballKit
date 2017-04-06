@@ -25,11 +25,15 @@ class PlayManager {
     var players:[Player:UIView] = [:]
     var ballCarrier:Player?
     
-    init(view: UIView) {
+    weak var delegate:PlayManagerDelegate?
+    
+    init(view: UIView, delegate:PlayManagerDelegate? = nil) {
         self.view = view
         ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
         ball.layer.cornerRadius = ballRadius/2
         field = Field(size: view.bounds.size, adjustment: CGSize(width: 14, height: 16))
+        
+        self.delegate = delegate
     }
     
     func play(play: Play) {
@@ -73,12 +77,24 @@ class PlayManager {
         }
         
         ball.center = aimBall(from:playerView.center, to:field.calculatePoint(coordinate: .A4))
-        print(ball.center)
         view.addSubview(ball)
     }
     
     func animate(_ play: Play) {
         
+        var started = false
+        
+        // The player may not be registered
+        // As such, we're using this method to make sure he was indeed registered before firing the delegation animationStarted() method
+        func notifyAnimationStart() {
+            guard !started else {
+                return
+            }
+            
+            delegate?.animationStarted()
+        }
+        
+        let group = DispatchGroup()
         let bothTeams = [play.homeTeam?.players, play.awayTeam?.players].flatMap { $0 }.flatMap { $0 }
         
         for player in bothTeams {
@@ -86,13 +102,21 @@ class PlayManager {
             guard let playerView = players[player] else {
                 continue
             }
-            
-            animate(player: player, view: playerView, actions: player.actions)
+
+            notifyAnimationStart()
+            group.enter()
+            animate(player: player, view: playerView, actions: player.actions) {
+                group.leave()
+            }
+        }
+     
+        group.notify(qos: DispatchQoS.background, flags: .assignCurrentContext, queue: DispatchQueue.main) {
+            self.delegate?.animationEnded()
         }
     }
     
     // MARK: - Private methods
-    private func animate(player:Player, view:UIView, actions:Queue<Action>) -> () {
+    private func animate(player:Player, view:UIView, actions:Queue<Action>, completion:@escaping ()->()) -> () {
         
         func fetchNextAction(from actions:Queue<Action>) {
             
@@ -114,6 +138,7 @@ class PlayManager {
             var remainingActions = actions
             
             guard let next = remainingActions.dequeue() else {
+                completion()
                 return
             }
             

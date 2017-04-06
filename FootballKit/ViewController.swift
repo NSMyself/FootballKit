@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, PlayManagerDelegate {
 	
     @IBOutlet var background: UIImageView?
     var playManager:PlayManager?
@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         if let background = background {
-            playManager = PlayManager(view: background)
+            playManager = PlayManager(view: background, delegate:self)
             
             let p1 = Play(scored: true, kind: .OpenPlay)
             let home = Team(name: "Home Team", country: "Portugal", color: .red)
@@ -57,5 +57,19 @@ class ViewController: UIViewController {
         }
         
         playManager?.animate(play)
+    }
+    
+    
+    // MARK: - Delegation
+    func animationStarted() {
+        print("Animation started")
+    }
+    
+    func animationEnded() {
+        print("Animation over!")
+    }
+    
+    func goal(scorer: Player) {
+        print("Player \(scorer.name.short) just scored!")
     }
 }
