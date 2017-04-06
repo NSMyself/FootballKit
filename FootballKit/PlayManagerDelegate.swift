@@ -9,7 +9,8 @@
 import Foundation
 
 protocol PlayManagerDelegate: class {
-    func animationStarted()
-    func animationEnded()
-    func goal(scorer:Player)
+    func animationDidStart()
+    func animationDidStop()
+    func scored(player: Player)
+    func tapped(player: Player)
 }

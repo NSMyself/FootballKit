@@ -12,6 +12,8 @@ class ViewController: UIViewController, PlayManagerDelegate {
 	
     @IBOutlet var background: UIImageView?
     @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var scoreTeam1: UILabel!
+    @IBOutlet weak var scoreTeam2: UILabel!
     
     var playManager:PlayManager?
     var items:[Play] = []
@@ -61,23 +63,24 @@ class ViewController: UIViewController, PlayManagerDelegate {
         playManager?.animate(play)
     }
     
-    
     // MARK: - Delegation
-    func animationStarted() {
-        
+    func animationDidStart() {
+        //TODO: reset player positions to improve replayability
+        scoreTeam1.text = "0"
+        scoreTeam2.text = "0"
         playBtn.setImage(UIImage(named: "Pause"), for: .normal)
-        
-        if let pause = UIImage(named: "Pause") {
-            print("got it")
-            
-        }
     }
     
-    func animationEnded() {
+    func animationDidStop() {
         playBtn.setImage(UIImage(named: "Play"), for: .normal)
     }
     
-    func goal(scorer: Player) {
-        print("Player \(scorer.name.short) just scored!")
+    func scored(player: Player) {
+        scoreTeam1.text = "1"
+        print("Player \(player.name.short) just scored!")
+    }
+    
+    func tapped(player: Player) {
+        print("Player \(player.name.short) was tapped")
     }
 }

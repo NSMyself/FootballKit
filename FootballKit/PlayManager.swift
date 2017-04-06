@@ -91,7 +91,7 @@ class PlayManager {
                 return
             }
             
-            delegate?.animationStarted()
+            delegate?.animationDidStart()
         }
         
         let group = DispatchGroup()
@@ -111,7 +111,7 @@ class PlayManager {
         }
      
         group.notify(qos: DispatchQoS.background, flags: .assignCurrentContext, queue: DispatchQueue.main) {
-            self.delegate?.animationEnded()
+            self.delegate?.animationDidStop()
         }
     }
     
@@ -127,7 +127,12 @@ class PlayManager {
                     move(player:player, to: action.destination, duration:action.duration)
                 case is BallAction:
                     let ballAction = action as! BallAction
-                    pass(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall)
+                    
+                    // For now, every shot is a goal
+                    // TODO: implement a proper result for each shot (blocked; missed; etc)
+                    let goal = (ballAction.kind == .shoot)
+                    
+                    kickBall(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall, scored:goal)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -150,9 +155,7 @@ class PlayManager {
         }
         
         func move(player:Player, to:Coordinate, duration:Double) {
-            
-            print("Moving")
-            
+                        
             let converted = field.calculatePoint(coordinate: to)
             
             UIView.animate(withDuration: duration,
@@ -165,19 +168,23 @@ class PlayManager {
                                 let diferential = (self.ball.center.x - view.center.x, self.ball.center.y - view.center.y)
                                 self.ball.center = self.moveWithBall(to: converted, maintaining: diferential)
                             }
-                            else {
-                                print("This guy doesn't have the ball")
-                            }
                             
                             view.center = converted
                 }, completion: nil)
         }
         
-        func pass(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil, highBall:Bool) {
+        func kickBall(player:Player, to:CGPoint, duration:Double = 2, swerve:Swerve? = nil, highBall:Bool = false, scored:Bool = false) {
             
             guard let lastCoordinate = player.tracker.lastPosition() else {
                 return
             }
+            
+            CATransaction.begin()
+            CATransaction.setCompletionBlock({
+                if scored {
+                    self.delegate?.scored(player: player)
+                }
+            })
             
             let from = self.field.calculatePoint(coordinate: lastCoordinate)
 
@@ -208,6 +215,8 @@ class PlayManager {
             animation.fillMode = kCAFillModeForwards
             animation.isRemovedOnCompletion = false
             self.ball.layer.add(animation, forKey:nil)
+            
+            CATransaction.commit()
         }
 
         fetchNextAction(from: actions)
@@ -258,4 +267,7 @@ class PlayManager {
             $0.removeFromSuperlayer()
         }
     }
+    
+    //MARK: - Delegation
+    
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -56,11 +57,68 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1k3-u2-zsb" userLabel="ScoreBar">
+                                <rect key="frame" x="840" y="120" width="240" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REDS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mn9-0w-GfE" userLabel="REDS">
+                                        <rect key="frame" x="20" y="8.5" width="52.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BLUES" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8X-mb-7Mc" userLabel="BLUES">
+                                        <rect key="frame" x="156.5" y="7.5" width="63.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnR-VK-kgG" userLabel="ScoreRed">
+                                        <rect key="frame" x="97.5" y="8.5" width="13.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkm-a1-ndB" userLabel="-">
+                                        <rect key="frame" x="112" y="7.5" width="9.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n53-Md-Uq6" userLabel="ScoreBlue">
+                                        <rect key="frame" x="121.5" y="8.5" width="13.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.45616918099999998" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="n53-Md-Uq6" firstAttribute="leading" secondItem="jkm-a1-ndB" secondAttribute="trailing" id="2J5-gc-64b"/>
+                                    <constraint firstItem="Mn9-0w-GfE" firstAttribute="centerY" secondItem="1k3-u2-zsb" secondAttribute="centerY" id="6Wv-es-3xv"/>
+                                    <constraint firstAttribute="height" constant="40" id="7uW-96-xET"/>
+                                    <constraint firstItem="d8X-mb-7Mc" firstAttribute="centerY" secondItem="1k3-u2-zsb" secondAttribute="centerY" id="GNs-bW-RHO"/>
+                                    <constraint firstItem="jkm-a1-ndB" firstAttribute="centerY" secondItem="1k3-u2-zsb" secondAttribute="centerY" id="LWr-JD-ZV2"/>
+                                    <constraint firstItem="gnR-VK-kgG" firstAttribute="leading" secondItem="Mn9-0w-GfE" secondAttribute="trailing" constant="25" id="PeZ-dk-JGp"/>
+                                    <constraint firstItem="gnR-VK-kgG" firstAttribute="centerY" secondItem="1k3-u2-zsb" secondAttribute="centerY" id="a9E-Zg-2HS"/>
+                                    <constraint firstItem="jkm-a1-ndB" firstAttribute="leading" secondItem="gnR-VK-kgG" secondAttribute="trailing" constant="1" id="crY-rk-gPb"/>
+                                    <constraint firstItem="Mn9-0w-GfE" firstAttribute="leading" secondItem="1k3-u2-zsb" secondAttribute="leading" constant="20" id="er9-on-y6A"/>
+                                    <constraint firstItem="n53-Md-Uq6" firstAttribute="centerY" secondItem="1k3-u2-zsb" secondAttribute="centerY" id="j7S-vt-FPv"/>
+                                    <constraint firstAttribute="trailing" secondItem="d8X-mb-7Mc" secondAttribute="trailing" constant="20" id="kUD-TK-HeP"/>
+                                    <constraint firstAttribute="width" constant="240" id="xP7-Ua-kOZ"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="SNs-UH-xaW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5H3-o4-u01"/>
+                            <constraint firstItem="1k3-u2-zsb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="120" id="9fp-Ub-b2o"/>
                             <constraint firstItem="SNs-UH-xaW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gNP-2P-848"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1k3-u2-zsb" secondAttribute="trailing" constant="100" id="r8k-ic-0EA"/>
                             <constraint firstItem="SNs-UH-xaW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="sA1-8h-olw"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nu9-jV-pa6" secondAttribute="bottom" constant="20" id="xkM-Pq-th3"/>
                             <constraint firstItem="SNs-UH-xaW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="top" id="y5u-Mc-FAE"/>
@@ -75,10 +133,13 @@
                     <connections>
                         <outlet property="background" destination="SNs-UH-xaW" id="fQr-DO-UPQ"/>
                         <outlet property="playBtn" destination="b5X-oy-y4d" id="BX6-ZU-GUt"/>
+                        <outlet property="scoreTeam1" destination="gnR-VK-kgG" id="XP9-xe-17N"/>
+                        <outlet property="scoreTeam2" destination="n53-Md-Uq6" id="6Bj-24-sgd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="33.600000000000001" y="37.781109445277366"/>
         </scene>
     </scenes>
     <resources>
