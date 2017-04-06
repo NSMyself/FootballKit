@@ -74,6 +74,7 @@
                     <size key="freeformSize" width="1200" height="800"/>
                     <connections>
                         <outlet property="background" destination="SNs-UH-xaW" id="fQr-DO-UPQ"/>
+                        <outlet property="playBtn" destination="b5X-oy-y4d" id="BX6-ZU-GUt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

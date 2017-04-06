@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController, PlayManagerDelegate {
 	
     @IBOutlet var background: UIImageView?
+    @IBOutlet weak var playBtn: UIButton!
+    
     var playManager:PlayManager?
     var items:[Play] = []
     var i = 0
@@ -62,11 +64,17 @@ class ViewController: UIViewController, PlayManagerDelegate {
     
     // MARK: - Delegation
     func animationStarted() {
-        print("Animation started")
+        
+        playBtn.setImage(UIImage(named: "Pause"), for: .normal)
+        
+        if let pause = UIImage(named: "Pause") {
+            print("got it")
+            
+        }
     }
     
     func animationEnded() {
-        print("Animation over!")
+        playBtn.setImage(UIImage(named: "Play"), for: .normal)
     }
     
     func goal(scorer: Player) {
