@@ -5,14 +5,14 @@ import PlaygroundSupport
 let bg = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 400, height: 400)))
 bg.backgroundColor = .white
 PlaygroundPage.current.liveView = bg
-
+/*
 let square = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
 square.backgroundColor = .red
 square.center = bg.center
 bg.addSubview(square)
 
 
-/*
+
 // Chainable animations
 typealias Position = (x: Int, y: Int)
 
@@ -43,7 +43,41 @@ func gleipnir(offset:[Position]) -> () {
 }
 
 //gleipnir(offset: movements)
+
+
+let label:UILabel = {
+    $0.frame = CGRect(x: 0, y: 0, width:100, height: 100)
+    $0.text = "lol"
+    $0.textColor = UIColor.white
+    $0.textAlignment = .center
+    $0.font = UIFont.systemFont(ofSize: 50.0, weight: UIFontWeightBold)
+    return $0
+}(UILabel())
 */
+
+
+let label:UILabel = {
+    $0.frame = CGRect(x:0, y:0, width:200, height:21)
+    $0.text = "lol"
+    $0.textColor = UIColor.red
+    $0.textAlignment = .center
+    $0.font = UIFont.systemFont(ofSize: 50.0, weight: UIFontWeightBold)
+    return $0
+}(UILabel())
+
+bg.addSubview(label)
+
+/*
+let label = UILabel(frame: CGRect(x:0, y:0, width:200, height:21))
+//label.center = CGPointMake(160, 284)
+label.textAlignment = NSTextAlignment.center
+label.text = "I'am a test label"
+bg.addSubview(label)
+
+
+
+
+
 let start = square.center
 let end = CGPoint(x:200, y:400)
 
@@ -67,3 +101,4 @@ animation2.values = [1,2,1].map { NSNumber(value: $0) }
 animation2.duration = 1
 
 square.layer.add(animation2, forKey: "transform")
+*/

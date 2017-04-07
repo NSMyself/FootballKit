@@ -12,5 +12,4 @@ protocol PlayManagerDelegate: class {
     func animationDidStart()
     func animationDidStop()
     func scored(player: Player)
-    func tapped(player: Player)
 }

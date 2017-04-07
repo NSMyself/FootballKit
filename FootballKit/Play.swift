@@ -16,6 +16,10 @@ class Play {
     var awayTeam:Team?
     var initialBallCarrier:Player?
     
+    var allPlayers:[Player] {
+        return [homeTeam?.players ?? [], awayTeam?.players ?? []].flatMap { $0 }
+    }
+    
     init(scored:Bool, offside:Bool = false, kind:Kind, homeTeam:Team? = nil, awayTeam:Team? = nil, initialBallCarrier:Player? = nil) {
         self.scored = scored
         self.kind = kind

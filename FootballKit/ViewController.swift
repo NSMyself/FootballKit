@@ -79,8 +79,4 @@ class ViewController: UIViewController, PlayManagerDelegate {
         scoreTeam1.text = "1"
         print("Player \(player.name.short) just scored!")
     }
-    
-    func tapped(player: Player) {
-        print("Player \(player.name.short) was tapped")
-    }
 }

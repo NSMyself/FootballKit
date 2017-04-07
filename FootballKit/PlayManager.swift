@@ -16,6 +16,8 @@ class PlayManager {
     let ballRadius:CGFloat = 14
     let field:Field
     
+    var isAnimating = false
+    
     let ball:UIView = {
         $0.backgroundColor = UIColor.init(colorLiteralRed: 241/255, green: 196/255, blue: 15/255, alpha: 1)
         $0.isOpaque = true
@@ -64,7 +66,7 @@ class PlayManager {
         
         let color = player.team?.color ?? UIColor.red
         
-        let playerView = playerCircle(coordinate: initialPosition, number: String(player.number), color: color)
+        let playerView = playerCircle(coordinate: initialPosition, player: player, color: color)
         players[player] = playerView
         view.addSubview(playerView)
     }
@@ -82,22 +84,24 @@ class PlayManager {
     
     func animate(_ play: Play) {
         
-        var started = false
+        guard (!isAnimating) else {
+            return
+        }
         
         // The player may not be registered
         // As such, we're using this method to make sure he was indeed registered before firing the delegation animationStarted() method
         func notifyAnimationStart() {
-            guard !started else {
+            guard !isAnimating else {
                 return
             }
-            
+         
+            isAnimating = true
             delegate?.animationDidStart()
         }
         
         let group = DispatchGroup()
-        let bothTeams = [play.homeTeam?.players, play.awayTeam?.players].flatMap { $0 }.flatMap { $0 }
-        
-        for player in bothTeams {
+    
+        for player in play.allPlayers {
             
             guard let playerView = players[player] else {
                 continue
@@ -111,6 +115,7 @@ class PlayManager {
         }
      
         group.notify(qos: DispatchQoS.background, flags: .assignCurrentContext, queue: DispatchQueue.main) {
+            self.isAnimating = false
             self.delegate?.animationDidStop()
         }
     }
@@ -232,31 +237,39 @@ class PlayManager {
     private func moveWithBall(to:CGPoint, maintaining:(x: CGFloat, y: CGFloat)) -> CGPoint {
         return CGPoint(x: to.x + maintaining.y, y:to.y + maintaining.y)
     }
-    
-    private func playerCircle(coordinate:Coordinate, number:String, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
+
+    private func playerCircle(coordinate:Coordinate, player:Player, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
         
         // calculate position
         let point = field.calculatePoint(coordinate: coordinate)
         
         // draw red circle
-        let playerView:UILabel = {
+        let playerView:UIView = {
             $0.frame = CGRect(x: point.x, y: point.y, width:playerRadius, height: playerRadius)
             $0.backgroundColor = color
+            $0.layer.borderWidth = 1.0
+            $0.layer.masksToBounds = true
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.layer.borderColor = color.cgColor
+            $0.layer.cornerRadius = playerRadius / 2.0
+            $0.isOpaque = true
+            $0.isUserInteractionEnabled = true
+            return $0
+        }(UIView())
+     
+        let label:UILabel = {
+            $0.frame = CGRect(x: 0, y: 0, width:playerRadius, height: playerRadius)
+            $0.text = String(player.number)
             $0.textColor = textColor
             $0.textAlignment = .center
             $0.font = UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightBold)
-            $0.layer.borderWidth = 1.0
-            $0.layer.masksToBounds = true
-            $0.layer.borderColor = color.cgColor
-            $0.layer.cornerRadius = playerRadius / 2.0
-            $0.text = number
-            $0.isOpaque = true
             return $0
         }(UILabel())
         
+        playerView.addSubview(label)
         return playerView
     }
-
+    
     private func wipeClean() {
         
         view.subviews.forEach {
@@ -267,7 +280,4 @@ class PlayManager {
             $0.removeFromSuperlayer()
         }
     }
-    
-    //MARK: - Delegation
-    
 }

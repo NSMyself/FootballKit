@@ -10,7 +10,6 @@
 		0AFD45A81DD61A30006DAB0B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD45A51DD61A30006DAB0B /* Player.swift */; };
 		0AFD45A91DD61A30006DAB0B /* Play.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD45A61DD61A30006DAB0B /* Play.swift */; };
 		0AFD45AE1DD61AB5006DAB0B /* fussballfeld-grid.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */; };
-		0AFD45AF1DD61AB5006DAB0B /* fussballfeld.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AFD45AD1DD61AB5006DAB0B /* fussballfeld.jpg */; };
 		590AD28F1DD7C74B00C583C3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590AD28E1DD7C74B00C583C3 /* Extensions.swift */; };
 		590AD2981DD7D6A300C583C3 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590AD2971DD7D6A300C583C3 /* Line.swift */; };
 		590FF8C31E0325BE00DF3F33 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590FF8C21E0325BE00DF3F33 /* Field.swift */; };
@@ -21,6 +20,7 @@
 		591169E31E8E5F7E00368DE1 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E21E8E5F7E00368DE1 /* Queue.swift */; };
 		591169E61E8E60E700368DE1 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E51E8E60E700368DE1 /* LinkedList.swift */; };
 		5920C1831E964FED003B5778 /* PlayManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */; };
+		593252421E96711B0082783A /* PlayerTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593252411E96711B0082783A /* PlayerTapGesture.swift */; };
 		594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */; };
 		5953C5FF1E853BBB00A62B1A /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5953C5FE1E853BBB00A62B1A /* Country.swift */; };
 		597E86AA1E8A88C900D905BA /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E86A91E8A88C900D905BA /* Coordinate.swift */; };
@@ -43,7 +43,6 @@
 		0AFD45A51DD61A30006DAB0B /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0AFD45A61DD61A30006DAB0B /* Play.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Play.swift; sourceTree = "<group>"; };
 		0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "fussballfeld-grid.jpg"; sourceTree = "<group>"; };
-		0AFD45AD1DD61AB5006DAB0B /* fussballfeld.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fussballfeld.jpg; sourceTree = "<group>"; };
 		590AD28E1DD7C74B00C583C3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		590AD2971DD7D6A300C583C3 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		590FF8C21E0325BE00DF3F33 /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
@@ -54,6 +53,7 @@
 		591169E21E8E5F7E00368DE1 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		591169E51E8E60E700368DE1 /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManagerDelegate.swift; sourceTree = "<group>"; };
+		593252411E96711B0082783A /* PlayerTapGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTapGesture.swift; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
 		5953C5FE1E853BBB00A62B1A /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		597E86A91E8A88C900D905BA /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 		0AFD45AA1DD61A42006DAB0B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				591169E41E8E60D700368DE1 /* Auxiliar Data Structures */,
+				591169E41E8E60D700368DE1 /* Auxiliar Structures */,
 				59B48B7D1E82945E0095A6C4 /* Visualization */,
 				59B48B7E1E8294690095A6C4 /* Concepts */,
 			);
@@ -101,7 +101,6 @@
 			children = (
 				59F90B311DD5D55900A29BDA /* Assets.xcassets */,
 				0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */,
-				0AFD45AD1DD61AB5006DAB0B /* fussballfeld.jpg */,
 			);
 			name = Assets;
 			path = images;
@@ -133,13 +132,14 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
-		591169E41E8E60D700368DE1 /* Auxiliar Data Structures */ = {
+		591169E41E8E60D700368DE1 /* Auxiliar Structures */ = {
 			isa = PBXGroup;
 			children = (
+				593252411E96711B0082783A /* PlayerTapGesture.swift */,
 				591169E21E8E5F7E00368DE1 /* Queue.swift */,
 				591169E51E8E60E700368DE1 /* LinkedList.swift */,
 			);
-			name = "Auxiliar Data Structures";
+			name = "Auxiliar Structures";
 			sourceTree = "<group>";
 		};
 		59B48B7D1E82945E0095A6C4 /* Visualization */ = {
@@ -284,7 +284,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				59F90B351DD5D55900A29BDA /* LaunchScreen.storyboard in Resources */,
-				0AFD45AF1DD61AB5006DAB0B /* fussballfeld.jpg in Resources */,
 				0AFD45AE1DD61AB5006DAB0B /* fussballfeld-grid.jpg in Resources */,
 				59F90B321DD5D55900A29BDA /* Assets.xcassets in Resources */,
 				59F90B301DD5D55900A29BDA /* Main.storyboard in Resources */,
@@ -322,6 +321,7 @@
 				591169E61E8E60E700368DE1 /* LinkedList.swift in Sources */,
 				59F90B2D1DD5D55900A29BDA /* ViewController.swift in Sources */,
 				590AD2981DD7D6A300C583C3 /* Line.swift in Sources */,
+				593252421E96711B0082783A /* PlayerTapGesture.swift in Sources */,
 				594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */,
 				591169DD1E8D65FF00368DE1 /* Action.swift in Sources */,
 				0AFD45A91DD61A30006DAB0B /* Play.swift in Sources */,
