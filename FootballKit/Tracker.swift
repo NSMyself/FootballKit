@@ -17,8 +17,8 @@ struct Tracker {
         positions[0] = position
     }
     
-    func initialPosition() -> Coordinate? {
-        return positions[0]
+    func initialPosition() -> Coordinate {
+        return positions[0] ?? .G6
     }
     
     mutating func set(position:Coordinate, duration:Double) {

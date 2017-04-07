@@ -65,7 +65,6 @@ class ViewController: UIViewController, PlayManagerDelegate {
     
     // MARK: - Delegation
     func animationDidStart() {
-        //TODO: reset player positions to improve replayability
         scoreTeam1.text = "0"
         scoreTeam2.text = "0"
         playBtn.setImage(UIImage(named: "Pause"), for: .normal)

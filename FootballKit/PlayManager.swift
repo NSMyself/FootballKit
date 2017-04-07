@@ -40,25 +40,14 @@ class PlayManager {
     
     func play(play: Play) {
         
-        guard let homeTeam = play.homeTeam else {
-            return
-        }
-        
         wipeClean()
         
-        for player in homeTeam.players {
-            registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
-        }
-        
-        if let awayTeam = play.awayTeam {
-            for player in awayTeam.players {
-                registerPlayer(player, initialPosition: player.tracker.initialPosition() ?? .G6)
+        for player in play.allPlayers {
+            registerPlayer(player, initialPosition: player.tracker.initialPosition())
+            
+            if player == play.initialBallCarrier {
+                resetBall(with: player)
             }
-        }
-        
-        if let player = play.initialBallCarrier {
-            drawBall(with: player)
-            ballCarrier = player
         }
     }
     
@@ -71,8 +60,17 @@ class PlayManager {
         view.addSubview(playerView)
     }
     
+    func resetPlayers(in play:Play) {
+        for player in players {
+            player.value.frame.origin = field.calculatePoint(coordinate: player.key.tracker.initialPosition())
+         
+            if player.key == play.initialBallCarrier {
+                resetBall(with: player.key)
+            }
+        }
+    }
     
-    func drawBall(with player:Player) {
+    func resetBall(with player:Player) {
         
         guard let playerView = players[player] else {
             return
@@ -80,6 +78,8 @@ class PlayManager {
         
         ball.center = aimBall(from:playerView.center, to:field.calculatePoint(coordinate: .A4))
         view.addSubview(ball)
+        
+        ballCarrier = player
     }
     
     func animate(_ play: Play) {
@@ -98,6 +98,8 @@ class PlayManager {
             isAnimating = true
             delegate?.animationDidStart()
         }
+        
+        resetPlayers(in:play)
         
         let group = DispatchGroup()
     
