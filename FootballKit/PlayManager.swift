@@ -175,7 +175,7 @@ class PlayManager {
                             
                             if (self.ballCarrier == player) {
                                 let diferential = (self.ball.center.x - view.center.x, self.ball.center.y - view.center.y)
-                                self.ball.center = self.moveWithBall(to: converted, maintaining: diferential)
+                                self.ball.center = CGPoint(x: converted.x + diferential.0, y:converted.y + diferential.1)
                             }
                             
                             view.center = converted
@@ -236,10 +236,6 @@ class PlayManager {
         let y = playerRadius * sin(theta)
         let x = playerRadius * cos(theta)
         return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
-    }
-    
-    private func moveWithBall(to:CGPoint, maintaining:(x: CGFloat, y: CGFloat)) -> CGPoint {
-        return CGPoint(x: to.x + maintaining.y, y:to.y + maintaining.y)
     }
 
     private func playerCircle(coordinate:Coordinate, player:Player, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
