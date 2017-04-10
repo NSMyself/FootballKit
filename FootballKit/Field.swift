@@ -17,7 +17,7 @@ struct Field {
     static let firstGoal:Coordinate = .A6
     static let secondGoal:Coordinate = .R6
     
-    func calculatePoint(coordinate:Coordinate) -> CGPoint {
+    func point(from coordinate:Coordinate) -> CGPoint {
         let squareSize = CGSize(width: size.width / (18.0 + 1.0), height: size.height / (11.0 + 0.8))
         let squareOffset = CGPoint(x: squareSize.width / 2.0, y: squareSize.height / 2.0)
 
@@ -29,5 +29,9 @@ struct Field {
     
     static func nearestGoal(from coordinate:Coordinate) -> Coordinate {
         return coordinate.x <= 9 ? firstGoal : secondGoal
+    }
+    
+    static func distance(from currentPosition:Coordinate, to newPosition:Coordinate) -> Float {
+        return 0
     }
 }

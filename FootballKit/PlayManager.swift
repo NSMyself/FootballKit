@@ -62,7 +62,7 @@ class PlayManager {
     
     func resetPlayers(in play:Play) {
         for player in players {
-            player.value.frame.origin = field.calculatePoint(coordinate: player.key.tracker.initialPosition())
+            player.value.frame.origin = field.point(from: player.key.tracker.initialPosition())
          
             if player.key == play.initialBallCarrier {
                 resetBall(with: player.key)
@@ -76,7 +76,7 @@ class PlayManager {
             return
         }
         
-        ball.center = aimBall(from:playerView.center, to:field.calculatePoint(coordinate: .A4))
+        ball.center = aimBall(from:playerView.center, to:field.point(from: .A4))
         view.addSubview(ball)
         
         ballCarrier = player
@@ -139,7 +139,7 @@ class PlayManager {
                     // TODO: implement a proper result for each shot (blocked; missed; etc)
                     let goal = (ballAction.kind == .shoot)
                     
-                    kickBall(player:player, to: field.calculatePoint(coordinate: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall, scored:goal)
+                    kickBall(player:player, to: field.point(from: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall, scored:goal)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -161,9 +161,9 @@ class PlayManager {
             }
         }
         
-        func move(player:Player, to:Coordinate, duration:Double) {
+        func move(player:Player, to coordinate:Coordinate, duration:Double) {
                         
-            let converted = field.calculatePoint(coordinate: to)
+            let converted = field.point(from: coordinate)
             
             UIView.animate(withDuration: duration,
                           delay: 0,
@@ -193,7 +193,7 @@ class PlayManager {
                 }
             })
             
-            let from = self.field.calculatePoint(coordinate: lastCoordinate)
+            let from = self.field.point(from: lastCoordinate)
 
             // Time to animate it
             let animation = CAKeyframeAnimation(keyPath: "position")
@@ -243,7 +243,7 @@ class PlayManager {
     private func playerCircle(coordinate:Coordinate, player:Player, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
         
         // calculate position
-        let point = field.calculatePoint(coordinate: coordinate)
+        let point = field.point(from: coordinate)
         
         // draw red circle
         let playerView:UIView = {
