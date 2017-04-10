@@ -30,19 +30,18 @@ class ViewController: UIViewController, PlayManagerDelegate {
             let away = Team(name: "Away Team", country: "France", color: .blue)
             
             let bernardo = Player(name: "Bernardo Silva", number: 10, at:.D1)
-            bernardo.move(to: .B2, duration: 1)
+            bernardo.move(to: .B1)
             bernardo.pass(to: .C8, duration: 1, swerve: .right, highBall:true)
             
             let renato = Player(name: "Renato Sanches", number: 8, at:.D9)
             renato.move(to: .C8, duration:2)
             renato.shoot()
             
-            home.register(player: renato)
-            home.register(player: bernardo)
-            
             let evra = Player(name: "Patrice Evra", number: 3, at:.E3)
-            evra.move(to: .B3, duration: 1.5)
+            evra.move(to: .B2, duration: 1.5)
             
+            home.register(player: bernardo)
+            home.register(player: renato)
             away.register(player: evra)
             
             p1.homeTeam = home

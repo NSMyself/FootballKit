@@ -31,7 +31,10 @@ struct Field {
         return coordinate.x <= 9 ? firstGoal : secondGoal
     }
     
-    static func distance(from currentPosition:Coordinate, to newPosition:Coordinate) -> Float {
-        return 0
+    static func distance(from currentPosition:Coordinate, to newPosition:Coordinate) -> Double {
+        let dist =  sqrt(pow(Double(currentPosition.x - newPosition.x), 2) + pow(Double(currentPosition.y - newPosition.y), 2))
+        
+        print("Disntace is \(dist)")
+        return dist
     }
 }

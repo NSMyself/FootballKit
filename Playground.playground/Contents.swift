@@ -11,8 +11,6 @@ square.backgroundColor = .red
 square.center = bg.center
 bg.addSubview(square)
 
-
-
 // Chainable animations
 typealias Position = (x: Int, y: Int)
 
@@ -43,62 +41,5 @@ func gleipnir(offset:[Position]) -> () {
 }
 
 //gleipnir(offset: movements)
-
-
-let label:UILabel = {
-    $0.frame = CGRect(x: 0, y: 0, width:100, height: 100)
-    $0.text = "lol"
-    $0.textColor = UIColor.white
-    $0.textAlignment = .center
-    $0.font = UIFont.systemFont(ofSize: 50.0, weight: UIFontWeightBold)
-    return $0
-}(UILabel())
 */
 
-
-let label:UILabel = {
-    $0.frame = CGRect(x:0, y:0, width:200, height:21)
-    $0.text = "lol"
-    $0.textColor = UIColor.red
-    $0.textAlignment = .center
-    $0.font = UIFont.systemFont(ofSize: 50.0, weight: UIFontWeightBold)
-    return $0
-}(UILabel())
-
-bg.addSubview(label)
-
-/*
-let label = UILabel(frame: CGRect(x:0, y:0, width:200, height:21))
-//label.center = CGPointMake(160, 284)
-label.textAlignment = NSTextAlignment.center
-label.text = "I'am a test label"
-bg.addSubview(label)
-
-
-
-
-
-let start = square.center
-let end = CGPoint(x:200, y:400)
-
-let animation = CAKeyframeAnimation(keyPath: "position")
-let path = UIBezierPath()
-path.move(to: square.center)
-
-let c1 = CGPoint(x:start.x + 64, y:start.y)
-let c2 = CGPoint(x:end.x, y: end.y)
-
-path.addCurve(to: end, controlPoint1: c1, controlPoint2: c2)
-animation.path = path.cgPath
-animation.fillMode = kCAFillModeForwards
-animation.isRemovedOnCompletion = false
-animation.duration = 3
-
-//square.layer.add(animation, forKey: "movement")
-
-let animation2 = CAKeyframeAnimation(keyPath: "transform.scale")
-animation2.values = [1,2,1].map { NSNumber(value: $0) }
-animation2.duration = 1
-
-square.layer.add(animation2, forKey: "transform")
-*/

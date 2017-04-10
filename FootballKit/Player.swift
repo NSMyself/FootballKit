@@ -28,11 +28,26 @@ class Player:Equatable, Hashable {
     }
     
     // MARK: - Moving
+    
+    // Since the user hasn't provided us with a duration parameter, we'll simply use the default one (one square per second)
+    // As such, we need to know how far away are the two positions in order to simply calculate the duration
+    func move(to newPosition:Coordinate) {
+        guard let currentPosition = tracker.lastPosition() else {
+            return
+        }
+        
+        // Given that the default speed is one square per second, we simply need to:
+        // 1. calculate the distance
+        // 2. multiply it by the default speed factor (0.5)
+        let distance = Field.distance(from: currentPosition, to: newPosition)
+        move(to:newPosition, duration: distance * 0.5)
+    }
+    
     func move(to:Coordinate, duration:Double) {
         track(action: Movement(destination: to, duration: duration))
     }
     
-    func holdPosition(duration:Double) {
+    func holdPosition(duration:Double = 1) {
         track(action: Hold(position:tracker.lastPosition() ?? .G6, duration: duration))
     }
     
