@@ -31,7 +31,7 @@ class Player:Equatable, Hashable {
     
     // Since the user hasn't provided us with a duration parameter, we'll simply use the default one (one square per second)
     // As such, we need to know how far away are the two positions in order to simply calculate the duration
-    func move(to newPosition:Coordinate) {
+    func move(to newPosition:Coordinate, animationCurve curve:UIViewAnimationCurve = .linear) {
         guard let currentPosition = tracker.lastPosition() else {
             return
         }
@@ -40,11 +40,11 @@ class Player:Equatable, Hashable {
         // 1. calculate the distance
         // 2. multiply it by the default speed factor (0.5)
         let distance = Field.distance(from: currentPosition, to: newPosition)
-        move(to:newPosition, duration: distance * 0.5)
+        move(to:newPosition, duration: distance * 0.5, animationCurve: curve)
     }
     
-    func move(to:Coordinate, duration:Double) {
-        track(action: Movement(destination: to, duration: duration))
+    func move(to:Coordinate, duration:Double, animationCurve curve:UIViewAnimationCurve = .linear) {
+        track(action: Movement(destination: to, duration: duration, animationCurve: curve))
     }
     
     func holdPosition(duration:Double = 1) {

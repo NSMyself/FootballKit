@@ -6,14 +6,16 @@
 //  Copyright © 2017 NSMyself. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Movement:Action {
     let destination:Coordinate
     let duration:Double
+    let animationCurve:UIViewAnimationCurve
     
-    init(destination:Coordinate, duration:Double) {
+    init(destination:Coordinate, duration:Double, animationCurve:UIViewAnimationCurve = .linear) {
         self.destination = destination
         self.duration = duration
+        self.animationCurve = animationCurve
     }
 }

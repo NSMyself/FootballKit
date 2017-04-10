@@ -131,7 +131,9 @@ class PlayManager {
                 
                 switch(action) {
                 case is Movement:
-                    move(player:player, to: action.destination, duration:action.duration)
+                    let movement = action as! Movement
+                    move(player:player, to: action.destination, duration:action.duration, animationCurve:movement.animationCurve)
+                    
                 case is BallAction:
                     let ballAction = action as! BallAction
                     
@@ -161,13 +163,13 @@ class PlayManager {
             }
         }
         
-        func move(player:Player, to coordinate:Coordinate, duration:Double) {
-                        
+        func move(player:Player, to coordinate:Coordinate, duration:Double, animationCurve:UIViewAnimationCurve = .linear) {
+            
             let converted = field.point(from: coordinate)
             
             UIView.animate(withDuration: duration,
                           delay: 0,
-                          options: [.curveLinear],
+                          options: [optionForCurve(curve: animationCurve)],
                           animations: {
                             [unowned self] in
                             
@@ -187,11 +189,11 @@ class PlayManager {
             }
             
             CATransaction.begin()
-            CATransaction.setCompletionBlock({
+            CATransaction.setCompletionBlock {
                 if scored {
                     self.delegate?.scored(player: player)
                 }
-            })
+            }
             
             let from = self.field.point(from: lastCoordinate)
 
@@ -230,7 +232,7 @@ class PlayManager {
     }
     
     private func aimBall(from:CGPoint, to:CGPoint)->CGPoint {
-        let theta = atan2((to.y - from.y), (to.x-from.y))
+        let theta = atan2((to.y - from.y), (to.x-from.x))
         let y = playerRadius * sin(theta)
         let x = playerRadius * cos(theta)
         return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
@@ -283,3 +285,20 @@ class PlayManager {
         }
     }
 }
+
+// MARK: - Extensions
+extension PlayManager {
+fileprivate func optionForCurve(curve: UIViewAnimationCurve) -> UIViewAnimationOptions {
+    switch (curve) {
+        case .easeInOut:
+            return UIViewAnimationOptions.curveEaseInOut
+        case .easeIn:
+            return UIViewAnimationOptions.curveEaseIn
+        case .easeOut:
+            return UIViewAnimationOptions.curveEaseOut
+        case .linear:
+            return UIViewAnimationOptions.curveLinear
+        }
+    }
+}
+
