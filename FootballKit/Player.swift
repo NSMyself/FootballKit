@@ -13,6 +13,7 @@ class Player:Equatable, Hashable {
     
     let name:Name
     let number:UInt8
+    let dominantFoot:Foot
     var tracker:Tracker
     weak var team:Team?
     weak var delegate:BallActionDelegate?
@@ -20,11 +21,12 @@ class Player:Equatable, Hashable {
     private(set) public var actions = Queue<Action>()
     
     // MARK: - Init
-    init(name:String, number:UInt8, at coordinate:Coordinate? = nil, delegate:BallActionDelegate? = nil) {
+    init(name:String, number:UInt8, foot:Foot = .right, at coordinate:Coordinate? = nil, delegate:BallActionDelegate? = nil) {
         self.name = Name(name: name)
         self.number = number
         self.delegate = delegate
         self.tracker = Tracker(position: coordinate ?? .G6)
+        self.dominantFoot = foot
     }
     
     // MARK: - Moving

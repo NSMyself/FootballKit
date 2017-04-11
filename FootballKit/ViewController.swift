@@ -29,7 +29,7 @@ class ViewController: UIViewController, PlayManagerDelegate {
             let home = Team(name: "Home Team", country: "Portugal", color: .red)
             let away = Team(name: "Away Team", country: "France", color: .blue)
             
-            let bernardo = Player(name: "Bernardo Silva", number: 10, at:.B1)
+            let bernardo = Player(name: "Bernardo Silva", number: 10, foot:.right, at:.B1)
             bernardo.move(to: .F1, duration:1)
             bernardo.pass(to: .C8, duration: 1, swerve: .right, highBall:true)
             

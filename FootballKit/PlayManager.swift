@@ -76,7 +76,7 @@ class PlayManager {
             return
         }
         
-        ball.center = aimBall(from:playerView.center, to:field.point(from: .A4))
+        ball.center = aimBall(player:player, from:playerView.center, to:field.point(from: .A4))
         view.addSubview(ball)
         
         ballCarrier = player
@@ -231,9 +231,10 @@ class PlayManager {
         fetchNextAction(from: actions)
     }
     
-    private func aimBall(from:CGPoint, to:CGPoint)->CGPoint {
+    private func aimBall(player:Player, from:CGPoint, to:CGPoint) -> CGPoint {
+        
         let theta = atan2((to.y - from.y), (to.x-from.x))
-        let y = playerRadius * sin(theta)
+        let y = playerRadius * sin(theta) * 0.8 * CGFloat(player.dominantFoot.rawValue)
         let x = playerRadius * cos(theta)
         return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
     }
