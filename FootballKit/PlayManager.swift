@@ -12,9 +12,9 @@ import EasyAnimation
 class PlayManager {
     
     let view:UIView
-    var playerRadius:CGFloat = 38
-    let ballRadius:CGFloat = 14
+    var playerDiameter:CGFloat = 38
     let field:Field
+    let ballSize = CGSize(width: 14, height: 14)
     
     var isAnimating = false
     
@@ -31,8 +31,8 @@ class PlayManager {
     
     init(view: UIView, delegate:PlayManagerDelegate? = nil) {
         self.view = view
-        ball.frame = CGRect(origin: CGPoint.zero, size:CGSize(width: ballRadius, height: ballRadius))
-        ball.layer.cornerRadius = ballRadius/2
+        ball.frame = CGRect(origin: CGPoint.zero, size: ballSize)
+        ball.layer.cornerRadius = ballSize.width/2
         field = Field(size: view.bounds.size, adjustment: CGSize(width: 14, height: 16))
         
         self.delegate = delegate
@@ -76,7 +76,9 @@ class PlayManager {
             return
         }
         
-        ball.center = aimBall(player:player, from:playerView.center, to:field.point(from: .A4))
+        let to = player.actions.first?.destination ?? .I6
+        
+        ball.center = aimBall(from:playerView.center, to:field.point(from: to))
         view.addSubview(ball)
         
         ballCarrier = player
@@ -231,12 +233,45 @@ class PlayManager {
         fetchNextAction(from: actions)
     }
     
-    private func aimBall(player:Player, from:CGPoint, to:CGPoint) -> CGPoint {
+    private func aimBall(from:CGPoint, to:CGPoint) -> CGPoint {
         
-        let theta = atan2((to.y - from.y), (to.x-from.x))
-        let y = playerRadius * sin(theta) * 0.8 * CGFloat(player.dominantFoot.rawValue)
-        let x = playerRadius * cos(theta)
-        return CGPoint(x: from.x + x + ballRadius, y: from.y + y)
+        let dx:CGFloat = from.x - to.x
+        let dy:CGFloat = from.y - to.y
+        
+        var angle = atan2(dy, dx)
+        
+        if (angle < 0) {
+            angle = 2*CGFloat(M_PI) + angle
+        }
+        
+        var x = ballSize.width/2*cos(angle)
+        var y = ballSize.width/2*sin(angle)
+        
+        var direction:(x:CGFloat,y:CGFloat) = (x:0, y:0)
+        
+        if (dx > 0) {
+            direction.x = -1
+        }
+        else if (dx < 0) {
+            direction.x = 1
+        }
+        else {
+            x = 0 // vertical movement only; we'll just use the player's center x coordinate
+        }
+        
+        if (dy > 0) {
+            direction.y = -1
+        }
+        else if (dy < 0) {
+            direction.y = 1
+        }
+        else {
+            y = 0
+        }
+     
+        // This still isn't right, but it depends on a proper implementation of the Field.point(from:_) method
+        // I'm postponing further development regarding this issue until that one is fixed first
+        return CGPoint(x: from.x + x + ballSize.width * 2 * direction.x, y: from.y + y + direction.y * ballSize.height)
     }
 
     private func playerCircle(coordinate:Coordinate, player:Player, color:UIColor, textColor:UIColor = UIColor.white) -> UIView {
@@ -246,20 +281,20 @@ class PlayManager {
         
         // draw red circle
         let playerView:UIView = {
-            $0.frame = CGRect(x: point.x, y: point.y, width:playerRadius, height: playerRadius)
+            $0.frame = CGRect(x: point.x, y: point.y, width:playerDiameter, height: playerDiameter)
             $0.backgroundColor = color
             $0.layer.borderWidth = 1.0
             $0.layer.masksToBounds = true
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.layer.borderColor = color.cgColor
-            $0.layer.cornerRadius = playerRadius / 2.0
+            $0.layer.cornerRadius = playerDiameter / 2.0
             $0.isOpaque = true
             $0.isUserInteractionEnabled = true
             return $0
         }(UIView())
      
         let label:UILabel = {
-            $0.frame = CGRect(x: 0, y: 0, width:playerRadius, height: playerRadius)
+            $0.frame = CGRect(x: 0, y: 0, width:playerDiameter, height: playerDiameter)
             $0.text = String(player.number)
             $0.textColor = textColor
             $0.textAlignment = .center
