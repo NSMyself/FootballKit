@@ -42,24 +42,25 @@ let field:UIView = {
     $0.backgroundColor = UIColor(red: 85/255, green: 149/255, blue: 30/255, alpha: 1)
     $0.layer.borderColor = UIColor.white.cgColor
     $0.layer.borderWidth = 2
+    $0.clipsToBounds = true
     return $0
 }(UIView())
 
 background.addSubview(field)
 
 // Draw vertical lanes
-var tracker = offsets.width + fieldSize.width/15
+var tracker = fieldSize.width/15
 
 for i in 0...6 {
     
     let xWidth:CGFloat = (i == 6) ? fieldSize.width/15 - 2 : fieldSize.width/15
     
     let faixa:UIView = {
-        $0.frame = CGRect(origin: CGPoint(x: tracker, y:offsets.height + 2), size: CGSize(width: xWidth, height: fieldSize.height - offsets.height*2 - 4))
+        $0.frame = CGRect(origin: CGPoint(x: tracker, y:0), size: CGSize(width: xWidth, height: fieldSize.height - offsets.height*2 - 4))
         $0.backgroundColor = UIColor(red: 93/255, green: 162/255, blue: 36/255, alpha: 1)
         return $0
     }(UIView())
-    background.addSubview(faixa)
+    field.addSubview(faixa)
     
     tracker += fieldSize.width/15*2
 }
@@ -95,6 +96,52 @@ let centerCircle:UIView = {
 }(UIView())
 background.addSubview(centerCircle)
 
+let circleDiameter = ((fieldSize.width - offsets.width * 2) * 2 / realSize.width) * 2
+
+let cornerCircle1:UIView = {
+    $0.frame = CGRect(origin: .zero, size: CGSize(width: circleDiameter, height: circleDiameter))
+    $0.center = .zero
+    $0.layer.cornerRadius = circleDiameter/2
+    $0.layer.borderWidth = 2
+    $0.layer.borderColor = UIColor.white.cgColor
+    $0.backgroundColor = UIColor.clear
+    return $0
+}(UIView())
+field.addSubview(cornerCircle1)
+
+let cornerCircle2:UIView = {
+    $0.frame = CGRect(origin: CGPoint(x: field.frame.width - circleDiameter/2, y: -circleDiameter/2), size: CGSize(width: circleDiameter, height: circleDiameter))
+    $0.layer.cornerRadius = circleDiameter/2
+    $0.layer.borderWidth = 2
+    $0.layer.borderColor = UIColor.white.cgColor
+    $0.backgroundColor = UIColor.clear
+    return $0
+}(UIView())
+field.addSubview(cornerCircle2)
+
+let cornerCircle3:UIView = {
+    $0.frame = CGRect(origin: CGPoint(x: field.frame.width - circleDiameter/2, y: field.frame.height - circleDiameter/2), size: CGSize(width: circleDiameter, height: circleDiameter))
+    $0.layer.cornerRadius = circleDiameter/2
+    $0.layer.borderWidth = 2
+    $0.layer.borderColor = UIColor.white.cgColor
+    $0.backgroundColor = UIColor.clear
+    return $0
+}(UIView())
+field.addSubview(cornerCircle3)
+
+
+let cornerCircle4:UIView = {
+    $0.frame = CGRect(origin: CGPoint(x: -circleDiameter/2, y: field.frame.height - circleDiameter/2), size: CGSize(width: circleDiameter, height: circleDiameter))
+    $0.layer.cornerRadius = circleDiameter/2
+    $0.layer.borderWidth = 2
+    $0.layer.borderColor = UIColor.white.cgColor
+    $0.backgroundColor = UIColor.clear
+    return $0
+}(UIView())
+field.addSubview(cornerCircle4)
+
+
+
 // Penalty boxes
 
 let boxSize = calculateProportion(width: 16.5, height: 40.3)
@@ -120,7 +167,6 @@ let innerBox1:UIView = {
 penaltyBox1.addSubview(innerBox1)
 
 let tmp = (fieldSize.width - offsets.width * 2) * 11 / realSize.width
-print(tmp)
 
 let spot:UIView = {
     $0.frame = CGRect(origin: CGPoint(x: innerBox1.frame.maxX * 2 - 6, y: boxSize.height/2 - 3), size: CGSize(width: 6, height: 6))
