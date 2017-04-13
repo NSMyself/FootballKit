@@ -21,6 +21,8 @@
 		591169E61E8E60E700368DE1 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E51E8E60E700368DE1 /* LinkedList.swift */; };
 		5920C1831E964FED003B5778 /* PlayManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */; };
 		593252421E96711B0082783A /* PlayerTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593252411E96711B0082783A /* PlayerTapGesture.swift */; };
+		594D83801E9E3D40001159BA /* fussballfeld.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 594D837F1E9E3D40001159BA /* fussballfeld.jpg */; };
+		594D83821E9E3F43001159BA /* pitch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 594D83811E9E3F43001159BA /* pitch.jpg */; };
 		594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */; };
 		5953C5FF1E853BBB00A62B1A /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5953C5FE1E853BBB00A62B1A /* Country.swift */; };
 		597E86AA1E8A88C900D905BA /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E86A91E8A88C900D905BA /* Coordinate.swift */; };
@@ -55,6 +57,8 @@
 		591169E51E8E60E700368DE1 /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManagerDelegate.swift; sourceTree = "<group>"; };
 		593252411E96711B0082783A /* PlayerTapGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTapGesture.swift; sourceTree = "<group>"; };
+		594D837F1E9E3D40001159BA /* fussballfeld.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = fussballfeld.jpg; path = ../../../fussballfeld.jpg; sourceTree = "<group>"; };
+		594D83811E9E3F43001159BA /* pitch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pitch.jpg; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
 		5953C5FE1E853BBB00A62B1A /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		597E86A91E8A88C900D905BA /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -66,6 +70,7 @@
 		59AAE5501E843E5A00F65553 /* PlayerName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerName.swift; sourceTree = "<group>"; };
 		59B48B7F1E8294AB0095A6C4 /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		59B48B811E8298130095A6C4 /* PlayKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKind.swift; sourceTree = "<group>"; };
+		59B91C1E1EA011730003E07A /* field.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = field.playground; sourceTree = "<group>"; };
 		59C0236A1E925FC3008F5731 /* Swerve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swerve.swift; sourceTree = "<group>"; };
 		59C0236C1E93A73B008F5731 /* Tracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		59F90B271DD5D55900A29BDA /* FootballKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +107,8 @@
 			isa = PBXGroup;
 			children = (
 				59F90B311DD5D55900A29BDA /* Assets.xcassets */,
+				594D83811E9E3F43001159BA /* pitch.jpg */,
+				594D837F1E9E3D40001159BA /* fussballfeld.jpg */,
 				0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */,
 			);
 			name = Assets;
@@ -220,6 +227,7 @@
 				59F90B2E1DD5D55900A29BDA /* Main.storyboard */,
 				59F90B331DD5D55900A29BDA /* LaunchScreen.storyboard */,
 				59F90B361DD5D55900A29BDA /* Info.plist */,
+				59B91C1E1EA011730003E07A /* field.playground */,
 				599DC10E1E818E56000A6242 /* Playground.playground */,
 			);
 			path = FootballKit;
@@ -286,7 +294,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				594D83801E9E3D40001159BA /* fussballfeld.jpg in Resources */,
 				59F90B351DD5D55900A29BDA /* LaunchScreen.storyboard in Resources */,
+				594D83821E9E3F43001159BA /* pitch.jpg in Resources */,
 				0AFD45AE1DD61AB5006DAB0B /* fussballfeld-grid.jpg in Resources */,
 				59F90B321DD5D55900A29BDA /* Assets.xcassets in Resources */,
 				59F90B301DD5D55900A29BDA /* Main.storyboard in Resources */,

@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1200" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fussballfeld-grid.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="SNs-UH-xaW">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pitch.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="SNs-UH-xaW">
                                 <rect key="frame" x="8" y="0.0" width="1185" height="799"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="SNs-UH-xaW" secondAttribute="height" multiplier="1230:829" id="abc-eJ-quq"/>
@@ -144,6 +144,6 @@
     </scenes>
     <resources>
         <image name="Play" width="64" height="64"/>
-        <image name="fussballfeld-grid.jpg" width="1230" height="829"/>
+        <image name="pitch.jpg" width="1150" height="800"/>
     </resources>
 </document>
