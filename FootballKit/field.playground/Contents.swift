@@ -206,7 +206,62 @@ penaltyBox2.addSubview(spot2)
 background.addSubview(penaltyBox1)
 background.addSubview(penaltyBox2)
 
+// Grid
+var spacing:CGFloat = offsets.height
 
+let xIncrement = fieldSize.height / 11
+
+// Horizontal lines
+for x in 1...10 {
+
+    let line:UIView = {
+        $0.frame = CGRect(origin: CGPoint(x: offsets.width - 10, y: spacing), size: CGSize(width:field.frame.width + 20, height:1))
+        $0.backgroundColor = UIColor.yellow
+        return $0
+    }(UIView())
+    
+    let label:UILabel = {
+        $0.text = String(x)
+        $0.textColor = UIColor.yellow
+        $0.textAlignment = .right
+        $0.frame.size = CGSize(width:28, height: 14)
+        $0.center = CGPoint(x: 0, y: spacing + xIncrement/2)
+        return $0
+    }(UILabel())
+    
+    background.addSubview(line)
+    background.addSubview(label)
+    
+    spacing += xIncrement
+}
+
+
+let yColumns:CGFloat = 15
+let yIncrement = fieldSize.width/yColumns
+
+var yTracker = offsets.width
+
+for y in "ABCDEFGHIJKLMN".characters {
+    let line:UIView = {
+        $0.frame = CGRect(origin: CGPoint(x: yTracker, y: offsets.height - 10), size: CGSize(width:1, height:fieldSize.height + 10))
+        $0.backgroundColor = UIColor.yellow
+        return $0
+    }(UIView())
+    
+    let label:UILabel = {
+        $0.text = String(y)
+        $0.textColor = UIColor.yellow
+        $0.textAlignment = .center
+        $0.frame.size = CGSize(width:28, height: 14)
+        $0.center = CGPoint(x: yTracker + yIncrement/2, y: offsets.height - 10)
+        return $0
+    }(UILabel())
+    
+    background.addSubview(line)
+    background.addSubview(label)
+    
+    yTracker += yIncrement
+}
 
 
 

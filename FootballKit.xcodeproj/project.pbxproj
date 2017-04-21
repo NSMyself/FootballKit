@@ -21,7 +21,6 @@
 		591169E61E8E60E700368DE1 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591169E51E8E60E700368DE1 /* LinkedList.swift */; };
 		5920C1831E964FED003B5778 /* PlayManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */; };
 		593252421E96711B0082783A /* PlayerTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593252411E96711B0082783A /* PlayerTapGesture.swift */; };
-		594D83801E9E3D40001159BA /* fussballfeld.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 594D837F1E9E3D40001159BA /* fussballfeld.jpg */; };
 		594D83821E9E3F43001159BA /* pitch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 594D83811E9E3F43001159BA /* pitch.jpg */; };
 		594DD4FD1DD8A2370059C9E8 /* PlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */; };
 		5953C5FF1E853BBB00A62B1A /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5953C5FE1E853BBB00A62B1A /* Country.swift */; };
@@ -57,7 +56,6 @@
 		591169E51E8E60E700368DE1 /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		5920C1821E964FED003B5778 /* PlayManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManagerDelegate.swift; sourceTree = "<group>"; };
 		593252411E96711B0082783A /* PlayerTapGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTapGesture.swift; sourceTree = "<group>"; };
-		594D837F1E9E3D40001159BA /* fussballfeld.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = fussballfeld.jpg; path = ../../../fussballfeld.jpg; sourceTree = "<group>"; };
 		594D83811E9E3F43001159BA /* pitch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pitch.jpg; sourceTree = "<group>"; };
 		594DD4FC1DD8A2370059C9E8 /* PlayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayManager.swift; sourceTree = "<group>"; };
 		5953C5FE1E853BBB00A62B1A /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 			children = (
 				59F90B311DD5D55900A29BDA /* Assets.xcassets */,
 				594D83811E9E3F43001159BA /* pitch.jpg */,
-				594D837F1E9E3D40001159BA /* fussballfeld.jpg */,
 				0AFD45AC1DD61AB5006DAB0B /* fussballfeld-grid.jpg */,
 			);
 			name = Assets;
@@ -294,7 +291,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				594D83801E9E3D40001159BA /* fussballfeld.jpg in Resources */,
 				59F90B351DD5D55900A29BDA /* LaunchScreen.storyboard in Resources */,
 				594D83821E9E3F43001159BA /* pitch.jpg in Resources */,
 				0AFD45AE1DD61AB5006DAB0B /* fussballfeld-grid.jpg in Resources */,
