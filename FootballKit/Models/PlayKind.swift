@@ -11,9 +11,9 @@ import Foundation
 typealias Kind = PlayKind
 
 enum PlayKind {
-    case OpenPlay
-    case Freekick
-    case Penalty
-    case Corner
-    case ThrowIn
+    case openPlay
+    case freekick
+    case penalty
+    case corner
+    case throwIn
 }

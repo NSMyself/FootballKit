@@ -26,6 +26,8 @@ class PlayManager {
     var players:[Player: UIView] = [:]
     var ballCarrier:Player?
     
+    private var highlights = [Play]()
+    
     weak var delegate: PlayManagerDelegate?
     
     init(view: UIView, delegate: PlayManagerDelegate? = nil) {
@@ -37,17 +39,8 @@ class PlayManager {
         self.delegate = delegate
     }
     
-    func play(play: Play) {
-        
-        wipeClean()
-        
-        for player in play.allPlayers {
-            registerPlayer(player, initialPosition: player.tracker.initialPosition())
-            
-            if player == play.initialBallCarrier {
-                resetBall(with: player)
-            }
-        }
+    func cue(play: Play) {
+        highlights.append(play)
     }
     
     func registerPlayer(_ player:Player, initialPosition:Coordinate) {
@@ -83,11 +76,31 @@ class PlayManager {
         ballCarrier = player
     }
     
-    func animate(_ play: Play) {
+    func play() {
+        if let highlight = highlights.last {
+            animate(play: highlight)
+        }
+    }
+    
+    private func prepare(play: Play) {
+        wipeClean()
+        
+        for player in play.allPlayers {
+            registerPlayer(player, initialPosition: player.tracker.initialPosition())
+            
+            if player == play.initialBallCarrier {
+                resetBall(with: player)
+            }
+        }
+    }
+    
+    private func animate(play: Play) {
         
         guard (!isAnimating) else {
             return
         }
+        
+        prepare(play: play)
         
         // The player may not be registered
         // As such, we're using this method to make sure he was indeed registered before firing the delegation animationStarted() method
@@ -100,7 +113,7 @@ class PlayManager {
             delegate?.animationDidStart()
         }
         
-        resetPlayers(in:play)
+        resetPlayers(in: play)
         
         let group = DispatchGroup()
     
