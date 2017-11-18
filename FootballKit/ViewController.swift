@@ -2,12 +2,13 @@
 //  ViewController.swift
 //  FootballKit
 //
-//  Created by João Pereira on 11/11/16.
-//  Copyright © 2016 NSMyself. All rights reserved.
+//  Created by João Pereira on 03/11/2017.
+//  Copyright © 2017 nsmyself. All rights reserved.
 //
 
 import UIKit
 
+<<<<<<< Updated upstream
 class ViewController: UIViewController, PlayManagerDelegate {
 	
     @IBOutlet var background: UIImageView?
@@ -78,3 +79,7 @@ class ViewController: UIViewController, PlayManagerDelegate {
         print("Player \(player.name.short) just scored!")
     }
 }
+=======
+class ViewController: UIViewController {}
+
+>>>>>>> Stashed changes

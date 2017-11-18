@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/knight4/Desktop/FootballAnimation/FootballKit.xcodeproj">
+      location = "self:FootballKit.xcodeproj">
    </FileRef>
 </Workspace>
