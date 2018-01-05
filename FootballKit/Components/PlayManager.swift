@@ -12,7 +12,6 @@ class PlayManager {
     
     let view: UIView
     var playerDiameter: CGFloat = 38
-    let field: Field
     let ballSize = CGSize(width: 14, height: 14)
     
     var isAnimating = false
@@ -27,16 +26,27 @@ class PlayManager {
     var ballCarrier:Player?
     
     private var highlights = [Play]()
+    private let fieldManager = FieldManager()
     
     weak var delegate: PlayManagerDelegate?
     
-    init(view: UIView, delegate: PlayManagerDelegate? = nil) {
+    init(withSize size: CGSize, padding: CGSize = .zero, delegate: PlayManagerDelegate? = nil) {
+        self.view = fieldManager.generate(viewSize: CGSize(width: size.width - padding.width, height: size.height - padding.height))
+        self.delegate = delegate
+        
+        setup()
+    }
+    
+    init(fieldView view: UIView, delegate: PlayManagerDelegate? = nil) {
         self.view = view
+        self.delegate = delegate
+        
+        setup()
+    }
+    
+    private func setup() {
         ball.frame = CGRect(origin: CGPoint.zero, size: ballSize)
         ball.layer.cornerRadius = ballSize.width/2
-        field = Field(size: view.bounds.size, adjustment: CGSize(width: 14, height: 16))
-        
-        self.delegate = delegate
     }
     
     func cue(play: Play) {
@@ -54,7 +64,7 @@ class PlayManager {
     
     func resetPlayers(in play:Play) {
         for player in players {
-            player.value.frame.origin = field.point(from: player.key.tracker.initialPosition())
+            player.value.frame.origin = fieldManager.point(from: player.key.tracker.initialPosition())
          
             if player.key == play.initialBallCarrier {
                 resetBall(with: player.key)
@@ -70,7 +80,7 @@ class PlayManager {
         
         let to = player.actions.first?.destination ?? .I6
         
-        ball.center = aimBall(from:playerView.center, to:field.point(from: to))
+        ball.center = aimBall(from:playerView.center, to: fieldManager.point(from: to))
         view.addSubview(ball)
         
         ballCarrier = player
@@ -155,7 +165,7 @@ class PlayManager {
                     // TODO: implement a proper result for each shot (blocked; missed; etc)
                     let goal = (ballAction.kind == .shoot)
                     
-                    kickBall(player:player, to: field.point(from: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall, scored:goal)
+                    kickBall(player:player, to: fieldManager.point(from: action.destination), duration: ballAction.duration, swerve: ballAction.swerve, highBall: ballAction.highBall, scored:goal)
                 case is Hold:
                     print("Nothing to do but wait")
                 default:
@@ -179,7 +189,7 @@ class PlayManager {
         
         func move(player:Player, to coordinate:Coordinate, duration:Double, animationCurve:UIViewAnimationCurve = .linear) {
             
-            let converted = field.point(from: coordinate)
+            let converted = fieldManager.point(from: coordinate)
             
             UIView.animate(withDuration: duration,
                           delay: 0,
@@ -209,7 +219,7 @@ class PlayManager {
                 }
             }
             
-            let from = self.field.point(from: lastCoordinate)
+            let from = fieldManager.point(from: lastCoordinate)
 
             // Time to animate it
             let animation = CAKeyframeAnimation(keyPath: "position")
@@ -289,7 +299,7 @@ class PlayManager {
     private func playerCircle(coordinate: Coordinate, player: Player, color: UIColor, textColor: UIColor = UIColor.white) -> UIView {
         
         // calculate position
-        let point = field.point(from: coordinate)
+        let point = fieldManager.point(from: coordinate)
         
         // draw red circle
         let playerView:UIView = {

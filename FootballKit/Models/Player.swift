@@ -41,7 +41,7 @@ class Player:Equatable, Hashable {
         // Given that the default speed is one square per second, we simply need to:
         // 1. calculate the distance
         // 2. multiply it by the default speed factor (0.5)
-        let distance = Field.distance(from: currentPosition, to: newPosition)
+        let distance = FieldManager.distance(from: currentPosition, to: newPosition)
         move(to:newPosition, duration: distance * 0.5, animationCurve: curve)
     }
     
@@ -74,7 +74,7 @@ class Player:Equatable, Hashable {
             fatalError("Player has no registered positions")
         }
         
-        actions.enqueue(BallAction(kind: .shoot, destination: Field.nearestGoal(from: position), duration: 0.2))
+        actions.enqueue(BallAction(kind: .shoot, destination: FieldManager.nearestGoal(from: position), duration: 0.2))
     }
     
     // MARK: - Location management

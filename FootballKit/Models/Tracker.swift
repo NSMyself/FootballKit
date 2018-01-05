@@ -11,7 +11,7 @@ import Foundation
 
 struct Tracker {
     private var positions = [Double:Coordinate]()
-    private(set) public var timer:Double = 0
+    public private (set) var timer: Double = 0
     
     init(position: Coordinate) {
         positions[0] = position
@@ -29,41 +29,32 @@ struct Tracker {
     func position(when:Double) -> Coordinate? {
         
         // Input validation
-        guard when > 0 else {
-            return nil
-        }
-        
-        guard let highestKey = positions.keys.max() else {
-            return nil
+        guard when > 0,
+            let highestKey = positions.keys.max() else {
+                return nil
         }
         
         // Actual position detection
         guard let directMatch = positions[when] else {
             
-            if when >= highestKey {
+            guard when < highestKey else {
                 return positions[highestKey]
             }
-            else {
-                
-                let keys = positions.keys.filter { $0 < when }.sorted()
-                
-                guard let lastKey = keys.last else {
-                    return nil
-                }
-                
-                return positions[lastKey]
+            
+            let keys = positions.keys.filter { $0 < when }.sorted()
+            
+            guard let lastKey = keys.last else {
+                return nil
             }
+            
+            return positions[lastKey]
         }
         
         return directMatch
     }
     
     func lastPosition() -> Coordinate? {
-
-        guard let highestKey = positions.keys.max() else {
-            return nil
-        }
-        
+        guard let highestKey = positions.keys.max() else { return nil }
         return positions[highestKey]
     }
 }

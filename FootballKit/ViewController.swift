@@ -21,9 +21,8 @@ class ViewController: UIViewController, PlayManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let playManager = PlayManager(view: FieldManager.render(using: view.frame.size), delegate:self)
+        let playManager = PlayManager(withSize: view.frame.size, padding: CGSize(width: 20, height: 20), delegate: self)
         view.addSubview(playManager.view)
-        
         
         let p1 = Play(scored: true, kind: .openPlay)
         let home = Team(name: "Home Team", country: "Portugal", color: .red)
@@ -51,7 +50,6 @@ class ViewController: UIViewController, PlayManagerDelegate {
         items.append(p1)
         playManager.cue(play: p1)
         playManager.play()
-        
     }
     
     @IBAction func playToggled(_ sender: Any) {

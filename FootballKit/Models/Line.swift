@@ -12,14 +12,15 @@ enum Line: String {
     case run
     case pass
     
-    func color() -> CGColor {
+    func color() -> UIColor {
         switch(self) {
-        case .run: return UIColor.red.cgColor
-        case .pass: return UIColor.blue.cgColor
+        case .run: return UIColor.red
+        case .pass: return UIColor.blue
         }
     }
     
-    func dashPattern() -> [NSNumber]? {
+    func dashPattern() -> [Int]? {
         return (self == .run) ? [4,4] : nil
     }
 }
+

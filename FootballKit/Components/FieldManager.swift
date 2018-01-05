@@ -10,33 +10,14 @@ import Foundation
 import UIKit
 
 struct FieldManager {
+
+    static let firstGoal: Coordinate = .A6
+    static let secondGoal: Coordinate = .R6
     
-    static let realSize = CGSize(width: 105, height: 75)
-    static let offsets = CGSize(width: 19, height: 19)
+    let offsets = CGSize(width: 19, height: 19)
     
-    enum Line {
-        case vertical
-        case horizontal
-    }
-    
-    static func add(line:Line, at origin: CGPoint, amount: CGFloat, color: UIColor = .orange) -> UIView {
-        
-        return {
-            $0.frame.origin = origin
-            $0.frame.size = line == .vertical ? CGSize(width: 1, height: amount) : CGSize(width: amount, height: 1)
-            $0.backgroundColor = UIColor.orange
-            return $0
-            }(UIView())
-    }
-    
-    static func calculateProportion(of fieldSize: CGSize, width: CGFloat, height: CGFloat) -> CGSize {
-        let bWidth = (fieldSize.width - offsets.width * 2) * width / realSize.width
-        let bHeight = (fieldSize.height - offsets.height * 2) * height / realSize.height
-        
-        return CGSize(width: bWidth, height: bHeight)
-    }
-    
-    static func render(using fieldSize: CGSize) -> UIView {
+    // MARK: - Actual field generation
+    func generate(viewSize fieldSize: CGSize) -> UIView {
         
         let background: UIView = {
             $0.frame = CGRect(origin: .zero, size: fieldSize)
@@ -62,13 +43,13 @@ struct FieldManager {
             
             let xWidth:CGFloat = (i == 6) ? fieldSize.width/15 - 2 : fieldSize.width/15
             
-            let faixa: UIView = {
-            $0.frame = CGRect(origin: CGPoint(x: tracker, y:0), size: CGSize(width: xWidth, height: fieldSize.height - offsets.height*2 - 4))
-            $0.backgroundColor = UIColor(red: 93/255, green: 162/255, blue: 36/255, alpha: 1)
-            return $0
+            let lane: UIView = {
+                $0.frame = CGRect(origin: CGPoint(x: tracker, y:0), size: CGSize(width: xWidth, height: fieldSize.height - offsets.height*2 - 4))
+                $0.backgroundColor = UIColor(red: 93/255, green: 162/255, blue: 36/255, alpha: 1)
+                return $0
             }(UIView())
             
-            field.addSubview(faixa)
+            field.addSubview(lane)
             tracker += fieldSize.width/15*2
         }
         
@@ -81,7 +62,7 @@ struct FieldManager {
         }(UIView())
         background.addSubview(halfway)
         
-        let diameter = (fieldSize.width - offsets.width * 2) * 9.15 * 2 / realSize.width
+        let diameter = (fieldSize.width - offsets.width * 2) * 9.15 * 2
         print(diameter)
         
         let centerSpot: UIView = {
@@ -103,7 +84,7 @@ struct FieldManager {
         }(UIView())
         background.addSubview(centerCircle)
         
-        let circleDiameter = ((fieldSize.width - offsets.width * 2) * 2 / realSize.width) * 2
+        let circleDiameter = ((fieldSize.width - offsets.width * 2) * 2) * 2
         
         let cornerCircle1: UIView = {
             $0.frame = CGRect(origin: .zero, size: CGSize(width: circleDiameter, height: circleDiameter))
@@ -168,7 +149,7 @@ struct FieldManager {
         
         penaltyBox1.addSubview(innerBox1)
         
-        let tmp = (fieldSize.width - offsets.width * 2) * 11 / realSize.width
+        let tmp = (fieldSize.width - offsets.width * 2) * 11
         
         let spot: UIView = {
             $0.frame = CGRect(origin: CGPoint(x: innerBox1.frame.maxX * 2 - 6, y: boxSize.height/2 - 3), size: CGSize(width: 6, height: 6))
@@ -214,20 +195,20 @@ struct FieldManager {
         
         // Horizontal lines
         for x in 1...10 {
-        
+            
             let line: UIView = {
-            $0.frame = CGRect(origin: CGPoint(x: offsets.width - 10, y: spacing), size: CGSize(width:field.frame.width + 20, height:1))
-            $0.backgroundColor = UIColor.yellow
-            return $0
+                $0.frame = CGRect(origin: CGPoint(x: offsets.width - 10, y: spacing), size: CGSize(width:field.frame.width + 20, height:1))
+                $0.backgroundColor = UIColor.yellow
+                return $0
             }(UIView())
             
             let label: UILabel = {
-            $0.text = String(x)
-            $0.textColor = .yellow
-            $0.textAlignment = .right
-            $0.frame.size = CGSize(width:28, height: 14)
-            $0.center = CGPoint(x: 0, y: spacing + xIncrement/2)
-            return $0
+                $0.text = String(x)
+                $0.textColor = .yellow
+                $0.textAlignment = .right
+                $0.frame.size = CGSize(width:28, height: 14)
+                $0.center = CGPoint(x: 0, y: spacing + xIncrement/2)
+                return $0
             }(UILabel())
             
             background.addSubview(line)
@@ -238,23 +219,22 @@ struct FieldManager {
         
         let yColumns: CGFloat = 15
         let yIncrement = fieldSize.width/yColumns
-        
         var yTracker = offsets.width
         
         for y in "ABCDEFGHIJKLMN" {
             let line: UIView = {
-            $0.frame = CGRect(origin: CGPoint(x: yTracker, y: offsets.height - 10), size: CGSize(width:1, height:fieldSize.height + 10))
-            $0.backgroundColor = UIColor.yellow
-            return $0
+                $0.frame = CGRect(origin: CGPoint(x: yTracker, y: offsets.height - 10), size: CGSize(width:1, height:fieldSize.height + 10))
+                $0.backgroundColor = UIColor.yellow
+                return $0
             }(UIView())
             
             let label: UILabel = {
-            $0.text = String(y)
-            $0.textColor = UIColor.yellow
-            $0.textAlignment = .center
-            $0.frame.size = CGSize(width:28, height: 14)
-            $0.center = CGPoint(x: yTracker + yIncrement/2, y: offsets.height - 10)
-            return $0
+                $0.text = String(y)
+                $0.textColor = UIColor.yellow
+                $0.textAlignment = .center
+                $0.frame.size = CGSize(width:28, height: 14)
+                $0.center = CGPoint(x: yTracker + yIncrement/2, y: offsets.height - 10)
+                return $0
             }(UILabel())
             
             background.addSubview(line)
@@ -264,5 +244,39 @@ struct FieldManager {
         }
         
         return background
+    }
+    
+    // MARK: - Auxiliar methods
+    private func add(line: LineMarking, at origin: CGPoint, amount: CGFloat, color: UIColor = .orange) -> UIView {
+        return {
+            $0.frame.origin = origin
+            $0.frame.size = line.size(considering: amount)
+            $0.backgroundColor = UIColor.orange
+            return $0
+            }(UIView())
+    }
+    
+    func point(from coordinate: Coordinate) -> CGPoint {
+        let squareSize = CGSize(width: 150, height: 150)
+        let squareOffset = CGPoint(x: squareSize.width / 2.0, y: squareSize.height / 2.0)
+        
+        let x = squareSize.width * CGFloat(Double(coordinate.x) - 1.0) + squareOffset.x * 1.3
+        let y = squareSize.height * CGFloat(Double(coordinate.y))
+        
+        return CGPoint(x: x, y: y)
+    }
+    
+    func calculateProportion(of fieldSize: CGSize, width: CGFloat, height: CGFloat) -> CGSize {
+        let bWidth = (fieldSize.width - offsets.width * 2) * width
+        let bHeight = (fieldSize.height - offsets.height * 2) * height
+        return CGSize(width: bWidth, height: bHeight)
+    }
+    
+    static func nearestGoal(from coordinate: Coordinate) -> Coordinate {
+        return coordinate.x <= 9 ? FieldManager.firstGoal : FieldManager.secondGoal
+    }
+    
+    static func distance(from currentPosition: Coordinate, to newPosition: Coordinate) -> Double {
+        return sqrt(pow(Double(currentPosition.x - newPosition.x), 2) + pow(Double(currentPosition.y - newPosition.y), 2))
     }
 }
