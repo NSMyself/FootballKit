@@ -21,7 +21,7 @@ class ViewController: UIViewController, PlayManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let playManager = PlayManager(withSize: view.frame.size, padding: CGSize(width: 20, height: 20), delegate: self)
+        let playManager = PlayManager(withSize: view.frame.size, padding: CGSize(width: 50, height: 50), delegate: self)
         view.addSubview(playManager.view)
         
         let p1 = Play(scored: true, kind: .openPlay)
@@ -49,7 +49,7 @@ class ViewController: UIViewController, PlayManagerDelegate {
         
         items.append(p1)
         playManager.cue(play: p1)
-        playManager.play()
+        //playManager.play()
     }
     
     @IBAction func playToggled(_ sender: Any) {

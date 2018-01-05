@@ -22,8 +22,8 @@ class PlayManager {
         return $0
     }(UIView())
     
-    var players:[Player: UIView] = [:]
-    var ballCarrier:Player?
+    var players: [Player: UIView] = [:]
+    var ballCarrier: Player?
     
     private var highlights = [Play]()
     private let fieldManager = FieldManager()
@@ -31,7 +31,7 @@ class PlayManager {
     weak var delegate: PlayManagerDelegate?
     
     init(withSize size: CGSize, padding: CGSize = .zero, delegate: PlayManagerDelegate? = nil) {
-        self.view = fieldManager.generate(viewSize: CGSize(width: size.width - padding.width, height: size.height - padding.height))
+        self.view = fieldManager.generate(viewSize: size, padding: padding)
         self.delegate = delegate
         
         setup()
