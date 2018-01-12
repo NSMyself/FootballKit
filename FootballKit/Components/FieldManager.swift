@@ -16,6 +16,9 @@ class FieldManager {
     
     var offsets = CGSize(width: 20, height: 20)
     
+    private let nColumns: CGFloat = 14
+    private let nRows: CGFloat = 10
+    
     public var containerBackgroundColor = UIColor(red: 68/255, green: 123/255, blue: 22/255, alpha: 1)
     public var fieldBackgroundColor = UIColor(red: 85/255, green: 149/255, blue: 30/255, alpha: 1)
     public var fieldAlternativeColor = UIColor(red: 93/255, green: 162/255, blue: 36/255, alpha: 1)
@@ -31,7 +34,7 @@ class FieldManager {
         
         let background: UIView = {
             $0.frame = CGRect(origin: .zero, size: fieldSize)
-            $0.backgroundColor = self.containerBackgroundColor
+            $0.backgroundColor = containerBackgroundColor
             return $0
         }(UIView())
         
@@ -43,7 +46,7 @@ class FieldManager {
         }(UIView())
         
         let markings = UIView()
-        markings.frame = CGRect(origin: CGPoint(x: field.frame.minX - indicatorSpacing, y: field.frame.minY - indicatorSpacing), size: CGSize(width: field.frame.width + indicatorSpacing * 2, height: field.frame.height + indicatorSpacing * 2))
+        markings.frame = field.frame
         background.addSubview(field)
         background.addSubview(markings)
         
@@ -181,22 +184,19 @@ class FieldManager {
         
         background.addSubview(penaltyBox1)
         background.addSubview(penaltyBox2)
-        
+ 
         // Grid
-        var spacing: CGFloat = offsets.height
         let yIncrement = (fieldSize.height - offsets.height * 2) / 10
         
         // Columns
         // Draw different color grass lane (lighter green)
-        let nColumns: CGFloat = 14
         let xIncrement = (fieldSize.width - offsets.width*2)/nColumns
         
         var tracker: CGFloat = 0
         
         for _ in 0...6 {
-            
             let lane: UIView = {
-                $0.frame = CGRect(origin: CGPoint(x: tracker, y: offsets.height),
+                $0.frame = CGRect(origin: CGPoint(x: tracker, y: 0),
                                   size: CGSize(width: xIncrement, height: fieldSize.height - offsets.height*2))
                 $0.backgroundColor = fieldAlternativeColor
                 return $0
@@ -207,36 +207,42 @@ class FieldManager {
         }
         
         // Draw indicators
-        tracker = indicatorSpacing
+        tracker = 0
         
-        for y in "ABCDEFGHIJKLMN" {
+        for y in "ABCDEFGHIJKLMNO" {
+            
             let line: UIView = {
-                $0.frame = CGRect(origin: CGPoint(x: tracker, y: offsets.height - 10),
-                                  size: CGSize(width: 1, height: fieldSize.height + 10))
+                $0.frame = CGRect(origin: CGPoint(x: tracker, y: -10),
+                                  size: CGSize(width: 1, height: field.frame.height + 20))
                 $0.backgroundColor = indicatorLineColor
                 return $0
             }(UIView())
             
-            let label: UILabel = {
-                $0.text = String(y)
-                $0.textColor = .yellow
-                $0.textAlignment = .center
-                $0.sizeToFit()
-                $0.center = CGPoint(x: tracker + xIncrement/2, y: offsets.height - 15)
-                return $0
-            }(UILabel())
-            
             markings.addSubview(line)
-            markings.addSubview(label)
+            
+            if y != "O" {
+                let label: UILabel = {
+                    $0.text = String(y)
+                    $0.textColor = .yellow
+                    $0.textAlignment = .center
+                    $0.sizeToFit()
+                    $0.center = CGPoint(x: tracker + xIncrement/2, y: -15)
+                    return $0
+                }(UILabel())
+                
+                markings.addSubview(label)
+            }
             
             tracker += xIncrement
         }
         
         // Lines
+        tracker = 0
+        
         for x in 1...11 {
             
             let line: UIView = {
-                $0.frame = CGRect(origin: CGPoint(x: 0, y: spacing), size: CGSize(width: markings.frame.width + 20, height:1))
+                $0.frame = CGRect(origin: CGPoint(x: -10, y: tracker), size: CGSize(width: markings.frame.width + 20, height:1))
                 $0.backgroundColor = indicatorLineColor
                 return $0
             }(UIView())
@@ -249,14 +255,14 @@ class FieldManager {
                     $0.textColor = indicatorLabelColor
                     $0.textAlignment = .right
                     $0.sizeToFit()
-                    $0.center = CGPoint(x: offsets.width / 2, y: spacing + yIncrement/2)
+                    $0.center = CGPoint(x: -offsets.width / 2, y: tracker + yIncrement/2)
                     return $0
                 }(UILabel())
                 
                 markings.addSubview(label)
             }
             
-            spacing += yIncrement
+            tracker += yIncrement
         }
         
         
