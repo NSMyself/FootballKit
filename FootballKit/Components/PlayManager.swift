@@ -187,7 +187,7 @@ class PlayManager {
             }
         }
         
-        func move(player:Player, to coordinate:Coordinate, duration:Double, animationCurve:UIViewAnimationCurve = .linear) {
+        func move(player:Player, to coordinate:Coordinate, duration:Double, animationCurve:UIView.AnimationCurve = .linear) {
             
             let converted = fieldManager.point(from: coordinate)
             
@@ -245,7 +245,7 @@ class PlayManager {
             
             animation.duration = duration
             animation.path = path.cgPath
-            animation.fillMode = kCAFillModeForwards
+            animation.fillMode = CAMediaTimingFillMode.forwards
             animation.isRemovedOnCompletion = false
             self.ball.layer.add(animation, forKey:nil)
             
@@ -342,7 +342,7 @@ class PlayManager {
 
 // MARK: - Extensions
 extension PlayManager {
-fileprivate func optionForCurve(curve: UIViewAnimationCurve) -> UIViewAnimationOptions {
+fileprivate func optionForCurve(curve: UIView.AnimationCurve) -> UIView.AnimationOptions {
     switch (curve) {
         case .easeInOut:
             return .curveEaseInOut

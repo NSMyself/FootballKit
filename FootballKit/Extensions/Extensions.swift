@@ -44,8 +44,8 @@ extension CGPoint {
     }
 }
 
-extension UIViewAnimationOptions {
-    init(curve: UIViewAnimationCurve) {
+extension UIView.AnimationOptions {
+    init(curve: UIView.AnimationCurve) {
         switch curve {
         case .easeIn:
             self = .curveEaseIn
